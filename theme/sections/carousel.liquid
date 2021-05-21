@@ -1,0 +1,127 @@
+<div class="container">
+    <div class="carousel p-mx" data-section-type="slideshow">
+        <div id="customize-controls-hero-slider-{{section.id}}" class="arrows">
+            <button class="prev">
+                <svg width="11" height="21" viewBox="0 0 11 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4.85 10.373L11 17.999L7.638 20.418L0.257999 10.209L7.638 0L11 2.419L4.85 10.373Z" fill="white"></path> 
+                </svg>
+            </button>
+            <button class="next">
+                <svg width="11" height="21" viewBox="0 0 11 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6.15 10.373L0 17.999L3.362 20.418L10.742 10.209L3.362 0L0 2.419L6.15 10.373Z" fill="white"></path> 
+                </svg>
+            </button>
+        </div>
+        <div id="slider-{{ section.id }}">
+            {%- for block in section.blocks -%}
+                {%- assign _block = block.settings -%}
+                {%- case block.type -%}
+                    {%- when 'carousel' -%}
+                        <div>
+                            <div class="carousel__img">
+                                <div class="content">
+                                    <div class="sub-title-1">{{_block.sub_title}}</div>
+                                    <div class="title-1">{{_block.title}}</div>
+                                    <a class="button-1" href="{{_block.url}}">{{_block.text_button}}</a>
+                                </div>
+                                {%- if _block.image != blank -%}
+                                {%- assign img_url = _block.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                                    <img id="{{ _block.image.id }}"
+                                        class="lazyload"
+                                        data-src="{{ img_url }}"
+                                        data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                                        data-aspectratio="{{ _block.image.aspect_ratio }}"
+                                        data-sizes="auto"
+                                        alt="_block.image.alt">
+                                {%- else -%}
+                                    {{ 'image' | placeholder_svg_tag }}                  
+                                {%- endif -%}
+                            </div>
+                        </div>
+                {%- endcase -%}
+            {%- endfor -%}
+        </div>
+        <script type="application/json" data-tns-config>
+        {
+            "container": "#slider-{{ section.id }}",
+            "loop" : false,
+            "items" : 1,
+            "slideBy": "page",
+            "nav": false,
+            "autoplay": false,
+            "autoplayButtonOutput": false,
+            "mouseDrag": true,
+            "lazyload": false,
+            "speed": 400,
+            "preventScrollOnTouch": "auto",
+            "controlsContainer": "#customize-controls-hero-slider-{{section.id}}",
+            "responsive": {
+                "0": {
+                    "items": 1
+                }
+            }
+        }
+    </script>
+    </div>
+</div>
+
+{%- schema -%}
+{
+    "name" : {
+        "en": "Carousel"
+    },
+    "settings" : [],
+    "blocks": [
+        {
+            "type" : "carousel",
+            "name": {
+                "en": "Carousel"
+            },
+            "settings" : [
+                {
+                    "type": "text",
+                    "id": "sub_title",
+                    "label": {
+                        "en": "Subtitle"
+                    }
+                },
+                {
+                    "type": "richtext",
+                    "id": "title",
+                    "label": {
+                        "en": "Title"
+                    }
+                },
+                {
+                    "type": "image_picker",
+                    "id": "image",
+                    "label": {
+                        "en": "Image"
+                    }
+                },
+                {
+                    "type": "text",
+                    "id": "text_button",
+                    "label": {
+                        "en": "Text button"
+                    },
+                    "default" : "Shop this look"
+                },
+                {
+                    "type" : "url",
+                    "id" : "url_button",
+                    "label" : {
+                        "en": "URL Button"
+                    }
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Carousel",
+            "category": "Advanced layout"
+        }
+    ]
+}
+{%- endschema -%}

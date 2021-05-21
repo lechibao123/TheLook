@@ -1,15 +1,15 @@
 /*============================================================================
-  #Sass Variables
+    #Sass Variables
 ==============================================================================*/
 :root {
-    --max-width: 1440px;
+    --max-width: 1920px;
     --large-max-width: 960px;
     --medium-max-width: 720px;
     --small-max-width: 540px;
 
     --large-padding: 255px;
     --medium-padding: 100px;
-    --small-padding: 50px;
+    --small-padding: 30px;
 }
 
 // @import "elements/_01_variables.scss";
@@ -17,12 +17,16 @@
 @import "elements/02_variables.scss";
 
 /*============================================================================
-  #Sass Mixins & Tools
+    #Sass Mixins & Tools
 ==============================================================================*/
 @import "elements/_mixin.scss";
 
 //Element  
 /* ============== Element ============== */
 @import "elements/reset.scss";
+<<<<<<< HEAD
 @import "elements/carrousel.scss";
 @import "elements/list-product.scss";
+=======
+@import "elements/carousel.scss";
+>>>>>>> 3d4039d15b58310781a51cbf6f39c6691c1c6ebc

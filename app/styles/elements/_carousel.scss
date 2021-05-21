@@ -1,0 +1,61 @@
+.carousel {
+    position: relative;
+    padding-top: 30px;
+    padding-bottom: 50px;
+
+    &__img{
+        position: relative;
+        text-align: right;
+        img{
+            width: 75%;
+        }
+    }
+
+    .content{
+        position: absolute;
+        text-align: left;
+        max-width: 480px;
+        top: 40%;
+        left: 0;
+        @include respond-to(768){
+            top: 20%;
+        }
+        @include respond-to(600){
+            top: 10%;
+        }
+    }
+
+    .title-1{
+        text-transform: uppercase;
+        margin-bottom: 40px;
+        @include respond-to(768){
+            margin-bottom: 10px;
+        }
+        strong{
+            font-weight: bold;
+            white-space: nowrap;
+        }
+        p{
+            font-weight: 400;
+            margin: 0;
+            line-height: 62.4px;
+            letter-spacing: 2px;
+            @include respond-to(768){
+                line-height: 50px;
+            }
+            @include respond-to(600){
+                line-height: 30px;
+            }
+        }
+    }
+    .sub-title-1{
+        margin-bottom: 16px;
+        @include respond-to(600){
+            margin-bottom: 8px;
+        }
+    }
+    
+    a:focus, a:not([disabled]):hover{
+        color: #FFF !important;
+    }
+}
