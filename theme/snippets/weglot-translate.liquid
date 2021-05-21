@@ -1,0 +1,107 @@
+  {%- assign gg_with_name  = true -%}
+  {%- assign gg_full_name  = true -%}
+  {{ "//cdn.weglot.com/weglot.min.js" | script_tag }}
+
+  <script>
+    if (typeof Weglot != 'undefined') {
+      Weglot.initialize({
+        api_key         : "{{settings.api_translate}}"
+        ,auto_switch      : JSON.parse('{{ settings.auto_switch }}')
+        ,auto_switch_fallback   : "{{settings.weglot_language_fallback | downcase | default: 'en' }}"
+        ,wait_transition    : true
+        ,cache          : true
+        ,translate_search     : true
+        ,search_parameter     : "q"
+        ,search_forms       : "#bc-product-search"
+        ,dynamic        : ".text-date, .related-dynamic, .add-to-cart-sticky, .snize, input, .search-results .result-item"
+        ,excluded_blocks: [
+          {value: ".no-translate"}
+        ]
+        ,switchers: [
+          {
+            button_style:{
+              full_name : {% if gg_full_name %}true{% else %}false{% endif %}
+              ,with_name  : {% if gg_with_name %}true{% else %}false{% endif %}
+              ,is_dropdown: true
+              ,with_flags : JSON.parse("true")
+              ,flag_type  : "circle"
+            },
+            location: {
+              target : ".translate-position",
+              sibling: null
+            }
+          },
+          {
+            button_style:{
+              full_name : {% if gg_full_name %}true{% else %}false{% endif %}
+              ,with_name  : true
+              ,is_dropdown: true
+              ,with_flags : JSON.parse("true")
+              ,flag_type  : "circle"
+            },
+            location: {
+              target : ".translate-position-mobile",
+              sibling: null
+            }
+          }
+        ]
+      });
+
+      Weglot.on("initialized", function(){
+        let name = Weglot.getLanguageName(Weglot.getCurrentLang());
+        jQuery('div[data-target="#popup_languages"] span').html(name); 
+      });
+
+      Weglot.on("languageChanged", function(newLang, prevLang){
+        let name = Weglot.getLanguageName(newLang);
+        jQuery('div[data-target="#popup_languages"] span').html(name);
+              
+        let demo_rtl = '<link href="{{'global-rtl.scss.css' | asset_url }}" rel="stylesheet" type="text/css" media="all">';
+        $('.weglot_switcher ul .wg-li').on("click", function() { 
+            jQuery.cookie('firstclick', 'true', { expires: 7 });
+              var _wg_li = $('.wgcurrent').attr('data-l');
+              if(_wg_li == 'ar'){
+                jQuery.cookie('checkrtlcookie', 'true', { expires: 7 });
+              }
+              else{
+                jQuery.cookie('checkrtlcookie', '');
+              }
+              setTimeout(function(){
+                  location.reload();
+              }, 3000);
+          });
+
+          if(jQuery.cookie('checkrtlcookie')){
+            $('head').append(demo_rtl);
+            $('body').attr('data-rtl', true);
+            $('body').attr('data-check-rtl', true);
+        }
+      })
+            
+      jQuery(document).ready(function($) {
+        if(!jQuery.cookie('firstclick')){
+          let demo_rtl = '<link href="{{'global-rtl.scss.css' | asset_url }}" rel="stylesheet" type="text/css" media="all">';
+          $('.weglot_switcher ul .wg-li').on("click", function() {  
+            jQuery.cookie('firstclick', 'true', { expires: 7 });
+            var _wg_li = $('.wgcurrent').attr('data-l');
+            if(_wg_li == 'ar'){
+              jQuery.cookie('checkrtlcookie', 'true', { expires: 7 });
+            }
+            else{
+              jQuery.cookie('checkrtlcookie', '');
+            }
+            setTimeout(function(){
+              location.reload();
+            }, 5000);
+          });
+
+          if(jQuery.cookie('checkrtlcookie')){
+            $('head').append(demo_rtl);
+            $('body').attr('data-rtl', true);
+            $('body').attr('data-check-rtl', true);
+          }
+        }
+      });
+    }
+      
+  </script>

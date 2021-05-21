@@ -1,0 +1,6 @@
+development:
+  password: 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
+  theme_id: "122968703154"
+  store: electro0411.myshopify.com
+  ignore_files:
+  - config/settings_data.json

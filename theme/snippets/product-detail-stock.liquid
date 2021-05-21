@@ -1,0 +1,13 @@
+{% if product.available %}
+  <div id="stock">
+    <span>{{"products.product.available" | t }}:</span>
+    <span class="stock">{{"products.product.in_stock" | t }}</span>
+  </div>
+
+{% else %}
+  <div id="stock">
+    <span>{{"products.product.available" | t }}:</span>
+    <span class="stock">{{"products.product.out_stock" | t }}</span>
+  </div>
+
+{% endif %}

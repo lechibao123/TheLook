@@ -1,0 +1,45 @@
+{% include 'header-top-bar' %}
+
+<div class="header-main">
+  <div class="{{ _layout_class }}">
+    <div class="table-row">
+
+      <div class="navbar navbar-responsive-menu d-lg-none">
+        <div class="responsive-menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </div>
+      </div>
+      
+      {% include 'header-logo' %}
+      {% include 'header-mobile-cart-icon' %}
+      {% include 'header-search' %}
+      {% include 'header-icons' %}
+
+    </div>
+  </div>
+</div>
+
+{% unless section.settings.nav_linklist == blank and section.settings.vertical_nav_linklist == blank %}
+  <div class="header-navigation d-none d-lg-block">
+
+    <div class="{{ _layout_class }}">
+      <div class="table-row">
+        {% include 'header-vertical-menu' %}
+        
+        <div class="wrap-horizontal-menu">
+          {% include 'header-horizontal-menu' %}
+
+          {% unless section.settings.shipping_text == blank %}
+            <div class="shipping-text">
+              <span>{{ section.settings.shipping_text }}</span>
+            </div>
+          {% endunless %}
+        </div>
+   
+      </div>
+    </div>
+
+  </div>
+{% endunless %}

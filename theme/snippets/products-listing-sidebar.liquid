@@ -1,0 +1,31 @@
+{% assign _listing_col = block.settings.sb_latest_product_col %}
+{% assign _listing_collection = collections[_listing_col] %}
+{% assign _limit = block.settings.sb_latest_product_limit %}
+{% assign _listing_title = block.settings.sb_latest_product_title %}
+
+{% unless _listing_col == blank %}
+<div class="sb-widget d-none d-lg-block">
+  <div class="sb-product">
+
+    {% unless _listing_title == blank %}<h5 class="sb-title">{{ _listing_title }}</h5>{% endunless %}
+
+    <div class="sb-product-list sb-product-carousel">
+      {% for product in _listing_collection.products limit: _limit %}
+      {% capture mod %}{{ forloop.index | modulo: 4 }}{% endcapture %}
+
+      {% if mod == '1' %}
+      <div class="latest-product-item">
+        {% endif %}
+
+        {% include 'products-listing-item' %}
+
+        {% if mod == '0' or forloop.last %}
+      </div>
+      {% endif %}
+
+      {% endfor %}
+    </div>
+
+  </div>
+</div>
+{% endunless %}

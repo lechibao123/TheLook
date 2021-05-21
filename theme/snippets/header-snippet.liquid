@@ -1,0 +1,53 @@
+<header data-section-type="header" data-section-id="{{ section.id }}" class="header-content" data-headerstyle="{{ section.settings.header_style }}" data-stick="{{ section.settings.show_sticky_bar }}" data-stickymobile="{{ section.settings.show_sticky_bar_mobile }}">
+  {%- assign _header_style = section.settings.header_style -%}
+  {%- assign _lazyload = settings.use_lazyload -%}
+  {%- assign _layout = section.settings.layout -%}
+  {%- assign _show_search = settings.show_search -%}
+  {%- assign _fix_header_2 = section.settings.fix_header_2 -%}
+  
+  {% if _layout == 'boxed' %}
+    {%- assign _layout_class = 'container' -%}
+  {% else %}
+    {% if _header_style == 2 and _fix_header_2 %}
+      {%- assign _layout_class = 'container' -%}
+    {% else %}
+      {%- assign _layout_class = 'container-fluid' -%}
+    {% endif %}
+  {% endif %}
+
+  <div class="header-container layout-{{ _layout }} style-{{ _header_style }}" data-style="{{ _header_style }}">
+    
+    {% unless section.settings.vertical_nav_linklist == blank %}
+      <ul class="main-nav fix-vertical-left-column hide"> 
+        {% for l in linklists[section.settings.vertical_nav_linklist].links %}
+          {% include 'vertical-nav-link' %}
+        {% endfor %}
+      </ul>
+    {% endunless %}
+
+    {% case _header_style %}
+        {% when 1 %}
+          {% include 'header-style-1' %}
+        {% when 2 %}
+          {% include 'header-style-2' %}
+        {% when 3 %}
+          {% include 'header-style-3' %}
+        {% when 4 %}
+          {% include 'header-style-4' %}
+        {% when 5 %}
+          {% include 'header-style-5' %}
+        {% when 6 %}
+          {% include 'header-style-6' %}
+        {% when 7 %}
+          {% include 'header-style-7' %}
+        {% else %}
+          {% include 'header-style-8' %}
+    {% endcase %}
+      
+    {% include 'navigation-mobile' %}
+
+  </div>
+  
+  {% include 'header-mobile-search' %}
+  
+</header>

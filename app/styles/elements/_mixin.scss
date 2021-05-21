@@ -1,0 +1,517 @@
+@mixin button1 {
+	text-align: center;
+	padding: 10px 30px;
+	line-height: 27px;
+	white-space: normal;
+	font-weight: var(--font-bold);
+	font-size: var(--body-font-size);
+	background: var(--button-btn1);
+	color: var(--button-btn1-txt);
+	border: 1px solid var(--button-btn1-border);
+	@include transition(all 0.35s ease 0s);
+	@include border-radius-25;
+	&:hover {
+		text-decoration: none;
+		background: var(--button-hover-btn1);
+		color: var(--button-hover-btn1-txt);
+		border-color: var(--button-hover-btn1-border);
+	}
+}
+@mixin button2 {
+	text-align: center;
+	padding: 10px 30px;
+	line-height: 27px;
+	white-space: normal;
+	font-weight: var(--font-bold);
+	font-size: var(--body-font-size);
+	background: var(--button-btn2);
+	color: var(--button-btn2-txt);
+	border: 1px solid var(--button-btn2-border);
+	@include border-radius-25;
+	@include transition(all 0.35s ease 0s);
+	&:hover {
+		background: var(--button-hover-btn2);
+		text-decoration: none;
+		color: var(--button-hover-btn2-txt);
+		border-color: var(--button-hover-btn2-border);
+	}
+}
+@mixin box-shadow($shadow...) {
+	-webkit-box-shadow: $shadow;
+	-ms-transform: $shadow; // IE9+
+	-o-transform: $shadow;
+	box-shadow: $shadow;
+}
+@mixin opacity ($value) {
+	opacity: $value;
+}
+@mixin ab($t, $l, $b, $r) {
+	position: absolute; 
+	@if $l !=n {
+		left: $l;
+	}
+	@if $t !=n {
+		top: $t;
+	}
+	@if $r !=n {
+		right: $r;
+	}
+	@if $b !=n {
+		bottom: $b;
+	} 
+}
+@mixin transform($transforms) {
+	-moz-transform: $transforms;
+	-o-transform: $transforms;
+	-ms-transform: $transforms;
+	-webkit-transform: $transforms;
+	transform: $transforms;
+}
+@mixin scale($x, $y) {
+	@include transform(scale($x, $y));
+}
+@mixin translate($x, $y) {
+	@include transform(translate($x, $y));
+}
+@mixin translate3d($x, $y, $z) {
+	@include transform(translate3d($x, $y, $z)); 
+}
+@mixin rotate ($deg) {
+	@include transform(rotate(#{$deg}deg));
+}
+@mixin rotateX($degree) {
+	@include transform(rotateX($degree));
+}
+@mixin transition($transition...) {
+	-moz-transition: $transition;
+	-o-transition: $transition;
+	-webkit-transition: $transition;
+	transition: $transition;
+}
+@mixin transform-origin($origin) {
+	-moz-transform-origin: $origin;
+	-o-transform-origin: $origin;
+	-ms-transform-origin: $origin;
+	-webkit-transform-origin: $origin;
+	transform-origin: $origin;
+}
+@mixin placeholder {
+	&::-webkit-input-placeholder {@content}
+    &:-moz-placeholder           {@content}
+    &::-moz-placeholder          {@content}
+    &:-ms-input-placeholder      {@content}
+}
+@mixin flexbox() {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+}
+@mixin flex($values) {
+    -webkit-box-flex: $values;
+    -moz-box-flex: $values;
+    -webkit-flex: $values;
+    -ms-flex: $values;
+    flex: $values;
+}
+@mixin border-radius($tl, $tr, $br, $bl) {
+    border-radius: $tl $tr $br $bl;
+    -moz-border-radius: $tl $tr $br $bl;
+    -webkit-border-radius: $tl $tr $br $bl;
+    -ms-border-radius: $tl $tr $br $bl;
+}
+@mixin border-radius-reset {
+    @include border-radius(0, 0, 0, 0);
+}
+@mixin border-radius-50 {
+    @include border-radius(50px, 50px, 50px, 50px);
+}
+@mixin border-radius-20 {
+    @include border-radius(20px, 20px, 20px, 20px);
+}
+@mixin border-radius-25 {
+    @include border-radius(25px, 25px, 25px, 25px);
+}
+@mixin border-radius-10 {
+    @include border-radius(10px, 10px, 10px, 10px);
+}
+@mixin border-radius-circle {
+    @include border-radius(50%, 50%, 50%, 50%);
+}
+@mixin preserve-3d {
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+@mixin padding-start($value) {
+    -webkit-padding-start: $value;
+    -moz-padding-start: $value;
+    padding-inline-start: $value;
+}
+@mixin padding-end($value) {
+    -webkit-padding-end: $value;
+    -moz-padding-end: $value;
+    padding-inline-end: $value;
+}
+@mixin margin-start($value) {
+    -webkit-margin-start: $value;
+    -moz-margin-start: $value;
+    margin-inline-start: $value;
+}
+@mixin margin-end($value) {
+    -webkit-margin-end: $value;
+    -moz-margin-end: $value;
+    margin-inline-end: $value;
+}
+@mixin border-start($value) {
+    -webkit-border-start: $value;
+    -moz-border-start: $value;
+    border-inline-start: $value;
+}
+@mixin border-end($value) {
+    -webkit-border-end: $value;
+    -moz-border-end: $value;
+    border-inline-end: $value;
+}
+@mixin next-icon { 
+    content: "\f006";
+}   
+@mixin prev-icon {
+    content: "\f007";
+}
+@mixin before {
+    @include ab(n, 0, 0, 0);
+    background-color: rgba(#ffffff, 0.2);
+    content: '';
+    width: 100%;
+    height: 0;
+    z-index: 1;
+    @include transition(all 0.35s ease-in-out 0s); 
+}
+@mixin before-hover {
+    width: 100%;
+    height: 100%;
+}
+@mixin close-btn {
+    content: "\e9a3";
+    font-family: var(--font-family-icon);
+    font-size: var(--body-font-size);
+    color: var(--main-color-text);
+    display: block;
+    line-height: 45px;
+    margin: 0 auto;
+    padding: 0;
+    width: 100%;
+}
+@mixin width-btn {
+    width: 35px;
+    height: 35px;
+    line-height: 35px;
+}
+@mixin width-btn-1 {
+    width: 45px;
+    height: 45px;
+    line-height: 45px;
+    background: var(--main-color);
+}
+@mixin swatch-product {
+    .swatch {
+        margin: 15px 0 0;
+        position: relative;
+        .header {
+            display: block;
+            margin: 0;
+            line-height: 34px;
+            color: var(--body-title-color);
+            float: left;
+            min-width: 80px;
+            padding: 0;
+            @include padding-end(10px); 
+        }
+        .swatch-element {
+            margin: 0;
+            padding: 0;
+            float: left;
+            label {
+                min-width: var(--color_swatch_width) !important;
+                height: var(--color_swatch_height) !important;
+                line-height: calc(var(--color_swatch_height) - 3px);
+                position: relative;
+                text-align: center;
+                color: var(--body-title-color);
+                font-size: calc(var(--body-font-size) - 1px);
+                word-break: break-word;
+                white-space: normal;
+                font-weight: 700;
+                text-transform: none;
+                cursor: pointer;
+                background-color: transparent;
+                background-repeat: no-repeat !important;
+                background-position: center !important;
+                background-size: cover;
+                border: 1px solid var(--body-border-color);
+                margin: 0 0 5px;
+                @include margin-end(5px); 
+                @include border-radius-reset;
+                @include box-shadow(0 0 0 0 #ffffff inset);
+                &:before {
+                    @include ab(0, 0, n, n);
+                    width: 100%;
+                    height: 100%;
+                    cursor: pointer;
+                }
+            }
+            input:checked + label {
+                box-shadow: none;
+                cursor: default;
+                border: 2px solid var(--main-color);
+                color: var(--main-color);
+                @include box-shadow(0 0 0 0 #ffffff inset);
+            }
+            &.circle label {
+                @include border-radius-circle;
+                &:before {
+                    @include border-radius-circle;
+                }
+            }
+            &.img-true label {
+                min-width: var(--image_swatch_width) !important;
+                height: var(--image_swatch_height) !important;
+            }
+            &:hover {
+                @media (min-width: 1025px) {
+                    label {
+                        border: 2px solid var(--main-color);
+                        color: var(--main-color);
+                        @include box-shadow(0 0 0 0 #ffffff inset);
+                    }
+                }
+            }
+            &.soldout {
+                label {
+                    cursor: default;
+                    background-color: transparent !important;
+                    color: var(--body-title-color) !important;
+                    border-color: var(--body-border-color) !important;
+                    &:before {
+                        cursor: default;
+                    }
+                }
+                &:hover {
+                    @media (min-width: 1025px) {
+                        label {
+                            cursor: default;
+                            background-color: transparent !important;
+                            color: var(--main-color);
+                            border: 1px solid var(--body-border-color);
+                            &:before {
+                                cursor: default;
+                            }
+                        }
+                    }
+                }
+            }
+            &.colour:not(.soldout) {
+                input:checked + label {
+                    cursor: default;
+                    border: 2px solid var(--main-color);
+                    &:before {
+                        cursor: default;
+                    }
+                }
+                &:hover {
+                    @media (min-width: 1025px) {
+                        label {
+                            border: 2px solid var(--main-color);
+                        }
+                    }
+                }
+            }
+        }
+        &:last-child {
+            margin-bottom: 15px;
+        }
+    }
+}
+@mixin drawer-sidebar {
+    position: fixed;
+    z-index: 999999;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 300px;
+    padding: 50px 20px 30px;
+    overflow-y: auto;
+    background: var(--body-background-color);
+    @include opacity(0); 
+    @include translate(-300px, 0);
+    @include transition(all 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94));
+    @media (max-width: 300px) {
+        width: 100%;
+        padding-bottom: 20px;
+    }
+    .f-close,
+    .fof-close {
+        text-align: center;
+        cursor: pointer;
+        background: var(--body-second-color);
+        @include width-btn;
+        @include ab(10px, n, n, 10px);
+        @include border-radius-circle;
+        @include transition(all 0.35s ease 0s);
+        &:hover {
+            background: var(--main-color);
+            color: var(--main-color-text);
+        }
+    }
+}
+@mixin icons-number {
+    @include ab(n, n, -10px, -9px);
+    width: 22px;
+    height: 22px;
+    line-height: 22px;
+    background: var(--bg-number-icon);
+    color: var(--text-number-icon);
+    text-align: center;
+    font-size: 12px;
+    font-weight: 700;
+    @include border-radius-circle;
+}
+@mixin hover-icons-number {
+    -webkit-animation-name: hvr-icon-bob-float, hvr-icon-bob;
+    animation-name: hvr-icon-bob-float, hvr-icon-bob;
+    -webkit-animation-duration: .3s, .75s;
+    animation-duration: .3s, 0.75s;
+    -webkit-animation-delay: 0s, .3s;
+    animation-delay: 0s, .3s;
+    -webkit-animation-timing-function: ease-out, ease-in-out;
+    animation-timing-function: ease-out, ease-in-out;
+    -webkit-animation-iteration-count: 1, infinite;
+    animation-iteration-count: 1, infinite;
+    -webkit-animation-fill-mode: forwards;
+    animation-fill-mode: forwards;
+    -webkit-animation-direction: normal, alternate;
+    animation-direction: normal, alternate;
+}
+@mixin padding-carousel {
+    .owl-stage-outer {
+        padding: 0 0 35px;
+        margin-bottom: -35px;
+        @media (max-width: 1024px) {
+            padding: 0;
+            margin-bottom: 0;
+        }
+    }
+    .owl-nav {
+        top: -52px;
+    }
+}
+@mixin middle-button-carousel ($sFont, $left, $right) {
+    .owl-nav {
+        position: static;
+        button {
+            @include ab(50%, n, n, n);
+            @include translate(0, -50%);
+            span:before {
+                font-size: $sFont;
+            } 
+            &.owl-prev {
+                left: 0;
+                @media (min-width: 1500px) {
+                    left: $left;
+                }
+            }
+            &.owl-next {
+                right: 0;
+                @media (min-width: 1500px) {
+                    right: $right;
+                }
+            }
+        }
+    }
+}
+@mixin title-wrapper {
+    padding-bottom: 11px;
+    line-height: 32px;
+    position: relative;
+    &:before {
+        content: '';
+        width: 100%;
+        height: 2px;
+        background: var(--main-color);
+        @include ab(n, 0, -1px, 0);
+    }
+}
+@mixin dropdown-effect {
+    visibility: hidden;
+    z-index: -999;
+    display: block;
+    @include opacity(0);
+    @include transition(opacity 0.3s ease-in-out);
+}
+@mixin dropdown-effect-hover {
+    @include opacity(1);
+    visibility: visible;
+    z-index: 9999; 
+}
+@mixin clearfix() {
+    &:before, &:after {
+        content: ""; 
+        display: block;
+        width: 100%;
+        clear: both;
+    }
+}
+@mixin is-countdown-separate($size, $lheight, $height) {
+    &:after {
+        content: ':';
+        color: var(--body-title-color);
+        font-size: $size;
+        font-weight: var(--font-bold);
+        line-height: $lheight;
+        height: $height;
+        @include ab(0, n, n, -4px);
+    }
+    &:first-child {
+        @include padding-start(0);
+    }
+    &:last-child {
+        @include padding-end(0);
+        &:after {
+            content: none;
+        }
+    }
+}
+@mixin carousel-loading() {
+    height: 0;
+    @include opacity(0);
+    &.owl-loaded {
+        @include opacity(1);
+        height: auto;
+    } 
+}
+@mixin width-boxed { 
+    padding: 0 15px;
+    margin: 0 auto; 
+    width: 100%;  
+    @media (min-width: 576px) {
+        max-width: 100%; 
+    } 
+    @media (min-width: 768px) {
+        max-width: 760px;
+    }
+    @media (min-width: 992px) {
+        max-width: 980px;
+    }
+    @media (min-width: 1200px) {
+        max-width: 1200px;
+    }  
+    @media (min-width: 1440px) {
+        max-width: 1440px;
+    }
+}
+				

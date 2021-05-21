@@ -1,0 +1,53 @@
+{% include 'header-top-bar' %}
+
+<div class="header-main">
+  <div class="{{ _layout_class }}">
+    <div class="table-row">
+
+      <div class="navbar navbar-responsive-menu d-lg-none">
+        <div class="responsive-menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </div>
+      </div>
+      
+      {% include 'header-logo' %}
+      {% include 'header-mobile-cart-icon' %}
+      {% include 'header-horizontal-menu' %}
+
+      {% if section.settings.enable_header_contact %}
+        <div class="header-contact-box">
+          
+          {% if section.settings.enable_header_contact_icon %}
+            {%- render 'theme-icon', type: 'support' -%}
+          {% endif %}
+
+          <div class="info">
+            {% unless section.settings.header_phone_number == blank %}
+              <span>{{ section.settings.header_phone_number }}</span>
+            {% endunless %}
+
+            {% unless section.settings.header_email == blank %}
+              <span>{{ section.settings.header_email }}</span>
+            {% endunless %}
+          </div>
+          
+        </div>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+
+<div class="header-navigation d-none d-lg-block">
+  <div class="{{ _layout_class }}">
+
+    <div class="table-row">
+      {% include 'header-vertical-menu' %}
+      {% include 'header-search' %}
+      {% include 'header-icons' %}
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,12 @@
+<div class="action-button">
+  <button id="add-to-cart" class="add-to-cart btn btn-1" type="button">{%- render 'theme-icon', type: 'add-cart-icon' -%}{{ 'products.product.add_to_cart' | t }}</button> 
+</div>
+
+{% capture the_snippet_fave %}{% render 'socialshopwave-widget-fave' %}{% endcapture %}
+{% unless the_snippet_fave contains 'Liquid error' %}
+{{ the_snippet_fave }}
+{% endunless %}    
+
+{% if section.settings.enable_payment_button %}
+  {{ form | payment_button }}
+{% endif %}

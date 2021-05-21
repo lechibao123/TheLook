@@ -1,0 +1,27 @@
+{
+  "header-footer": [
+    "_01_variables",
+    "_mixin",
+    "_header",
+    "_footer"
+  ],
+  "global": [
+    "_01_variables",
+    "_mixin",
+    "_global",
+    "_currency-language"
+  ],
+  "themes": [
+    "_01_variables",
+    "_mixin",
+    "_index"
+  ],
+  "styles": [
+    "_01_variables",
+    "_mixin",
+    "_pages"
+  ],
+  "global-rtl": [
+    "_global-rtl"
+  ]
+}

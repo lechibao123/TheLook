@@ -1,0 +1,31 @@
+{% include 'header-top-bar' %}
+
+<div class="header-main">
+  <div class="{{ _layout_class }}">
+    <div class="table-row">
+
+      <div class="navbar navbar-responsive-menu d-lg-none">
+        <div class="responsive-menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </div>
+      </div>
+      
+      <div class="header-menu-logo">
+        {% include 'header-vertical-menu' %}
+        {% include 'header-logo' %}
+      </div>  
+
+      {% include 'header-mobile-cart-icon' %}   
+      
+      <div class="header-search-menu">
+        {% include 'header-search' %}
+        {% include 'header-horizontal-menu' %}
+      </div>      
+
+      {% include 'header-icons' %}
+
+    </div>
+  </div>
+</div>

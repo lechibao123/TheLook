@@ -1,0 +1,97 @@
+{% include 'header-top-bar' %}
+
+<div class="header-main">
+  <div class="{{ _layout_class }}">
+    <div class="table-row">
+
+      <div class="navbar navbar-responsive-menu d-lg-none">
+        <div class="responsive-menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </div>
+      </div>
+      
+      <div class="header-menu-logo">
+        {% include 'header-logo' %}
+        {% unless section.settings.toggle_nav_linklist == blank %}
+          <div class="off-canvas-navigation-wrapper">
+            <div class="off-canvas-navbar-toggle-buttons clearfix">
+              <div class="navbar-toggle-hamburger">
+                {%- render 'theme-icon', type: 'list-1' -%}
+              </div> 
+              <button class="navbar-toggler navbar-toggle-close" type="button">{%- render 'theme-icon', type: 'delete' -%}</button>
+            </div>
+            
+            <div class="desktop-toggle-menu">
+              <div class="sidemenu-holder">
+
+                <nav class="navbar navbar-expand-lg">
+                  <div class="collapse navbar-collapse">
+                    <ul class="toggle-menu-list">
+                      {% for l in linklists[section.settings.toggle_nav_linklist].links %}
+                        {% assign submenu = l.title | handleize %}
+                        {% if linklists[submenu].links.size > 0 %}
+                          {% include 'dropdown-menu' %}
+                        {% else %}
+                          <li><a href="{{ l.url }}"><span>{{ l.title }}</span></a></li>
+                        {% endif %}
+                      {% endfor %}
+                    </ul>
+                  </div>
+                </nav>
+
+              </div>
+            </div>
+          </div>
+
+          <script type="text/javascript">
+            jQuery(document).ready(function($) {
+              jQuery(document).on('click','.off-canvas-navigation-wrapper .navbar-toggle-hamburger',function(){
+                $('.off-canvas-navigation-wrapper').addClass('toggled');
+                $('body').addClass('off-canvas-active');
+              });
+
+              jQuery(document).on('click','.off-canvas-navigation-wrapper .navbar-toggle-close, #body-content',function(){
+                $('.off-canvas-navigation-wrapper').removeClass('toggled');
+                $('body').removeClass('off-canvas-active');
+              });
+            });
+          </script>
+        {% endunless %}
+      </div>   
+
+      {% include 'header-mobile-cart-icon' %}  
+      
+      <div class="header-search-menu">
+        {% include 'header-search' %}
+        
+        {% if settings.enable_free_shipping %}
+          <div class="shipping-text">
+            <span></span>
+          </div>
+        {% endif %}
+      </div>      
+
+      {% include 'header-icons' %}
+
+    </div>
+  </div>
+</div>
+
+{% unless section.settings.nav_linklist == blank and section.settings.vertical_nav_linklist == blank %}
+  <div class="header-navigation d-none d-lg-block">
+
+    <div class="{{ _layout_class }}">
+      <div class="table-row">
+        {% include 'header-vertical-menu' %}
+        
+        <div class="wrap-horizontal-menu">
+          {% include 'header-horizontal-menu' %}
+        </div>
+   
+      </div>
+    </div>
+
+  </div>
+{% endunless %}

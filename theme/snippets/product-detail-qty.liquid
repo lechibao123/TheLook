@@ -1,0 +1,17 @@
+<div class="quantity-product">
+  <label>{{ 'products.product.quantity' | t }}</label>
+  <div class="quantity">
+    <input type="number" id="quantity" class="item-quantity" name="quantity" value="1" />
+    <span class="qty-inner qty-wrapper">
+
+      <span class="qty-up" title="Increase" data-src="#quantity">
+        {%- render 'theme-icon', type: 'plus' -%}
+      </span>
+
+      <span class="qty-down" title="Decrease" data-src="#quantity">
+        {%- render 'theme-icon', type: 'minus' -%}
+      </span>
+
+    </span>
+  </div>
+</div>

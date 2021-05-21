@@ -1,0 +1,26 @@
+{%- assign _lazyload = settings.use_lazyload -%}
+{%- assign _layout = section.settings.layout -%}
+
+{% if _layout == 'boxed' %}
+  {%- assign _layout_class = 'container' -%}
+{% else %}
+  {%- assign _layout_class = 'container-fluid' -%}
+{% endif %}
+
+<footer id="footer-content">
+  
+  <div class="footer-container layout-{{ _layout }}">
+      {% include 'footer-newsletter' %}
+      {% include 'footer-widget' %}
+      {% include 'footer-copyright' %}
+  </div>
+
+  <div id="checkLayout">
+    <span class="d-block d-sm-none"></span>
+    <span class="d-none d-sm-block d-md-none"></span>
+    <span class="d-none d-md-block d-lg-none"></span>
+    <span class="d-none d-lg-block d-xl-none"></span>
+    <span class="d-none d-xl-block"></span>
+  </div>
+  
+</footer>

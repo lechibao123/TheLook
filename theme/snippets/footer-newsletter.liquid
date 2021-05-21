@@ -1,0 +1,51 @@
+{% unless section.settings.email_type == 'none' %}
+  {%- assign _fix_layout = section.settings.fix_layout -%}
+  {%- assign _mailing_title = section.settings.mailing_title -%}
+  {%- assign _mailing_caption = section.settings.mailing_caption -%}
+  {%- assign _mailing_form_action = section.settings.mailing_form_action -%}
+  {%- assign _mailing_text_placeholder = section.settings.mailing_text_placeholder -%}
+
+  <div id="widget-newsletter" class="fix-{{ _fix_layout }}">
+    <div class="widget-newsletter">
+      <div class="{{ _layout_class }}">
+
+        <div class="newsletter-container">
+          {% unless _mailing_title == blank %}
+            <div class="newsletter-title">
+            <svg aria-hidden="true" focusable="false" data-prefix="fal" data-icon="paper-plane" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-paper-plane fa-w-16 fa-2x"><path fill="currentColor" d="M464 4.3L16 262.7C-7 276-4.7 309.9 19.8 320L160 378v102c0 30.2 37.8 43.3 56.7 20.3l60.7-73.8 126.4 52.2c19.1 7.9 40.7-4.2 43.8-24.7l64-417.1C515.7 10.2 487-9 464 4.3zM192 480v-88.8l54.5 22.5L192 480zm224-30.9l-206.2-85.2 199.5-235.8c4.8-5.6-2.9-13.2-8.5-8.4L145.5 337.3 32 290.5 480 32l-64 417.1z" class=""></path></svg>
+            <span>{{ _mailing_title }}</span></div>
+          {% endunless %}
+
+          {% unless _mailing_caption == blank %}
+            <p>{{ _mailing_caption }}</p>
+          {% endunless %}
+
+          {% if section.settings.email_type == 'mailchimp' %}
+            <form action="{{ _mailing_form_action }}" method="post" id="mc-embedded-subscribe-form" class="form-inline form-subscribe" name="mc-embedded-subscribe-form" target="_blank" rel="noopener">
+              <input class="form-control" type="email" required placeholder="{{ _mailing_text_placeholder }}" name="EMAIL" id="email-input" />
+              <button id="email-submit" type="submit" class="btn-custom">{{ section.settings.mailing_button_text }}</button>
+            </form>
+          {% elsif section.settings.email_type == 'klaviyo' %}
+            {%- assign klaviyo_id  = _mailing_form_action | split: 'g=' | last -%}
+          	<form action="{{ _mailing_form_action }}" method="post" id="mc-embedded-subscribe-form" class="form-inline form-subscribe klaviyo_styling" target="_blank" novalidate="novalidate">
+              <input type="hidden" name="g" value="{{klaviyo_id}}">
+              <input required type="email" class="form-control" value="" name="email" class="contact_email" placeholder="{{ _mailing_text_placeholder }}">
+              <button id="email-submit" type="submit" class="btn-custom">{{ section.settings.mailing_button_text }}</button>
+          	</form>
+          {% else %}
+            {%- assign formId = 'ContactFooter' -%}
+            <form method="post" action="/contact#ContactFooter" id="ContactFooter" accept-charset="UTF-8" class="contact-form" novalidate="novalidate">
+              <input type="hidden" name="form_type" value="customer">
+              <input type="hidden" name="utf8" value="✓">
+              <input type="hidden" name="contact[tags]" value="newsletter">
+              <input type="email" name="contact[email]" id="ContactFooter-email" class="form-control" value="" placeholder="{{ _mailing_text_placeholder }}" aria-label="Email address" aria-required="true" required="" autocorrect="off" autocapitalize="off">
+              <button id="email-submit" type="submit" class="btn-custom" name="commit">{{ section.settings.mailing_button_text }}</button>
+            </form>
+          {% endif %}
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+{% endunless %}

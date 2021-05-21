@@ -1,0 +1,5 @@
+{% unless section.settings.secure == blank %}
+  <div class="secure-image">
+    <img src="{{ section.settings.secure | img_url: '450x'}}" alt="Secure" />
+  </div>
+{% endunless %}

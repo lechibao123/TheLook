@@ -1,0 +1,27 @@
+{% if section.blocks.size > 0 %}
+<div class="footer-widget">
+  <div class="footer-inner {{ _layout_class }}">
+    
+    <div class="table-row">
+      <div class="row">   
+
+        {% for block in section.blocks %}
+          {% assign _width = block.settings.width %}
+
+          {% if block.type == 'logo' %}
+            {% include 'footer-widget-logo' %}
+
+          {% else %}
+            {% include 'footer-widget-menu' %} 
+
+          {% endif %}
+
+        {% endfor %}    
+
+      </div>
+    </div>
+    
+  </div>            
+
+</div>
+{% endif %}

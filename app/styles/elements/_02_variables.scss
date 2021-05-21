@@ -1,0 +1,33 @@
+.container{
+    width: 100%;
+    max-width: var(--max-width);
+    margin: 0 auto;
+
+    @include respond-to(992){
+        max-width: var(--large-max-width);
+    }
+    @include respond-to(768){
+        max-width: var(--medium-max-width);
+    }
+    @include respond-to(576){
+        max-width: var(--small-max-width);
+    }
+}
+
+.container-fluid{
+    width: 100%;
+}
+
+.p-mx{
+    padding-left: var(--large-padding);
+    padding-right: var(--large-padding);
+
+    @include respond-to(768){
+        padding-left: var(--medium-padding);
+        padding-right: var(--medium-padding);
+    }
+    @include respond-to(576){
+        padding-left: var(--small-padding);
+        padding-right: var(--small-padding);
+    }
+}

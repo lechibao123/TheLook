@@ -1,0 +1,208 @@
+//responsive
+@mixin respond-to($media) {
+    @media only screen and (max-width: $media + "px") {
+        @content;
+    }
+}
+
+/*========================================================*/
+@mixin respond-toSP($media) {
+    @media only screen and (min-width: $media + "px") {
+        @content;
+    }
+}
+
+/* 
+Below we are declaring a desktop, laptop, phablet, and mobileonly breakpoints. 
+These are abstract names and they should really be huge, large, medium, small… 
+but I wrote these well before I became a huge device agnostic fan and I haven’t 
+gone back to fix them just yet.
+
+*example
+.podcasts {
+    margin: 1em auto;
+    @include breakpoint(phablet){
+        width: 100%;
+    }
+    @include breakpoint(desktop){
+        // maybe some desktop layout styles.
+    }
+}
+*/
+/* 
+Example: 
+
+.grid-1-4 {
+	width: 100%;
+	@include breakpoint(phablet) {
+		width: 50%;
+	}
+	@include breakpoint(laptop) {
+		width: 25%;
+	}
+}
+
+*/
+@mixin breakpoint($point) {
+    @if $point == desktop {
+        @media (min-width: 70em) { @content ; }
+    }
+        @else if $point == laptop {
+        @media (min-width: 64em) { @content ; }
+    }
+        @else if $point == tablet {
+        @media (min-width: 50em) { @content ; }
+    }
+        @else if $point == phablet {
+        @media (min-width: 37.5em)  { @content ; }
+    }
+    @else if $point == mobileonly {
+        @media (max-width: 37.5em)  { @content ; }
+    }
+}
+
+//CSS triangles
+@mixin pseudo($display: block, $pos: absolute, $content: ''){
+    content: $content;
+    display: $display;
+    position: $pos;
+}
+
+@mixin css-triangle($color, $direction, $size: 6, $position: absolute, $round: false){
+    @include pseudo($pos: $position);
+    width: 0;
+    height: 0;
+    @if $round {
+        border-radius: 3px;
+    }
+    @if $direction == down {
+        border-left: $size solid transparent;
+        border-right: $size solid transparent;
+        border-top: $size solid $color;
+        margin-top: 0 - round( $size / 2.5 );
+    } @else if $direction == up {
+        border-left: $size solid transparent;
+        border-right: $size solid transparent;
+        border-bottom: $size solid $color;
+        margin-bottom: 0 - round( $size / 2.5 );
+    } @else if $direction == right {
+        border-top: $size solid transparent;
+        border-bottom: $size solid transparent;
+        border-left: $size solid $color;
+        margin-right: -$size;
+    } @else if  $direction == left {
+        border-top: $size solid transparent;
+        border-bottom: $size solid transparent;
+        border-right: $size solid $color;
+        margin-left: -$size;
+    }
+}
+
+//Font styles
+@mixin font-styles($size: false, $colour: false, $lh: false, $weight: normal) {
+    @if $size { font-size: $size; }
+    @if $colour { color: $colour; }
+    @if $weight { font-weight: $weight; }
+    @if $lh { line-height: $lh; }
+}
+
+
+//Placeholders
+/* 
+Example:
+    input,  
+    textarea {  
+        @include input-placeholder {
+            color: $grey;
+        }
+    }
+*/
+@mixin input-placeholder {
+    &.placeholder { @content; }
+    &:-moz-placeholder { @content; }
+    &::-moz-placeholder { @content; }
+    &:-ms-input-placeholder { @content; }
+    &::-webkit-input-placeholder { @content; }
+}
+
+//Z-index
+$z-indexes: (
+    "outdated-browser",
+    "modal",
+    "site-header",
+    "page-wrapper",
+    "site-footer"
+);
+@function z($name) {
+    @if index($z-indexes, $name) {
+        @return (length($z-indexes) - index($z-indexes, $name)) + 1;
+    } @else {
+        @warn 'There is no item "#{$name}" in this list; choose one of: #{$z-indexes}';
+        @return null;
+    }
+}
+
+//Hardware
+@mixin hardware($backface: true, $perspective: 1000) {
+    @if $backface {
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+    }
+    perspective: $perspective;
+}
+
+//Truncate
+@mixin truncate($truncation-boundary) {
+    display: -webkit-box;
+    -webkit-line-clamp: $truncation-boundary;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    overflow-wrap: break-word;
+}
+
+// Examble @include css3-compatible(transition, all 0.3s ease 0s);
+@mixin css3-compatible($atribute, $params) {
+    #{$atribute}: #{$params};
+    -webkit-#{$atribute}: #{$params};
+    -khtml-#{$atribute}: #{$params};
+    -moz-#{$atribute}: #{$params};
+    -ms-#{$atribute}: #{$params};
+    -o-#{$atribute}: #{$params};
+}
+
+// ==============================
+// Font size mixin
+// ==============================
+
+//  default font scale bounding
+$font-lock-min:  400px !default; 
+$font-lock-max: 1000px !default;
+
+//  font-size 
+@mixin font-size(
+  $min,                         // font-size 
+  $max: null,                   // optional maximum font size
+  $lock-min: $font-lock-min,  // optional minimum viewport width 
+  $lock-max: $font-lock-max   // optional maximum viewport width 
+    ){
+    & { font-size: $min; }
+    @if $max {
+        @media (min-width: $lock-min) and (max-width: $lock-max){ 
+            & { 
+            font-size: calc(
+                #{$min} + 
+                #{num($max) - num($min)} * 
+                (100vw - #{$lock-min}) / 
+                #{num($lock-max) - num($lock-min)}
+            ); 
+            } 
+        }
+        @media (min-width: $lock-max){ 
+            & { font-size: $max; } 
+        }
+    }
+}
+
+//  strip units helper function
+@function num($input){  @return $input/($input * 0 + 1); }

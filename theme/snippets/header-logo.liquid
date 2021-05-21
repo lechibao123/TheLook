@@ -1,0 +1,34 @@
+<div class="header-logo">
+  {% assign _logo_image = section.settings.logo %}
+  {% assign _logo_size = section.settings.logo_max_width | append: 'x' %}
+  {% assign _logo_svg = section.settings.logo_svg_desktop %}
+  <a href="{{ routes.root_url }}" title="{{ shop.name | escape }}" class="logo-site logo-site-desktop d-none d-lg-block{% if _lazyload %} lazyload waiting{% endif %}">
+    {% unless _logo_image == blank %}
+      <img {% if _lazyload %} class="lazyload" data-src="{{ _logo_image | img_url: _logo_size }}"
+           {% else %}src="{{ _logo_image | img_url: _logo_size }}"{% endif %} 
+           alt="{{ shop.name | escape }}"
+           style="max-width: {{ section.settings.logo_max_width }}px;" />
+    {% else %}
+      {{ _logo_svg }}
+    {% endunless %}
+  </a>
+
+  {% assign _logo_image_mobile = section.settings.logo_mobile %}
+  {% assign _logo_size_mobile = section.settings.logo_mobile_max_width | append: 'x' %}
+  {% assign _logo_size_2x_mobile = section.settings.logo_mobile_max_width | times: 2 | append: 'x' %}
+  {% assign _logo_svg_mobile = section.settings.logo_svg_mobile %}
+  <a href="{{ routes.root_url }}" title="{{ shop.name | escape }}" class="logo-site logo-site-mobile d-lg-none{% if _lazyload %} lazyload waiting{% endif %}">
+    {% unless _logo_image_mobile == blank %}
+      <img {% if _lazyload %} class="lazyload" data-src="{{ _logo_image_mobile | img_url: _logo_size_2x_mobile }}"
+           {% else %}src="{{ _logo_image_mobile | img_url: _logo_size_2x_mobile }}"{% endif %} 
+           alt="{{ shop.name | escape }}"
+           style="max-width: {{ section.settings.logo_mobile_max_width }}px;" />
+      {% else %}
+        {{ _logo_svg_mobile }}
+    {% endunless %}
+  </a>
+  
+  {% if _header_style == 4 %}
+    {% include 'header-vertical-menu' %}
+  {% endif %}
+</div>

@@ -1,0 +1,51 @@
+<div class="col-lg-{{ _width }} col-md-12 col-sm-12 col-12">
+  <div class="footer-block footer-logo">
+    {% if block.settings.logo != blank or block.settings.logo_svg != blank %}
+      <div class="logo-footer">
+        {% assign _logo_size = block.settings.logo_max_width | append: 'x' %}
+        {% assign _logo_size_2x = block.settings.logo_max_width | times: 2 | append: 'x' %}
+        {% assign _logo_svg = block.settings.logo_svg %}
+
+        <a href="{{ routes.root_url }}" title="{{ shop.name | escape }}" class="logo-site{% if _lazyload %} lazyload waiting{% endif %}">
+          {% unless block.settings.logo == blank %}
+            <img {% if _lazyload %} class="lazyload" data-srcset="{{ block.settings.logo | img_url: _logo_size }} 1x, {{ block.settings.logo | img_url: _logo_size_2x }} 2x"
+               {% else %}src="{{ block.settings.logo | img_url: _logo_size }}"{% endif %} 
+               alt="{{ shop.name | escape }}"
+               style="max-width: {{ block.settings.logo_max_width }}px;" />
+          {% else %}
+            {{ _logo_svg }}
+          {% endunless %}
+        </a>
+      </div>
+    {% endif %}
+
+    {% if block.settings.show_phone_number_box %}
+      <div class="support-box-1">
+        {% if block.settings.phone_number_box_icon %}
+        {%- render 'theme-icon', type: 'support' -%}
+        {% endif %}
+
+        <div class="text">
+          <span>{{ block.settings.phone_number_box_text_1 }}</span>
+          <span>{{ block.settings.phone_number_box_text_2 }}</span>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if block.settings.show_address_box %}
+      <div class="support-box-2">
+        <div class="text">
+          <span>{{ block.settings.address_box_text_1 }}</span>
+          <span>{{ block.settings.address_box_text_2 }}</span>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if block.settings.social_icon %}
+      <div class="widget-social">
+        {% include 'social-media-icons' %}
+      </div>
+    {% endif %}
+
+  </div>
+</div>

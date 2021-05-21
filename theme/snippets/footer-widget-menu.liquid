@@ -1,0 +1,19 @@
+{% assign _f_menu = block.settings.footer_menu %}
+
+{% unless _f_menu == blank %}
+  <div class="col-lg-{{ _width }} col-md-3 col-sm-3 col-12">
+    <div class="footer-block footer-menu">
+
+      {% assign _f_title = block.settings.footer_menu_title  %}
+      {% assign _hide_title_desktop = block.settings.hide_footer_menu_title  %}
+      <h6{% if _hide_title_desktop %} class="hide-title"{% endif %}>{{ _f_title }}<span class="icon"></span></h6>
+
+      <ul class="f-list">
+        {% for l in linklists[_f_menu].links %}
+        <li><a href="{{ l.url }}"><span>{{ l.title }}</span></a></li>
+        {% endfor %}
+      </ul>
+
+    </div>
+  </div>      
+{% endunless %}
