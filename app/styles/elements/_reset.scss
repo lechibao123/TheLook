@@ -13,7 +13,10 @@
 }
 
 .d-none{
-  display: none;
+    display: none !important;
+}
+.d-block{
+    display: block !important;
 }
 
 h1:empty,
@@ -173,3 +176,4 @@ del{
 .d-sm-block{
   display: none;
 }
+
