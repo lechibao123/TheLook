@@ -2,7 +2,12 @@
   assign variant_first_available = product.first_available_variant
   assign available = product.available   
   assign current_variant = product.selected_or_first_available_variant
+  assign first_variant = product.variants | first
+  assign selected_variant = product.selected_or_first_available_variant | default: first_variant
 -%}
+
+
+
 <div class="cart-product">
     <div class="cart-product-promotion">
         {%- if product.tags contains "new" -%}
@@ -19,6 +24,43 @@
                 {{ 'image' | placeholder_svg_tag }}
             {%- endif -%}
         </a>
+    </div>
+    <div class="cart-color">
+        <form id="js-swatch-form" name="formVariant">
+            <div class="swatch-list">
+            {%- unless product.has_only_default_variant -%}
+                {%- for option in product.options_with_values -%}
+                    {%- if option.name == "Color" -%}
+                        <div class="product-select">
+                            {%- for value in option.values -%}
+
+                            {%- capture color -%}
+                                {% if value == 'Black' %}
+                                    cl-black
+                                {%- elsif value == 'Red' -%}
+                                    cl-red
+                                {% endif %}
+                            {%- endcapture -%}
+                                <label for="color-{{ forloop.index }}">
+                                    <input type="radio" style="display: none;">
+                                    <div class="circle {{ color }}"></div>
+                                </label>
+                                {% comment %} {%- if value == "Black" -%}
+                                    <input type="radio" id="color-black">
+                                {%- elsif value == "Red" -%}
+                                    <input type="radio" id="color-red">
+                                {%- elsif value == "Yellow" -%}
+                                    <input type="radio" id="color-yellow">
+                                {%- else -%}
+                                    <input type="radio" id="color-white">
+                                {%- endif -%} {% endcomment %}
+                            {%- endfor -%}
+                        </div>
+                    {%- endif -%}
+                {%- endfor -%}
+            {%- endunless -%}
+            </div>
+        </form>
     </div>
     <div class="cart-product-title">
         <a href="{{product.url}}">
@@ -39,30 +81,64 @@
             </p>
         {%- endif -%}
     </div>
-    <div id="half-stars-example">
-        <div class="rating-group">
-            <input class="rating__input rating__input--none" checked name="rating2" id="rating2-0" value="0" type="radio">
-            <label aria-label="0 stars" class="rating__label" for="rating2-0">&nbsp;</label>
-            <label aria-label="0.5 stars" class="rating__label rating__label--half" for="rating2-05"><i class="rating__icon rating__icon--star fa fa-star-half"></i></label>
-            <input class="rating__input" name="rating2" id="rating2-05" value="0.5" type="radio">
-            <label aria-label="1 star" class="rating__label" for="rating2-10"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
-            <input class="rating__input" name="rating2" id="rating2-10" value="1" type="radio">
-            <label aria-label="1.5 stars" class="rating__label rating__label--half" for="rating2-15"><i class="rating__icon rating__icon--star fa fa-star-half"></i></label>
-            <input class="rating__input" name="rating2" id="rating2-15" value="1.5" type="radio">
-            <label aria-label="2 stars" class="rating__label" for="rating2-20"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
-            <input class="rating__input" name="rating2" id="rating2-20" value="2" type="radio">
-            <label aria-label="2.5 stars" class="rating__label rating__label--half" for="rating2-25"><i class="rating__icon rating__icon--star fa fa-star-half"></i></label>
-            <input class="rating__input" name="rating2" id="rating2-25" value="2.5" type="radio" checked>
-            <label aria-label="3 stars" class="rating__label" for="rating2-30"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
-            <input class="rating__input" name="rating2" id="rating2-30" value="3" type="radio">
-            <label aria-label="3.5 stars" class="rating__label rating__label--half" for="rating2-35"><i class="rating__icon rating__icon--star fa fa-star-half"></i></label>
-            <input class="rating__input" name="rating2" id="rating2-35" value="3.5" type="radio">
-            <label aria-label="4 stars" class="rating__label" for="rating2-40"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
-            <input class="rating__input" name="rating2" id="rating2-40" value="4" type="radio">
-            <label aria-label="4.5 stars" class="rating__label rating__label--half" for="rating2-45"><i class="rating__icon rating__icon--star fa fa-star-half"></i></label>
-            <input class="rating__input" name="rating2" id="rating2-45" value="4.5" type="radio">
-            <label aria-label="5 stars" class="rating__label" for="rating2-50"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
-            <input class="rating__input" name="rating2" id="rating2-50" value="5" type="radio">
-        </div>
+    <div class="rating">
+        <input type="radio" name="rating" id="rating-5">
+        <label for="rating-5"></label>
+        <input type="radio" name="rating" id="rating-4">
+        <label for="rating-4"></label>
+        <input type="radio" name="rating" id="rating-3">
+        <label for="rating-3"></label>
+        <input type="radio" name="rating" id="rating-2">
+        <label for="rating-2"></label>
+        <input type="radio" name="rating" id="rating-1">
+        <label for="rating-1"></label>
     </div>
+    <style>
+        .rating {
+            display: flex;
+            justify-content: center;
+            overflow: hidden;
+            flex-direction: row-reverse;
+            height: 40px;
+            width: 90px;
+            position: relative;
+        }
+
+        .rating-0 {
+        filter: grayscale(100%);
+        }
+
+        .rating > input {
+        display: none;
+        }
+
+        .rating > label {
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        margin-top: auto;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='126.729' height='126.73'%3e%3cpath fill='%23e3e3e3' d='M121.215 44.212l-34.899-3.3c-2.2-.2-4.101-1.6-5-3.7l-12.5-30.3c-2-5-9.101-5-11.101 0l-12.4 30.3c-.8 2.1-2.8 3.5-5 3.7l-34.9 3.3c-5.2.5-7.3 7-3.4 10.5l26.3 23.1c1.7 1.5 2.4 3.7 1.9 5.9l-7.9 32.399c-1.2 5.101 4.3 9.3 8.9 6.601l29.1-17.101c1.9-1.1 4.2-1.1 6.1 0l29.101 17.101c4.6 2.699 10.1-1.4 8.899-6.601l-7.8-32.399c-.5-2.2.2-4.4 1.9-5.9l26.3-23.1c3.8-3.5 1.6-10-3.6-10.5z'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 76%;
+        transition: .3s;
+        }
+
+        .rating > input:checked ~ label,
+        .rating > input:checked ~ label ~ label {
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='126.729' height='126.73'%3e%3cpath fill='%23fcd93a' d='M121.215 44.212l-34.899-3.3c-2.2-.2-4.101-1.6-5-3.7l-12.5-30.3c-2-5-9.101-5-11.101 0l-12.4 30.3c-.8 2.1-2.8 3.5-5 3.7l-34.9 3.3c-5.2.5-7.3 7-3.4 10.5l26.3 23.1c1.7 1.5 2.4 3.7 1.9 5.9l-7.9 32.399c-1.2 5.101 4.3 9.3 8.9 6.601l29.1-17.101c1.9-1.1 4.2-1.1 6.1 0l29.101 17.101c4.6 2.699 10.1-1.4 8.899-6.601l-7.8-32.399c-.5-2.2.2-4.4 1.9-5.9l26.3-23.1c3.8-3.5 1.6-10-3.6-10.5z'/%3e%3c/svg%3e");
+        }
+
+        .rating > input:not(:checked) ~ label:hover,
+        .rating > input:not(:checked) ~ label:hover ~ label {
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='126.729' height='126.73'%3e%3cpath fill='%23d8b11e' d='M121.215 44.212l-34.899-3.3c-2.2-.2-4.101-1.6-5-3.7l-12.5-30.3c-2-5-9.101-5-11.101 0l-12.4 30.3c-.8 2.1-2.8 3.5-5 3.7l-34.9 3.3c-5.2.5-7.3 7-3.4 10.5l26.3 23.1c1.7 1.5 2.4 3.7 1.9 5.9l-7.9 32.399c-1.2 5.101 4.3 9.3 8.9 6.601l29.1-17.101c1.9-1.1 4.2-1.1 6.1 0l29.101 17.101c4.6 2.699 10.1-1.4 8.899-6.601l-7.8-32.399c-.5-2.2.2-4.4 1.9-5.9l26.3-23.1c3.8-3.5 1.6-10-3.6-10.5z'/%3e%3c/svg%3e");
+        }
+        
+        #color-black{
+            background-color: black;
+        }
+    </style>
+    <button type="submit">
+    
+    </button>
 </div>
