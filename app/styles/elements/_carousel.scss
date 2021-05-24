@@ -13,10 +13,8 @@
 
     .content{
         position: absolute;
-        text-align: left;
         max-width: 480px;
-        top: 40%;
-        left: 0;
+        
         @include respond-to(768){
             top: 20%;
         }
@@ -46,6 +44,9 @@
             @include respond-to(600){
                 line-height: 30px;
             }
+            a:hover{
+                color: initial !important;
+            }
         }
     }
     .sub-title-1{
@@ -57,5 +58,86 @@
     
     a:focus, a:not([disabled]):hover{
         color: #FFF !important;
+    }
+}
+
+.nav-slider{
+    display: inline-block;
+    position: absolute;
+    right: 10px;
+    top: 45%;
+    z-index: 9;
+    @include respond-to(600){
+        top: 25%;
+        right: 0;
+    }
+
+    .dots{
+        position: relative;
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        row-gap: 15px;
+
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        cursor: default;
+        
+        .tns-nav-active{
+            a{
+                -webkit-transform: scale3d(1.3, 1.3, 1.3);
+                transform: scale3d(1.3, 1.3, 1.3);
+                &:after{
+                    height: 100%;
+                }
+            }
+        }
+        
+        li{
+            position: relative;
+            display: block;
+            float: left;
+            margin: 0 5px;
+            width: 10px;
+            height: 10px;
+            cursor: pointer;
+    
+            a{
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                outline: none;
+                border-radius: 50%;
+                text-indent: -999em;
+                cursor: pointer;
+                position: absolute;
+                overflow: hidden;
+                background-color: transparent;
+                box-shadow: inset 0 0 0 2px #0F1214;
+                -webkit-transition: all 0.3s ease;
+                transition: all 0.3s ease;
+                -webkit-transform: scale3d(1, 1, 1);
+                transform: scale3d(1, 1, 1);
+                
+                &:after{
+                    content: '';
+                    position: absolute;
+                    bottom: 0;
+                    height: 0;
+                    left: 0;
+                    width: 100%;
+                    background-color: #0F1214;
+                    box-shadow: 0 0 1px #0F1214;
+                    -webkit-transition: height 0.3s ease;
+                    transition: height 0.3s ease;
+                }
+            }
+        }
     }
 }
