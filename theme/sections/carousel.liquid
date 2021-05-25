@@ -1,73 +1,50 @@
-
+{% comment %} {%- capture padding_mx -%}
+    {% assign image_blocks = section.blocks | where: 'type', 'carousel-style-2' %}
+    {%- if image_blocks == 'carousel-style-2' -%}
+        p-l
+    {%- endif -%}
+{%- endcapture -%} {% endcomment %}
 
 <div class="container">
     <div class="carousel p-mx" data-section-type="slideshow">
-        <div id="controls-slider-{{section.id}}" class="arrows">
-            <button class="prev">
-                <svg width="11" height="21" viewBox="0 0 11 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M4.85 10.373L11 17.999L7.638 20.418L0.257999 10.209L7.638 0L11 2.419L4.85 10.373Z" fill="white"></path> 
-                </svg>
-            </button>
-            <button class="next">
-                <svg width="11" height="21" viewBox="0 0 11 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M6.15 10.373L0 17.999L3.362 20.418L10.742 10.209L3.362 0L0 2.419L6.15 10.373Z" fill="white"></path> 
-                </svg>
-            </button>
-        </div>
-        <div style="position: relative;">
+        <div class="carousel-detail">
+            {%- if section.settings.show-controls -%}
+                <div id="controls-slider-{{section.id}}" class="arrows">
+                    <button class="prev">
+                        {%- include 'icon-arrow-left-1' -%}
+                    </button>
+                    <button class="next">
+                        {%- include 'icon-arrow-right-1' -%}
+                    </button>
+                </div>
+            {%- endif -%}
             <div class="nav-slider {% if section.settings.show-dots == false -%} d-none {%- else -%} d-block {%- endif -%}">
                 <ul class="dots" id="nav-{{ section.id }}">
                     {%- for block in section.blocks -%}
-                        <li><a href="javascript:void(0)"></a></li>
+                        <li><p></p></li>
                     {%- endfor -%}
                 </ul>
             </div>
             <div id="slider-{{ section.id }}">
                 {%- for block in section.blocks -%}
-                    {%- assign _block = block.settings -%}
                     {%- case block.type -%}
-                        {%- when 'carousel' -%}
+                        {%- when 'carousel-style-1' -%}
                             <div>
-                                <div class="carousel__img">
-                                    <div class="content" id="content-{{ block.id }}">
-                                        <div class="sub-title-1">{{_block.sub_title}}</div>
-                                        <div class="title-1">{{_block.title}}</div>
-                                        <a class="button-1" href="{{_block.url}}">{{_block.text_button}}</a>
+                                {%- render 'carousel-style-1' block: block -%}
+                            </div>
+                        {%- when 'carousel-style-2' -%}
+                            <div>
+                                <div class="d-grid-2">
+                                    <div class="box-1">
+                                        <h1>123123123</h1>
                                     </div>
-                                    <div class="image-slider">
-                                        {%- if _block.image != blank -%}
-                                            {%- assign img_url = _block.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
-                                            <img id="{{ _block.image.id }}"
-                                                class="lazyload"
-                                                data-src="{{ img_url }}"
-                                                data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
-                                                data-aspectratio="{{ _block.image.aspect_ratio }}"
-                                                data-sizes="auto"
-                                                alt="{{ _block.image.alt }}">
-                                        {%- else -%}
-                                            {{ 'image' | placeholder_svg_tag }}                  
-                                        {%- endif -%}
-                                        
+                                    <div class="box-2">
+                                        <h1>123123123</h1>
+                                    </div>
+                                    <div class="box-3">
+                                        <h1>123123123</h1>
                                     </div>
                                 </div>
-                            <style>
-                                .carousel #content-{{ block.id }}{
-                                    top: {{ _block.top }}%;
-                                    left: {{ _block.left }}%;
-                                    transform: translateY(-50%);
-                                    text-align: {{ _block.text-align }};
-                                }
-
-                                {% comment %} #section-{{section.id}} .block-{{block.id}} .btn-style{
-                                    background-color: {{ _block.color_button }};
-                                    border-radius: 2px;
-                                } {% endcomment %}
-
-                                {% comment %} #section-{{section.id}} .block-{{block.id}} .btn-style:hover{
-                                    background-color: #FFFFFF;
-                                    color: {{ _block.color_button }};
-                                } {% endcomment %}
-                            </style>
                             </div>
                     {%- endcase -%}
                 {%- endfor -%}
@@ -87,6 +64,7 @@
             "mouseDrag": true,
             "lazyload": false,
             "speed": 400,
+            "autoHeight": false,
             "preventScrollOnTouch": "auto",
             "controlsContainer": "#controls-slider-{{section.id}}",
             "mode": "{{ section.settings.mode-slider }}",
@@ -105,6 +83,7 @@
     "name" : {
         "en": "Carousel"
     },
+    "max_blocks": 4,
     "settings" : [
         {
             "type": "select",
@@ -130,6 +109,14 @@
         },
         {
             "type" : "checkbox",
+            "id" : "show-controls",
+            "label" : {
+                "en": "Show controls slider"  
+            },
+            "default": true
+        },
+        {
+            "type" : "checkbox",
             "id" : "show-dots",
             "label" : {
                 "en": "Show dots"  
@@ -139,9 +126,9 @@
     ],
     "blocks": [
         {
-            "type" : "carousel",
+            "type" : "carousel-style-1",
             "name": {
-                "en": "Carousel"
+                "en": "Carousel style 1"
             },
             "settings" : [
                 {
@@ -154,7 +141,10 @@
                     "min" : 25,
                     "max" : 75,
                     "unit" : "%",
-                    "default" : 70
+                    "default" : 70,
+                    "info": {
+                        "en": "Note: this parameter varies from 768px or more"
+                    }
                 },
                 {
                     "type" : "range",
@@ -166,7 +156,10 @@
                     "min" : 0,
                     "max" : 50,
                     "unit" : "%",
-                    "default" : 0
+                    "default" : 0,
+                    "info": {
+                        "en": "Note: this parameter varies from 768px or more"
+                    }
                 },
                 {
                     "type": "select",
@@ -223,9 +216,57 @@
                     "type": "text",
                     "id": "text_button",
                     "label": {
-                        "en": "Text button"
+                        "en": "Text Button"
                     },
                     "default" : "Shop this look"
+                },
+                {
+                    "type": "color",
+                    "id": "color_button",
+                    "label": {
+                        "en": "Color Button"
+                    },
+                    "default" : "#0f1214"
+                },
+                {
+                    "type" : "range",
+                    "id": "border_button",
+                    "label": {
+                        "en" : "Border Button" 
+                    },
+                    "step": 5,
+                    "min" : 0,
+                    "max" : 40,
+                    "unit" : "px",
+                    "default" : 40
+                },
+                {
+                    "type": "select",
+                    "id": "animation_button",
+                    "label" : {
+                        "en" : "Animation Button"
+                    },
+                    "options": [
+                        {
+                            "value": "button-container-1",
+                            "label": {
+                                "en": "Animation 1"
+                            }
+                        },
+                        {
+                            "value": "button-container-2",
+                            "label": {
+                                "en": "Animation 2"
+                            }
+                        },
+                        {
+                            "value": "button-container-3",
+                            "label": {
+                                "en": "Animation 3"
+                            }
+                        }
+                    ],
+                    "default" : "button-container-1"
                 },
                 {
                     "type" : "url",
@@ -235,6 +276,13 @@
                     }
                 }
             ]
+        },
+        {
+            "type" : "carousel-style-2",
+            "name": {
+                "en": "Carousel style 2"
+            },
+            "settings" : []
         }
     ],
     "presets": [
