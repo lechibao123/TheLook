@@ -1,5 +1,5 @@
 <div class="container">
-    <div class="carousel p-mx" data-section-type="slideshow">
+    <div class="carousel {% if section.settings.layout == 'boxed' -%} p-mx {%- else -%} container-fluid {%- endif -%}" data-section-type="slideshow">
         <div class="carousel-detail">
             {%- if section.settings.show-controls -%}
                 <div id="controls-slider-{{section.id}}" class="arrows">
@@ -64,6 +64,16 @@
     },
     "max_blocks": 4,
     "settings" : [
+        {
+            "type": "select",
+            "id": "layout",
+            "label": "Section Layout Mode",
+            "default": "boxed",
+            "options": [
+                { "value": "full", "label": "Wide" },
+                { "value": "boxed", "label": "Boxed" }
+            ]
+        },
         {
             "type": "select",
             "id": "mode-slider",
@@ -149,7 +159,7 @@
                     },
                     "step": 1,
                     "min" : 0,
-                    "max" : 50,
+                    "max" : 70,
                     "unit" : "%",
                     "default" : 0,
                     "info": {
@@ -206,6 +216,18 @@
                     "label": {
                         "en": "Image"
                     }
+                },
+                {
+                    "type" : "range",
+                    "id": "width-image",
+                    "label": {
+                        "en" : "Width Image" 
+                    },
+                    "step": 1,
+                    "min" : 70,
+                    "max" : 100,
+                    "unit" : "%",
+                    "default" : 70
                 },
                 {
                     "type": "text",
