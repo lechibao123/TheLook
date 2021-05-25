@@ -177,7 +177,7 @@ $z-indexes: (
 
 //  default font scale bounding
 $font-lock-min:  400px !default; 
-$font-lock-max: 1000px !default;
+$font-lock-max: 1026px !default;
 
 //  font-size 
 @mixin font-size(
@@ -206,3 +206,52 @@ $font-lock-max: 1000px !default;
 
 //  strip units helper function
 @function num($input){  @return $input/($input * 0 + 1); }
+
+@mixin button-style($bcolor, $url, $x1, $y1, $bor, $col) {
+    background: $bcolor;
+    -webkit-mask: url($url);
+    mask: url($url);
+    -webkit-mask-size: $x1 $y1;
+    mask-size: $x1 $y1;
+    border: $bor;
+    color: $col;
+}
+
+@mixin responsive-spacing($spacingType, $large, $medium, $small, $properties: top right bottom left) {
+
+    // Error handling
+    @if (($spacingType == margin) or ($spacingType == padding)) {
+
+    // Comma separated list with media features and related spacing width (use your own variables here)
+    $responsiveSpacesList:
+        ('(max-width: 800px)', $small),
+        ('(min-width: 801px) and (max-width: 1280px)', $medium),
+        ('(min-width: 1281px)', $large);
+
+    // Loop through each item of $responsiveSpacesList
+    @each $mediaFeature, $spacingValue in $responsiveSpacesList {
+
+        // Set media query and trim surrounding brackets
+        @media screen and (str-slice($mediaFeature, 2, -2)) {
+
+        // Space separated list of possible direction arguments
+        $directions: top right bottom left;
+
+        // Loop through each item of $directions
+        @each $direction in $directions {
+
+            // Return index number when a direction was found in properties
+            $i: index($properties, $direction);
+
+            // If index is given, set css property and value
+            @if $i {
+            #{$spacingType}-#{$direction}: $spacingValue;
+            }
+        }
+        }
+    }
+    }
+    @else {
+        @error "Invalid spacing type. Please use 'margin' or 'padding'";
+    }
+}

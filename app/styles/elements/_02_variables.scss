@@ -19,15 +19,217 @@
 }
 
 .p-mx{
-    padding-left: var(--large-padding);
-    padding-right: var(--large-padding);
+    @include responsive-spacing(padding, var(--large-padding), var(--medium-padding), var(--small-padding));
+    // padding-left: var(--large-padding);
+    // padding-right: var(--large-padding);
 
-    @include respond-to(768){
-        padding-left: var(--medium-padding);
-        padding-right: var(--medium-padding);
+    // @include respond-to(1280){
+    //     padding-left: var(--medium-padding);
+    //     padding-right: var(--medium-padding);
+    // }
+    // @include respond-to(600){
+    //     padding-left: var(--small-padding);
+    //     padding-right: var(--small-padding);
+    // }
+}
+
+/* .cart-product{
+
+} */
+img{
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
+    vertical-align: middle;
+}
+
+.subtitle-1{
+    font-style: normal;
+    font-weight: normal;
+    @include font-size(16px, 20px);
+    letter-spacing: 0.2px;
+    color: #252A2F;
+}
+
+.title-1{
+    font-style: normal;
+    font-weight: bold;
+    @include font-size(20px, 52px);
+    letter-spacing: 2px;
+    color: #0F1214;
+}
+
+.button-1{
+    display: inline-block;
+    @include font-size(12px, 14px);
+    letter-spacing: 0.1px;
+    background: #0F1214;
+    border-radius: 40px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    color: #FFFFFF;
+    padding: 11px 53px;
+
+    @include respond-to(600){
+        padding: 5px 20px !important;
     }
-    @include respond-to(576){
-        padding-left: var(--small-padding);
-        padding-right: var(--small-padding);
+}
+
+.button-container-1,
+.button-container-2,
+.button-container-3 {
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #0F1214;
+    transition: 0.5s;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    
+    a,button {
+        display: inline-block;
+        @include font-size(12px, 14px);
+        letter-spacing: 0.1px;
+        text-align: center;
+        font-weight: 400;
+        padding: 11px 53px;
+        @include respond-to(600){
+            padding: 5px 20px !important;
+        }
+
     }
+}
+
+.button-container-1{
+    a,button{
+        @include button-style(#0F1214,
+        "https://raw.githubusercontent.com/robin-dela/css-mask-animation/master/img/nature-sprite.png",
+        2300%,
+        100%,
+        none,
+        #fff);
+        cursor: pointer;
+        -webkit-animation: ani2 0.7s steps(22) forwards;
+        animation: ani2 0.7s steps(22) forwards;
+    
+        &:hover {
+            -webkit-animation: ani 0.7s steps(22) forwards;
+            animation: ani 0.7s steps(22) forwards;
+            color: #fff !important;
+        }
+    }
+}   
+
+.button-container-2 {
+    a,button {
+        @include button-style(#0F1214, "https://raw.githubusercontent.com/robin-dela/css-mask-animation/master/img/urban-sprite.png",
+        3000%,
+        100%,
+        none,
+        #fff);
+        cursor: pointer;
+        -webkit-animation: ani2 0.7s steps(29) forwards;
+        animation: ani2 0.7s steps(29) forwards;
+
+        &:hover {
+            -webkit-animation: ani 0.7s steps(29) forwards;
+            animation: ani 0.7s steps(29) forwards;
+            color: #fff !important;
+        }
+    }
+}
+
+.button-container-3 {
+    a,button {
+        @include button-style(#000, "https://raw.githubusercontent.com/pizza3/asset/master/natureSmaller.png",
+        7100%,
+        100%,
+        none,
+        #fff);
+        cursor: pointer;
+        -webkit-animation: ani2 0.7s steps(70) forwards;
+        animation: ani2 0.7s steps(70) forwards;
+
+        &:hover {
+            -webkit-animation: ani 0.7s steps(70) forwards;
+            animation: ani 0.7s steps(70) forwards;
+        }
+    }
+}
+
+.mas {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    color: #0F1214;
+    @include font-size(12px, 14px);
+    letter-spacing: 0.1px;
+    text-align: center;
+    font-weight: 400;
+    overflow: hidden;
+
+    @include respond-to(600){
+        width: 100%;
+    }
+}
+
+@-webkit-keyframes ani {
+    from {
+        -webkit-mask-position: 0 0;
+        mask-position: 0 0;
+    }
+
+    to {
+        -webkit-mask-position: 100% 0;
+        mask-position: 100% 0;
+    }
+}
+
+@keyframes ani {
+    from {
+        -webkit-mask-position: 0 0;
+        mask-position: 0 0;
+    }
+
+    to {
+        -webkit-mask-position: 100% 0;
+        mask-position: 100% 0;
+    }
+}
+
+@-webkit-keyframes ani2 {
+    from {
+        -webkit-mask-position: 100% 0;
+        mask-position: 100% 0;
+    }
+
+    to {
+        -webkit-mask-position: 0 0;
+        mask-position: 0 0;
+    }
+}
+
+@keyframes ani2 {
+    from {
+        -webkit-mask-position: 100% 0;
+        mask-position: 100% 0;
+    }
+
+    to {
+        -webkit-mask-position: 0 0;
+        mask-position: 0 0;
+    }
+}
+
+.d-grid-2{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
+    column-gap: 30px;
+    row-gap: 30px;
+}
+
+.p-my{
+    padding-top: 80px;
+    padding-bottom: 100px;
 }

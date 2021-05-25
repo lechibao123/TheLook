@@ -778,6 +778,72 @@
         "max": 20,
         "step": 1,
         "unit": "px"
+      },
+      {
+        "type": "header",
+        "content": {
+          "en": "Slider"
+        }
+      },
+      {
+        "type": "font_picker",
+        "id": "type_slider_font",
+        "label": {
+          "cs": "Písmo",
+          "da": "Skrifttype",
+          "de": "Schriftart",
+          "en": "Font",
+          "es": "Fuente",
+          "fi": "Fontti",
+          "fr": "Police",
+          "it": "Font",
+          "ja": "フォント",
+          "ko": "글꼴",
+          "nb": "Skrifttype",
+          "nl": "Lettertype",
+          "pl": "Czcionka",
+          "pt-BR": "Fonte",
+          "pt-PT": "Tipo de letra",
+          "sv": "Typsnitt",
+          "th": "แบบอักษร",
+          "tr": "Yazı tipi",
+          "vi": "Phông chữ",
+          "zh-CN": "字体",
+          "zh-TW": "字型"
+        },
+        "default": "helvetica_n7"
+      },
+      {
+        "type": "range",
+        "id": "type_slider_base_size",
+        "label": {
+          "cs": "Základní velikost nadpisu",
+          "da": "Basisstørrelse for overskrift",
+          "de": "Titelgröße",
+          "en": "Heading base size",
+          "es": "Tamaño base de título",
+          "fi": "Otsikon peruskoko",
+          "fr": "Dimensions de base de l'en-tête",
+          "it": "Dimensione base del titolo",
+          "ja": "見出しの基本サイズ",
+          "ko": "제목 기본 크기",
+          "nb": "Grunnstørrelse for overskrift",
+          "nl": "Afmeting kopbasis",
+          "pl": "Podstawowy rozmiar nagłówka",
+          "pt-BR": "Tamanho básico do título",
+          "pt-PT": "Tamanho básico do título",
+          "sv": "Rubrik basstorlek",
+          "th": "ขนาดพื้นฐานของหัวเรื่อง",
+          "tr": "Başlık temel boyutu",
+          "vi": "Cỡ cơ sở của tiêu đề",
+          "zh-CN": "标题基本尺寸",
+          "zh-TW": "標題基本尺寸"
+        },
+        "default": 26,
+        "min": 20,
+        "max": 36,
+        "step": 1,
+        "unit": "px"
       }
     ]
   },

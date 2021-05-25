@@ -1,0 +1,295 @@
+{% comment %} {%- capture padding_mx -%}
+    {% assign image_blocks = section.blocks | where: 'type', 'carousel-style-2' %}
+    {%- if image_blocks == 'carousel-style-2' -%}
+        p-l
+    {%- endif -%}
+{%- endcapture -%} {% endcomment %}
+
+<div class="container">
+    <div class="carousel p-mx" data-section-type="slideshow">
+        <div class="carousel-detail">
+            {%- if section.settings.show-controls -%}
+                <div id="controls-slider-{{section.id}}" class="arrows">
+                    <button class="prev">
+                        {%- include 'icon-arrow-left-1' -%}
+                    </button>
+                    <button class="next">
+                        {%- include 'icon-arrow-right-1' -%}
+                    </button>
+                </div>
+            {%- endif -%}
+            <div class="nav-slider {% if section.settings.show-dots == false -%} d-none {%- else -%} d-block {%- endif -%}">
+                <ul class="dots" id="nav-{{ section.id }}">
+                    {%- for block in section.blocks -%}
+                        <li><p></p></li>
+                    {%- endfor -%}
+                </ul>
+            </div>
+            <div id="slider-{{ section.id }}">
+                {%- for block in section.blocks -%}
+                    {%- case block.type -%}
+                        {%- when 'carousel-style-1' -%}
+                            <div>
+                                {%- render 'carousel-style-1' block: block -%}
+                            </div>
+                        {%- when 'carousel-style-2' -%}
+                            <div>
+                                <div class="d-grid-2">
+                                    <div class="box-1">
+                                        <h1>123123123</h1>
+                                    </div>
+                                    <div class="box-2">
+                                        <h1>123123123</h1>
+                                    </div>
+                                    <div class="box-3">
+                                        <h1>123123123</h1>
+                                    </div>
+                                </div>
+                            </div>
+                    {%- endcase -%}
+                {%- endfor -%}
+            </div>
+        </div>
+        <script type="application/json" data-tns-config>
+        {
+            "container": "#slider-{{ section.id }}",
+            "loop" : false,
+            "items" : 1,
+            "slideBy": "page",
+            "nav": {{ section.settings.show-dots }},
+            "navContainer": "#nav-{{ section.id }}",
+            "navAsThumbnails": true,
+            "autoplay": false,
+            "autoplayButtonOutput": false,
+            "mouseDrag": true,
+            "lazyload": false,
+            "speed": 400,
+            "autoHeight": false,
+            "preventScrollOnTouch": "auto",
+            "controlsContainer": "#controls-slider-{{section.id}}",
+            "mode": "{{ section.settings.mode-slider }}",
+            "responsive": {
+                "0": {
+                    "items": 1
+                }
+            }
+        }
+    </script>
+    </div>
+</div>
+
+{%- schema -%}
+{
+    "name" : {
+        "en": "Carousel"
+    },
+    "max_blocks": 4,
+    "settings" : [
+        {
+            "type": "select",
+            "id": "mode-slider",
+            "label" : {
+                "en" : "Mode slider"
+            },
+            "options": [
+            {
+                "value": "carousel",
+                "label": {
+                    "en": "Carousel"
+                }
+            },
+                        {
+                "value": "gallery",
+                "label": {
+                    "en": "Gallery"
+                }
+            }
+            ],
+            "default" : "gallery"
+        },
+        {
+            "type" : "checkbox",
+            "id" : "show-controls",
+            "label" : {
+                "en": "Show controls slider"  
+            },
+            "default": true
+        },
+        {
+            "type" : "checkbox",
+            "id" : "show-dots",
+            "label" : {
+                "en": "Show dots"  
+            },
+            "default": true
+        }
+    ],
+    "blocks": [
+        {
+            "type" : "carousel-style-1",
+            "name": {
+                "en": "Carousel style 1"
+            },
+            "settings" : [
+                {
+                    "type" : "range",
+                    "id": "top",
+                    "label": {
+                        "en" : "Top content" 
+                    },
+                    "step": 1,
+                    "min" : 25,
+                    "max" : 75,
+                    "unit" : "%",
+                    "default" : 70,
+                    "info": {
+                        "en": "Note: this parameter varies from 768px or more"
+                    }
+                },
+                {
+                    "type" : "range",
+                    "id": "left",
+                    "label": {
+                        "en" : "Left content" 
+                    },
+                    "step": 1,
+                    "min" : 0,
+                    "max" : 50,
+                    "unit" : "%",
+                    "default" : 0,
+                    "info": {
+                        "en": "Note: this parameter varies from 768px or more"
+                    }
+                },
+                {
+                    "type": "select",
+                    "id": "text-align",
+                    "label" : {
+                        "en" : "Text align"
+                    },
+                    "options": [
+                        {
+                            "value": "left",
+                            "label": {
+                                "en": "Left"
+                            }
+                        },
+                        {
+                            "value": "center",
+                            "label": {
+                                "en": "Center"
+                            }
+                        },
+                        {
+                            "value": "right",
+                            "label": {
+                                "en": "Right"
+                            }
+                        }
+                    ],
+                    "default" : "left"
+                },
+                {
+                    "type": "text",
+                    "id": "sub_title",
+                    "label": {
+                        "en": "Subtitle"
+                    },
+                    "default" : "Subtitle"
+                },
+                {
+                    "type": "richtext",
+                    "id": "title",
+                    "label": {
+                        "en": "Title"
+                    },
+                    "default" : "<p>Title</p>"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "image",
+                    "label": {
+                        "en": "Image"
+                    }
+                },
+                {
+                    "type": "text",
+                    "id": "text_button",
+                    "label": {
+                        "en": "Text Button"
+                    },
+                    "default" : "Shop this look"
+                },
+                {
+                    "type": "color",
+                    "id": "color_button",
+                    "label": {
+                        "en": "Color Button"
+                    },
+                    "default" : "#0f1214"
+                },
+                {
+                    "type" : "range",
+                    "id": "border_button",
+                    "label": {
+                        "en" : "Border Button" 
+                    },
+                    "step": 5,
+                    "min" : 0,
+                    "max" : 40,
+                    "unit" : "px",
+                    "default" : 40
+                },
+                {
+                    "type": "select",
+                    "id": "animation_button",
+                    "label" : {
+                        "en" : "Animation Button"
+                    },
+                    "options": [
+                        {
+                            "value": "button-container-1",
+                            "label": {
+                                "en": "Animation 1"
+                            }
+                        },
+                        {
+                            "value": "button-container-2",
+                            "label": {
+                                "en": "Animation 2"
+                            }
+                        },
+                        {
+                            "value": "button-container-3",
+                            "label": {
+                                "en": "Animation 3"
+                            }
+                        }
+                    ],
+                    "default" : "button-container-1"
+                },
+                {
+                    "type" : "url",
+                    "id" : "url_button",
+                    "label" : {
+                        "en": "URL Button"
+                    }
+                }
+            ]
+        },
+        {
+            "type" : "carousel-style-2",
+            "name": {
+                "en": "Carousel style 2"
+            },
+            "settings" : []
+        }
+    ],
+    "presets": [
+        {
+            "name": "Carousel",
+            "category": "Advanced layout"
+        }
+    ]
+}
+{%- endschema -%}

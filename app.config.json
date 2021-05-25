@@ -14,7 +14,8 @@
   "themes": [
     "_01_variables",
     "_mixin",
-    "_index"
+    "_index",
+    "_carousel"
   ],
   "styles": [
     "_01_variables",
