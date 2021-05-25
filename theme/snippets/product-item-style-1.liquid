@@ -24,10 +24,7 @@
                 {{ 'image' | placeholder_svg_tag }}
             {%- endif -%}
         </a>
-    </div>
-    <div class="cart-color">
-        <form id="js-swatch-form" name="formVariant">
-            <div class="swatch-list">
+        <div class="cart-color">
             {%- unless product.has_only_default_variant -%}
                 {%- for option in product.options_with_values -%}
                     {%- if option.name == "Color" -%}
@@ -52,8 +49,7 @@
                     {%- endif -%}
                 {%- endfor -%}
             {%- endunless -%}
-            </div>
-        </form>
+        </div>
     </div>
     <div class="cart-product-title">
         <a href="{{product.url}}">
