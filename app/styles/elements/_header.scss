@@ -1,6 +1,16 @@
 .header{
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: 28px;
+    padding-bottom: 28px;
+
+    -ms-box-orient: horizontal;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -moz-flex;
+    display: -webkit-flex;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
     a{
         display: inline-block;
