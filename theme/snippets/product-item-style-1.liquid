@@ -1,0 +1,123 @@
+{%- liquid 
+  assign variant_first_available = product.first_available_variant
+  assign available = product.available   
+  assign current_variant = product.selected_or_first_available_variant
+  assign first_variant = product.variants | first
+  assign selected_variant = product.selected_or_first_available_variant | default: first_variant
+-%}
+
+
+
+<div class="cart-product">
+    <div class="cart-product-promotion">
+        {%- if product.tags contains "new" -%}
+            <p class="cart-product-promotion-content">New</p>
+        {%- elsif current_variant.compare_at_price > current_variant.price -%}
+            <p class="cart-product-promotion-content">{{ 'products.product.sold_out' | t }}</p>
+        {%- endif -%}
+    </div>
+    <div class="cart-product-image">
+        <a href="{{product.url}}">
+            {%- if product.featured_image != blank -%}
+                <img src="{{ product.featured_image | img_url: 'master' }}" alt="{{ product.featured_image.alt }}">
+            {%- else -%}
+                {{ 'image' | placeholder_svg_tag }}
+            {%- endif -%}
+        </a>
+    </div>
+    <div class="cart-color">
+        <form id="js-swatch-form" name="formVariant">
+            <div class="swatch-list">
+            {%- unless product.has_only_default_variant -%}
+                {%- for option in product.options_with_values -%}
+                    {%- if option.name == "Color" -%}
+                        <div class="product-select">
+                            {%- for value in option.values -%}
+
+                            {%- capture color -%}
+                                {% if value == 'Black' %}
+                                    cl-black
+                                {%- elsif value == 'Red' -%}
+                                    cl-red
+                                {%- elsif value == 'Yellow' -%}
+                                    cl-yellow
+                                {% endif %}
+                            {%- endcapture -%}
+                                <label for="color-{{ forloop.index }}">
+                                    <input type="radio" style="display: none;">
+                                    <div class="circle {{ color }}"></div>
+                                </label>
+                            {%- endfor -%}
+                        </div>
+                    {%- endif -%}
+                {%- endfor -%}
+            {%- endunless -%}
+            </div>
+        </form>
+    </div>
+    <div class="cart-product-title">
+        <a href="{{product.url}}">
+            <h1>{{product.title}}</h1>
+        </a>
+    </div>
+    <div class="cart-product-price">
+        {%- if current_variant.compare_at_price > current_variant.price -%}
+            <span class="cart-product-price-sale">
+                {{current_variant.price | money}}
+            </span>
+            <span class="cart-prodcut-price-after-sale">
+                {{current_variant.compare_at_price | money}}
+            </span>
+        {%- else -%}
+            <p class="cart-product-price-original">
+                {{current_variant.price | money}}
+            </p>
+        {%- endif -%}
+    </div>
+    <div class="rating">
+        <input type="radio" name="rating" id="rating-5">
+        <label for="rating-5"></label>
+        <input type="radio" name="rating" id="rating-4">
+        <label for="rating-4"></label>
+        <input type="radio" name="rating" id="rating-3">
+        <label for="rating-3"></label>
+        <input type="radio" name="rating" id="rating-2">
+        <label for="rating-2"></label>
+        <input type="radio" name="rating" id="rating-1">
+        <label for="rating-1"></label>
+    </div>
+    <div class="cart-function">
+        <div class="cart-modal">
+            <a href="#">
+                <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="0.5" y="0.5" width="43" height="43" rx="21.5" fill="white" stroke="#F4F4F5"/>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M30.9794 21.3704C30.8294 21.1338 27.229 15.5834 21.9993 15.5834C16.7695 15.5834 13.1692 21.1338 13.0191 21.3704C12.771 21.7576 12.771 22.2465 13.0191 22.6337C13.1692 22.8703 16.7695 28.4007 21.9951 28.4167H22.0201C27.2332 28.4167 30.8335 22.8663 30.9836 22.6297C31.2288 22.2427 31.2271 21.7559 30.9794 21.3704ZM22.02 27.2136C17.4362 27.2136 14.1025 22 14.1025 22C14.1025 22 17.4362 16.7865 22.02 16.7865C26.6038 16.7865 29.9375 22 29.9375 22C29.9375 22 26.5913 27.2136 22.02 27.2136Z" fill="#494F56"/>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M21.9987 18.7917C20.1576 18.7917 18.665 20.2282 18.665 22.0001C18.665 23.772 20.1576 25.2084 21.9987 25.2084C23.8399 25.2084 25.3324 23.772 25.3324 22.0001C25.3324 20.2282 23.8399 18.7917 21.9987 18.7917ZM21.9987 24.0053C20.848 24.0053 19.9152 23.1075 19.9152 22.0001C19.9152 20.8926 20.848 19.9949 21.9987 19.9949C23.1494 19.9949 24.0823 20.8926 24.0823 22.0001C24.0823 23.1075 23.1494 24.0053 21.9987 24.0053Z" fill="#494F56"/>
+                </svg>
+            </a>
+        </div>
+        <div class="cart-button">
+            {%- if available -%}
+                <form class="form-cart" action="/cart/add">
+                    <input type="hidden" name="id" value="{{variant_first_available.id}}">
+                    <button type="submit" class="icon-cart">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M12.4916 3.87482H10.7456C10.5498 2.41637 9.37995 1.33337 8.00033 1.33337C6.6207 1.33337 5.45085 2.41637 5.25506 3.87482H3.5091C3.04402 3.87482 2.66699 4.27746 2.66699 4.77415V13.7674C2.66699 14.2641 3.04402 14.6667 3.5091 14.6667H12.4916C12.9566 14.6667 13.3337 14.2641 13.3337 13.7674V4.77415C13.3337 4.27746 12.9566 3.87482 12.4916 3.87482ZM8.00025 2.22605C8.89428 2.28881 9.65221 2.95128 9.88656 3.87481H6.11393C6.34829 2.95128 7.10621 2.28881 8.00025 2.22605ZM12.4916 13.7674H3.50911V4.77413H5.19333V5.67345C5.19333 5.92179 5.38184 6.12311 5.61438 6.12311C5.84692 6.12311 6.03543 5.92179 6.03543 5.67345V4.77413H9.96525V5.67345C9.96525 5.92179 10.1538 6.12311 10.3863 6.12311C10.6188 6.12311 10.8074 5.92179 10.8074 5.67345V4.77413H12.4916V13.7674Z" fill="white"/>
+                        </svg>
+                        <span>{{'products.product.add_to_cart' | t}}</span>
+                    </button>
+                </form>
+            {% else %}
+                <p class="sold-out">{{'products.product.sold_out' | t}}</p>
+            {%- endif -%}
+        </div>
+        <div class="cart-like">
+            <a href="#">
+                <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="0.5" y="0.5" width="43" height="43" rx="21.5" fill="white" stroke="#F4F4F5"/>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M25.753 14.2821C26.8651 14.2555 27.9386 14.7552 28.7252 15.6656C29.5117 16.5761 29.9435 17.8185 29.9205 19.1057C29.8949 19.7747 29.7532 20.4309 29.5038 21.0352C28.7619 22.762 22.0022 29.7177 22.0022 29.7177C22.0022 29.7177 15.2508 22.7572 14.5006 21.0352C14.2334 20.4385 14.0907 19.7777 14.0839 19.1057C14.0645 17.8197 14.4973 16.5797 15.2831 15.6702C16.0689 14.7606 17.1403 14.2596 18.2514 14.2821C19.3725 14.2821 21.252 16.3418 22.0022 17.1763C22.7523 16.3466 24.6319 14.2821 25.753 14.2821ZM25.753 12.835C24.7653 12.835 23.6151 13.5537 22.0022 15.2034C20.3894 13.5537 19.2392 12.835 18.2515 12.835C16.3979 12.7858 14.657 13.8618 13.6614 15.6722C12.6659 17.4825 12.5606 19.7636 13.3838 21.6864C14.1798 23.5145 19.5434 29.1244 21.1687 30.7982C21.6433 31.2895 22.3612 31.2895 22.8358 30.7982C24.4653 29.1244 29.8372 23.5145 30.6249 21.6767C31.4393 19.7535 31.3291 17.4782 30.3341 15.6724C29.3391 13.8666 27.6031 12.7914 25.753 12.835Z" fill="#494F56"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+</div>
