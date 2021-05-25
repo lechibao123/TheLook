@@ -21,47 +21,49 @@ document.addEventListener(
     // Event Header
     document.getElementById('openNav').addEventListener('click', function(){
         document.getElementById("mySidenav").style.width = "300px";
+        document.getElementById("navigation").style.opacity = "1";
         document.getElementById("overlay").style.display = "block";
     });
 
     document.getElementById('closeNav').addEventListener('click', function(){
         document.getElementById("mySidenav").style.width = "0";
+        document.getElementById("navigation").style.opacity = "0";
         document.getElementById("overlay").style.display = "none";
     });
 
     document.getElementById('overlay').addEventListener('click', function(){
         document.getElementById("mySidenav").style.width = "0";
+        document.getElementById("navigation").style.opacity  = "0";
         document.getElementById("overlay").style.display = "none";
     });
 
     let parent = document.getElementsByClassName('its-parent');
     for (let i = 0; i < parent.length; i++) {
         parent[i].addEventListener('click', function(){
-            console.log(this)
             let children = this.nextElementSibling;
-            console.log(children.offsetHeight )
-
+            slideToggle(this, children);
             this.classList.toggle("downed");
             console.log(true);
         })
     }
 
-    var slideOpen = true;
-    var heightChecked = false;
-    var initHeight = 0;
-    
-    function slideToggle(height) {
-        if(!heightChecked) {
-            initHeight = height;
-            heightChecked = true;
+
+    var isBlock = false;
+    function slideToggle(parent, children) {
+        if (parent.classList.contains("downed")) {
+            isBlock = true;
         }
-        if(slideOpen) {
-            slideOpen = false;
-            mdiv.style.height = '0px';
+        else{
+            isBlock = false;
+        }
+        console.log(isBlock)
+        if(!isBlock) {
+            children.style.display = 'block';
+            isBlock = true;
         }
         else {
-            slideOpen = true;
-            mdiv.style.height = initHeight + 'px';
+            children.style.display = 'none';
+            isBlock = false;
         }
     }
 
