@@ -10,7 +10,7 @@
             </div>
         {%- endif -%}
     </div>
-    <div class="image-slider">
+    <div class="image-slider" id="image-{{ block.id }}">
         {%- if _block.image != blank -%}
             {%- assign img_url = _block.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
             <img id="{{ _block.image.id }}"
@@ -23,7 +23,6 @@
         {%- else -%}
             {{ 'image' | placeholder_svg_tag }}                  
         {%- endif -%}
-        
     </div>
 </div>
 <style>
@@ -33,6 +32,10 @@
         transform: translateY(-50%);
         text-align: {{ _block.text-align }};
     }
+    .carousel #image-{{ block.id }} img{
+        width: {{ _block.width-image }}%;
+    }
+
     .carousel #btn-style-{{ block.id }}{
         border-radius: {{ _block.border_button }}px;
     }
