@@ -55,8 +55,8 @@
   }
   .cart-product{
     width: 100%;
-    transition: box-shadow .3s;
     position: relative;
+    transition: all .5s ease;
 
     .cart-product-promotion{
       position: absolute;
@@ -222,7 +222,6 @@
   .cart-product:hover{
     box-shadow: 0 0 15px rgba(33,33,33,.2);
     padding: 10px;
-    transition: .4s;
 
     .cart-product-promotion{
       position: absolute;
@@ -247,10 +246,4 @@
       display: flex;
     }
   }
-}
-.tns-inner{
-  padding-top: 16px;
-  padding-bottom: 16px;
-  padding-left: 8px!important;
-  padding-right: 8px!important;
 }

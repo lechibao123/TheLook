@@ -9,8 +9,8 @@
             <div class="list-product-title-text">
                 <p>{{section.settings.title}}</p>
             </div>
-            {%- unless collection.products == 0 -%}
-                {%- if section.settings.show-controls -%}
+            {%- if section.settings.show-controls -%}
+                {%- unless collection.products == 0 -%}
                 <div class="list-product-title-button-slide" id="controls-{{section.id}}">
                     <button class="list-product-title-pre-slide">
                         <svg width="18" height="14" viewBox="0 0 18 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -23,13 +23,13 @@
                         </svg>
                     </button>
                 </div>
-                {%- endif -%}
-            {%- endunless -%}
+                {%- endunless -%}
+            {%- endif -%}
         </div>
 
         <div id="list-product-{{section.id}}">
             {%- for product in collection.products -%}
-                <div>
+                <div id="product-{{section.id}}">
                     {% render 'product-item-style-1' product:product %}
                 </div>
             {%- endfor -%}
@@ -45,6 +45,7 @@
                 "lazyload": false,
                 "speed": 400,
                 "gutter": 30,
+                "edgePadding": 10,
                 "preventScrollOnTouch": "auto",
                 "controlsContainer": "#controls-{{section.id}}",
                 "responsive": {
@@ -138,3 +139,9 @@
     ]
 }
 {%- endschema -%}
+<style>
+    #product-{{section.id}}{
+        padding-top: 16px;
+        padding-bottom: 16px;
+    }
+</style>
