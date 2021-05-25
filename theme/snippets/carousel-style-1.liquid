@@ -1,5 +1,5 @@
 {%- assign _block = block.settings -%}
-<div class="carousel__img">
+<div class="carousel__img align-image-{{ block.id }}">
     <div class="content" id="content-{{ block.id }}">
         <div class="sub-title-1">{{_block.sub_title}}</div>
         <div class="title-1">{{_block.title}}</div>
@@ -26,6 +26,9 @@
     </div>
 </div>
 <style>
+    .carousel .align-image-{{ block.id }}{
+        text-align: {{ _block.align-image }};
+    }
     .carousel #content-{{ block.id }}{
         top: {{ _block.top }}%;
         left: {{ _block.left }}%;

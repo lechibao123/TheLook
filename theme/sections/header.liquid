@@ -1,5 +1,22 @@
 <div class="container">
     <div class="header p-mx">
+        <div id="mySidenav" class="sidenav">
+            <a href="javascript:void(0)" id="closeNav" class="closebtn">&times;</a>
+            <a href="#">About</a>
+            <a href="#">Services</a>
+            <a href="#">Clients</a>
+            <a href="#">Contact</a>
+        </div>
+
+        <div id="openNav">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M2.90909 6.77465H21.0909C21.593 6.77465 22 6.37738 22 5.88732C22 5.39727 21.593 5 21.0909 5H2.90909C2.40701 5 2 5.39727 2 5.88732C2 6.37738 2.40701 6.77465 2.90909 6.77465Z" fill="#252A2F"/>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M2.90909 19H21.0909C21.593 19 22 18.6027 22 18.1127C22 17.6226 21.593 17.2253 21.0909 17.2253H2.90909C2.40701 17.2253 2 17.6226 2 18.1127C2 18.6027 2.40701 19 2.90909 19Z" fill="#252A2F"/>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M2.90909 10.9155H14.4242C14.9263 10.9155 15.3333 10.5182 15.3333 10.0282C15.3333 9.53814 14.9263 9.14087 14.4242 9.14087H2.90909C2.40701 9.14087 2 9.53814 2 10.0282C2 10.5182 2.40701 10.9155 2.90909 10.9155Z" fill="#252A2F"/>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M2.90909 15.0564H19.8788C20.3809 15.0564 20.7879 14.6591 20.7879 14.1691C20.7879 13.679 20.3809 13.2817 19.8788 13.2817H2.90909C2.40701 13.2817 2 13.679 2 14.1691C2 14.6591 2.40701 15.0564 2.90909 15.0564Z" fill="#252A2F"/>
+            </svg>
+        </div>
+
         {% if section.settings.logo %}
             {%- assign img_url = section.settings.logo | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
             <a href="{{ routes.root_url }}">
@@ -23,6 +40,11 @@
         {% else %}
             <a class="site-header__logo-link" href="{{ routes.root_url }}">{{ shop.name }}</a>
         {% endif %}
+
+        <div class="annoubar-item">
+            123
+        </div>
+
     </div>
 </div>
 
