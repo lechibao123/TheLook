@@ -1,5 +1,5 @@
 <div class="container">
-    <div class="carousel {% if section.settings.layout == 'boxed' -%} p-mx {%- else -%} container-fluid {%- endif -%}" data-section-type="slideshow">
+    <div class="carousel {% if section.settings.layout == 'boxed' -%} p-mx {%- else -%} container-fluid {%- endif -%}"data-section-id="{{section.id}}" data-section-type="slideshow">
         <div class="carousel-detail">
             {%- if section.settings.show-controls -%}
                 <div id="controls-slider-{{section.id}}" class="arrows">
@@ -43,7 +43,7 @@
             "mouseDrag": true,
             "lazyload": false,
             "speed": 400,
-            "autoHeight": false,
+            "autoHeight": true,
             "preventScrollOnTouch": "auto",
             "controlsContainer": "#controls-slider-{{section.id}}",
             "mode": "{{ section.settings.mode-slider }}",
