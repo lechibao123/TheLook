@@ -14,6 +14,7 @@ document.addEventListener(
       });
     };
     slideshow();
+
     document.addEventListener("shopify:section:load", () => slideshow());
 
     console.log(true);

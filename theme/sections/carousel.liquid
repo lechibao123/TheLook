@@ -1,10 +1,3 @@
-{% comment %} {%- capture padding_mx -%}
-    {% assign image_blocks = section.blocks | where: 'type', 'carousel-style-2' %}
-    {%- if image_blocks == 'carousel-style-2' -%}
-        p-l
-    {%- endif -%}
-{%- endcapture -%} {% endcomment %}
-
 <div class="container">
     <div class="carousel p-mx" data-section-type="slideshow">
         <div class="carousel-detail">
@@ -28,23 +21,9 @@
             <div id="slider-{{ section.id }}">
                 {%- for block in section.blocks -%}
                     {%- case block.type -%}
-                        {%- when 'carousel-style-1' -%}
+                        {%- when 'carousel' -%}
                             <div>
                                 {%- render 'carousel-style-1' block: block -%}
-                            </div>
-                        {%- when 'carousel-style-2' -%}
-                            <div>
-                                <div class="d-grid-2">
-                                    <div class="box-1">
-                                        <h1>123123123</h1>
-                                    </div>
-                                    <div class="box-2">
-                                        <h1>123123123</h1>
-                                    </div>
-                                    <div class="box-3">
-                                        <h1>123123123</h1>
-                                    </div>
-                                </div>
                             </div>
                     {%- endcase -%}
                 {%- endfor -%}
@@ -53,13 +32,13 @@
         <script type="application/json" data-tns-config>
         {
             "container": "#slider-{{ section.id }}",
-            "loop" : false,
+            "loop" : {{ section.settings.loop }},
             "items" : 1,
             "slideBy": "page",
             "nav": {{ section.settings.show-dots }},
             "navContainer": "#nav-{{ section.id }}",
             "navAsThumbnails": true,
-            "autoplay": false,
+            "autoplay": {{ section.settings.autoplay }},
             "autoplayButtonOutput": false,
             "mouseDrag": true,
             "lazyload": false,
@@ -109,6 +88,22 @@
         },
         {
             "type" : "checkbox",
+            "id" : "autoplay",
+            "label" : {
+                "en": "Auto play slider"  
+            },
+            "default": false
+        },
+        {
+            "type" : "checkbox",
+            "id" : "loop",
+            "label" : {
+                "en": "Loop slider"  
+            },
+            "default": false
+        },
+        {
+            "type" : "checkbox",
             "id" : "show-controls",
             "label" : {
                 "en": "Show controls slider"  
@@ -126,9 +121,9 @@
     ],
     "blocks": [
         {
-            "type" : "carousel-style-1",
+            "type" : "carousel",
             "name": {
-                "en": "Carousel style 1"
+                "en": "Carousel"
             },
             "settings" : [
                 {
@@ -276,13 +271,6 @@
                     }
                 }
             ]
-        },
-        {
-            "type" : "carousel-style-2",
-            "name": {
-                "en": "Carousel style 2"
-            },
-            "settings" : []
         }
     ],
     "presets": [
