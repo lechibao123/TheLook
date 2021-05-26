@@ -199,6 +199,9 @@
 </head>
 
 <body class="template-{{ request.page_type | handle }}">
+    <a href="#" class="cd-top text-replace js-cd-top">
+        {%- include 'icon-arrow-top' -%}
+    </a>
     <div id="overlay" class="overlay"></div>
   <a class="in-page-link visually-hidden skip-link" href="#MainContent">{{ 'general.accessibility.skip_to_content' | t }}</a>
 
@@ -215,7 +218,6 @@
     </main>
 
     {% section 'footer' %}
-
     <div id="slideshow-info" class="visually-hidden" aria-hidden="true">
       {{- 'sections.slideshow.navigation_instructions' | t -}}
     </div>
@@ -229,7 +231,7 @@
       "cartChangeUrl": "{{ routes.cart_change_url }}"
     }
   </script>
-
+    <script src="{{ 'util.js' | asset_url}}"></script>
   <ul hidden>
     <li id="a11y-refresh-page-message">{{ 'general.accessibility.refresh_page' | t }}</li>
     <li id="a11y-selection-message">{{ 'general.accessibility.selection_help' | t }}</li>
