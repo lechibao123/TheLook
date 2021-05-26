@@ -80,7 +80,7 @@
             </script>
         </div>
     {%- else -%}
-        <div class="list-product-style" id="list-product-style-section-{{section.id}}" data-section-type="slideshow">
+        <div class="list-product-style p-mx p-my" id="list-product-style-section-{{section.id}}" data-section-type="slideshow">
             <div class="list-product-style-title">
                 <div class="list-product-style-title-text">
                     <p>{{section.settings.title}}</p>
@@ -148,6 +148,11 @@
             #list-product-style-{{section.id}}-ow{
                 width: 73%;
                 padding-left: 10px;
+            }
+            @media only screen and (max-width: 600px){
+                #list-product-style-{{section.id}}-ow{
+                    width: 100%;
+                }
             }
         </style>
     {%- endif -%}

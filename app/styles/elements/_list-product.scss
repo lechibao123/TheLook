@@ -255,9 +255,7 @@
 }
 
 .list-product-style{
-  padding: 60px 255px;
   display: flex;
-  width: 100%;
 
   .list-product-style-title{
     width: 27%;
@@ -512,6 +510,14 @@
           align-items: center;
         }
       }
+    }
+  }
+}
+@include respond-to(600){
+  .list-product-style{
+    display: block;
+    .list-product-style-title{
+      width: 100%;
     }
   }
 }
