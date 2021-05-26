@@ -229,13 +229,6 @@ img{
     row-gap: 30px;
 }
 
-.grid__annoubar{
-    display: grid;
-    grid-template-rows: auto;
-    @include respond-to(600){
-        grid-template-columns: repeat(2, 1fr) !important;
-    }
-}
 
 .p-my{
     padding-top: 80px;

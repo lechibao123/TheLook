@@ -209,10 +209,28 @@
             top: 0;
             left: 0;
         }
+        .grid__annoubar{
+            display: grid;
+            grid-template-rows: auto;
+        }
+        @media only screen and (max-width: 600px) {
+            .grid__annoubar{
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+        }
     {%- elsif section.settings.header-style == 'style-2' -%}
         .header .sidenav{
             top: 0;
             right: 10px;
+        }
+        .grid__annoubar{
+            display: grid;
+            grid-template-rows: auto;
+        }
+        @media only screen and (max-width: 600px) {
+            .grid__annoubar{
+                grid-template-columns: repeat(3, 1fr) !important;
+            }
         }
     {%- endif -%}
 
