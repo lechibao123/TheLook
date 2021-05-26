@@ -21,6 +21,8 @@ document.addEventListener(
 
 
     // Event Header
+    var isBlock = false;
+
     document.getElementById('openNav').addEventListener('click', function(){
         document.getElementById("mySidenav").style.width = "300px";
         document.getElementById("navigation").style.opacity = "1";
@@ -32,11 +34,15 @@ document.addEventListener(
         document.getElementById("navigation").style.opacity = "0";
         document.getElementById("overlay").style.display = "none";
     });
-
+    
     document.getElementById('overlay').addEventListener('click', function(){
         document.getElementById("mySidenav").style.width = "0";
         document.getElementById("navigation").style.opacity  = "0";
         document.getElementById("overlay").style.display = "none";
+    });
+
+    document.getElementById('iconCustoms').addEventListener('click', function(){
+        this.classList.toggle('show-icon');
     });
 
     let parent = document.getElementsByClassName('its-parent');
@@ -45,12 +51,10 @@ document.addEventListener(
             let children = this.nextElementSibling;
             slideToggle(this, children);
             this.classList.toggle("downed");
-            console.log(true);
         })
     }
 
-
-    var isBlock = false;
+    
     function slideToggle(parent, children) {
         if (parent.classList.contains("downed")) {
             isBlock = true;

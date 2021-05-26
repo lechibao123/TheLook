@@ -229,6 +229,15 @@ img{
     row-gap: 30px;
 }
 
+.d-grid-4{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto;
+    @include respond-to(600){
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
 .p-my{
     padding-top: 80px;
     padding-bottom: 100px;
@@ -252,4 +261,11 @@ img{
 @keyframes fade-in {
     0% {opacity: 0;}
     100% {opacity: 1;}
+}
+
+@include respond-to(600){
+    #MainContent{
+        padding-top: 0;
+    }
+
 }
