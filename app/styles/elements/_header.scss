@@ -3,12 +3,12 @@
     position: sticky;
     top: 0px;
     width: 100%;
-    z-index: 1000;
+    z-index: 99;
 }
 
 .header{
-    padding-top: 18px;
-    padding-bottom: 18px;
+    padding-top: 34px;
+    padding-bottom: 34px;
     position: relative;
 
     -ms-box-orient: horizontal;
@@ -26,10 +26,7 @@
         padding: 0;
         width: 200px;
         display: inline-flex;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+
         @include respond-to(600){
             width: 150px;
         }
@@ -40,23 +37,17 @@
             object-fit: cover;
         }
     }
-    
-    @include respond-to(600){
-        .site-header__icon{
-            padding: 5px;
-        }
-    }
+
+
     .sidenav {
         height: 100%;
         width: 0;
         position: fixed;
-        z-index: 99;
-        top: 0;
-        left: 0;
         background-color: #111;
         overflow-x: hidden;
         transition: 0.5s;
         padding-top: 60px;
+        z-index: 999;
     }
     
     .sidenav .closebtn {
@@ -65,10 +56,10 @@
         right: 25px;
         font-size: 36px;
         margin-left: 50px;
+        color: #F4F4F5;
     }
 
     #openNav{
-        display: inline-block;
         cursor: pointer;
         width: 24px;
         height: 24px;
@@ -88,6 +79,11 @@
         a.icon-search{
             display: none;
         }
+        .site-header__icon{
+            padding: 5px;
+        }
+        padding-top: 17px;
+        padding-bottom: 17px;
     }
 }
 
@@ -163,6 +159,11 @@
     -moz-transition: .4s;
 }
 
+.downed ~ .its-children li{
+    -webkit-animation: fadeIn 1s;
+    animation: fadeIn 1s;
+}
+
 .d-hide{
     display: none;
     position: relative;
@@ -171,6 +172,9 @@
 @include respond-to(600){
     .d-hide{
         display: block;
+    }
+    .site-header__cart{
+        width: 33.14px;
     }
 }
 
@@ -183,7 +187,7 @@
     animation: fade-out .5s;
     position: absolute;
     top: 125%;
-    right: 4px;
+    right: 13px;
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -238,6 +242,7 @@
     padding-top: 16px;
     padding-bottom: 16px;
     position: relative;
+    z-index: 5;
 
     -ms-box-orient: horizontal;
     display: -webkit-box;
@@ -248,7 +253,12 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    row-gap: 8px;
 
+    @include respond-to(600){
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+    }
     h6{
         margin: 0;
         @include font-size(12px, 14px);
@@ -257,6 +267,7 @@
     a{
         text-transform: uppercase;
         margin-right: 31px;
+        @include font-size(12px, 14px);
         @include respond-to(768){
             margin-right: 11px;
         }
@@ -294,4 +305,13 @@
 @keyframes fade-out {
     0% {opacity: 1;}
     100% {opacity: 0;}
+}
+
+@-webkit-keyframes fadeIn {
+    from { opacity: 0; transform: translate(0px, 40px);}
+    to { opacity: 1; transform: translate(0px, 0px);}
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translate(0px, 40px);}
+    to { opacity: 1; transform: translate(0px, 0px);}
 }
