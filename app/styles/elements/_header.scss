@@ -1,6 +1,7 @@
 .header{
     padding-top: 28px;
     padding-bottom: 28px;
+    position: relative;
 
     -ms-box-orient: horizontal;
     display: -webkit-box;
@@ -12,10 +13,19 @@
     align-items: center;
     justify-content: space-between;
 
-    a{
-        display: inline-block;
+    > a{
         margin: 0;
         padding: 0;
+        width: 200px;
+        display: inline-flex;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        @include respond-to(600){
+            width: 150px;
+        }
+        
         img{
             width: 100%;
             height: 100%;
@@ -23,6 +33,11 @@
         }
     }
     
+    @include respond-to(600){
+        .site-header__icon{
+            padding: 5px;
+        }
+    }
     .sidenav {
         height: 100%;
         width: 0;
@@ -34,7 +49,6 @@
         overflow-x: hidden;
         transition: 0.5s;
         padding-top: 60px;
-        z-index: 11;
     }
     
     .sidenav .closebtn {
@@ -52,6 +66,20 @@
         height: 24px;
     }
 
+    #iconCustoms{
+        position: relative;
+        display: none;
+    }
+    @include respond-to(600){
+        #iconCustoms{
+            display: block;
+        }
+        a.icon-login,
+        a.icon-heart,
+        a.icon-search{
+            display: none;
+        }
+    }
 }
 
 /* Nav Links */
@@ -63,14 +91,14 @@
 
 .nav-links {
     list-style: none;
-    font-size: 14px;
+    @include font-size(14px, 16px);
     color: #F4F4F5;
 }
 
 .nav-links .its-parent,
 .nav-links li a {
     display: block;
-    padding: 10px;
+    padding: 10px 10px 10px 20px;
     text-decoration: none;
     color: #F4F4F5;
 }
@@ -103,11 +131,14 @@
 }
 
 .its-parent:after {
-    content: "\f2f9";
+    content: "\27A4";
     float: right;
     margin-right: 20px;
     transition: .4s;
     font-size: 16px;
+    transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
 }
 
 .its-parent.downed {
@@ -115,10 +146,111 @@
 }
 
 .its-parent.downed:after {
-    transform: rotate(180deg);
-    -webkit-transform: rotate(180deg);
-    -moz-transform: rotate(360deg);
+    transform: rotate(-90deg);
+    -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
     transition: .4s;
     -webkit-transition: .4s;
     -moz-transition: .4s;
+}
+
+.d-hide{
+    display: none;
+    position: relative;
+}
+
+@include respond-to(600){
+    .d-hide{
+        display: block;
+    }
+}
+
+.hide-icons{
+    display: none;
+    transition: all 1s;
+}
+
+.list-icons{
+    animation: fade-out .5s;
+    position: absolute;
+    top: 125%;
+    right: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    border: 1px solid #808080;
+    background-color: antiquewhite;
+    z-index: 5;
+    padding: 0 20px;
+}
+
+.list-icons::after{
+    content: "";
+    height: 15px;
+    width: 15px;
+    position: absolute;
+    top: -8px;
+    right: 2.5px;
+    border-top: 1px solid grey;
+    border-left: 1px solid grey;
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+    background-color: antiquewhite;
+}
+
+.show-icon ~ .hide-icons{
+    display: block;
+    .list-icons{
+        animation: fadeInUp .5s;
+    }
+}
+
+.site-header__cart{
+    background-color: #F4F4F5;
+    border-radius: 50%;
+}
+
+.site-header__cart-count{
+    width: 1.5em !important;
+    height: 1.5em !important;
+    right: -0.2rem !important;
+    top: -0.5rem !important;
+
+    @include respond-to(600){
+        width: 20px !important;
+        height: 20px !important;
+        right: -8px !important;
+        top: -10px !important;
+    }
+}
+
+@-webkit-keyframes fadeInUp {
+	0% {
+		opacity: 0;
+		-webkit-transform: translate3d(0, 100%, 0);
+		transform: translate3d(0, 100%, 0)
+	}
+	to {
+		opacity: 1;
+		-webkit-transform: translateZ(0);
+		transform: translateZ(0)
+	}
+}
+@keyframes fadeInUp {
+	0% {
+		opacity: 0;
+		-webkit-transform: translate3d(0, 100%, 0);
+		transform: translate3d(0, 100%, 0)
+	}
+	to {
+		opacity: 1;
+		-webkit-transform: translateZ(0);
+		transform: translateZ(0)
+	}
+}
+
+@keyframes fade-out {
+    0% {opacity: 1;}
+    100% {opacity: 0;}
 }
