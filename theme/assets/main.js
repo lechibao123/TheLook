@@ -27,18 +27,21 @@ document.addEventListener(
         document.getElementById("mySidenav").style.width = "300px";
         document.getElementById("navigation").style.opacity = "1";
         document.getElementById("overlay").style.display = "block";
+        document.body.style.overflow = "hidden";
     });
 
     document.getElementById('closeNav').addEventListener('click', function(){
         document.getElementById("mySidenav").style.width = "0";
         document.getElementById("navigation").style.opacity = "0";
         document.getElementById("overlay").style.display = "none";
+        document.body.style.overflow = "auto";
     });
     
     document.getElementById('overlay').addEventListener('click', function(){
         document.getElementById("mySidenav").style.width = "0";
-        document.getElementById("navigation").style.opacity  = "0";
+        document.getElementById("navigation").style.opacity = "0";
         document.getElementById("overlay").style.display = "none";
+        document.body.style.overflow = "auto";
     });
 
     document.getElementById('iconCustoms').addEventListener('click', function(){
