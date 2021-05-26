@@ -1,6 +1,14 @@
+#shopify-section-header{
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0px;
+    width: 100%;
+    z-index: 1000;
+}
+
 .header{
-    padding-top: 28px;
-    padding-bottom: 28px;
+    padding-top: 18px;
+    padding-bottom: 18px;
     position: relative;
 
     -ms-box-orient: horizontal;
@@ -42,7 +50,7 @@
         height: 100%;
         width: 0;
         position: fixed;
-        z-index: 1;
+        z-index: 99;
         top: 0;
         left: 0;
         background-color: #111;
@@ -68,6 +76,7 @@
 
     #iconCustoms{
         position: relative;
+        margin-right: 8px;
         display: none;
     }
     @include respond-to(600){
@@ -222,6 +231,38 @@
         height: 20px !important;
         right: -8px !important;
         top: -10px !important;
+    }
+}
+
+.announcement{
+    padding-top: 16px;
+    padding-bottom: 16px;
+    position: relative;
+
+    -ms-box-orient: horizontal;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -moz-flex;
+    display: -webkit-flex;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    h6{
+        margin: 0;
+        @include font-size(12px, 14px);
+    }
+
+    a{
+        text-transform: uppercase;
+        margin-right: 31px;
+        @include respond-to(768){
+            margin-right: 11px;
+        }
+    }
+    a:last-child{
+        margin-right: 0;
     }
 }
 
