@@ -1,13 +1,6 @@
 {%- liquid 
     assign links = linklists[section.settings.menu].links
-
 -%}
-
-    {%- if section.settings.header-style == 'style-1' -%}
-        {%- assign count_grid = 4 -%}
-    {%- elsif section.settings.header-style == 'style-2' -%}
-        {%- assign count_grid = 5 -%}
-    {%- endif -%}
 
 <div id="overlay" class="overlay"></div>
 <div>
@@ -16,7 +9,7 @@
             <div class="container">
                 <div class="announcement p-mx">
                     <div class="content-left">
-                        <h6>Free shipping on domestic order over $200</h6>
+                        <h6>{{ section.settings.text-announcement }}</h6>
                     </div>
                     <div class="content-right">
                         <a href="#">SIGN IN</a>
@@ -83,14 +76,14 @@
                     <a href="{{ routes.root_url }}" style="max-width: {{ section.settings.logo_max_width }}px">
                         {% capture logo_alt %}{{ section.settings.logo.alt | default: shop.name }}{% endcapture %}
                         <img class="lazyload js"
-                            {% comment %} src="{{ section.settings.logo | img_url: '300x300' }}" {% endcomment %}
+                            src="{{ section.settings.logo | img_url: '300x300' }}"
                             data-src="{{ img_url }}"
                             data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
                             data-aspectratio="{{ section.settings.logo.aspect_ratio }}"
                             data-sizes="auto"
                             alt="{{ logo_alt | escape }}">
                         <noscript>
-                            {% capture image_size %}{{ section.settings.logo_max_width | escape }}x{% endcapture %}
+                            {% capture image_size %}{{ section.settings.logo_max_width | escape }}px{% endcapture %}
                             <img src="{{ section.settings.logo | img_url: image_size }}"
                                     srcset="{{ section.settings.logo | img_url: image_size }} 1x, {{ section.settings.logo | img_url: image_size, scale: 2 }} 2x"
                                     alt="{{ section.settings.logo.alt | default: shop.name }}"
@@ -102,31 +95,40 @@
                 {% endif %}
 
                 <div class="annoubar-item">
-                    <div class="grid__annoubar">
+                    <div class="flex__annoubar">
                         <a href="#" class="site-header__icon site-header__account icon-search">
                             {% include 'icon-search' %}
-                            <span class="icon__fallback-text">{{ 'layout.navigation.search' | t }}</span>
+                            {%- unless section.settings.header-style != 'style-2' -%}
+                                <span class="fallback-text">{{ 'layout.navigation.search' | t }}</span>
+                            {%- endunless -%}
                         </a>
                         <a href="#" class="site-header__icon site-header__account icon-heart">
                             {%- include 'icon-heart' -%}
+                            {%- unless section.settings.header-style != 'style-2' -%}
+                                <span class="fallback-text">Wishlist</span>
+                            {%- endunless -%}
                         </a>
                         {% if shop.customer_accounts_enabled and section.settings.customer_accounts_enabled %}
                             {% if customer %}
                                 <a href="{{ routes.account_url }}" class="site-header__icon site-header__account icon-login">
                                     {% include 'icon-login' %}
-                                    <span class="icon__fallback-text">{{ 'layout.customer.account' | t }}</span>
+                                    {%- unless section.settings.header-style != 'style-2' -%}
+                                        <span class="fallback-text">{{ 'layout.customer.account' | t }}</span>
+                                    {%- endunless -%}
                                 </a>
                             {% else %}
                                 <a href="{{ routes.account_login_url }}" class="site-header__icon site-header__account icon-login">
                                     {% include 'icon-login' %}
-                                    <span class="icon__fallback-text">{{ 'layout.customer.log_in' | t }}</span>
+                                    {%- unless section.settings.header-style != 'style-2' -%}
+                                        <span class="fallback-text">{{ 'layout.customer.log_in' | t }}</span>
+                                    {%- endunless -%}
                                 </a>
                             {% endif %}
                         {% endif %}
                         <div class="d-hide">
-                            <a href="javascript:void(0)" id="iconCustoms" class="site-header__icon">
+                            <div id="iconCustoms" class="site-header__icon">
                                 {%- include 'icon-customs' -%}
-                            </a>
+                            </div>
                             <div class="hide-icons">
                                 <div class="list-icons">
                                     <a href="#" class="site-header__icon site-header__account">
@@ -153,18 +155,25 @@
                             </div>
                         </div>
                         
+                        {%- if section.settings.header-style == 'style-1' -%}
+                            <a href="{{ routes.cart_url }}" class="site-header__icon site-header__cart">
+                                {% include 'icon-cart' %}
+                                <span class="icon__fallback-text">{{ 'layout.cart.title' | t }}</span>
+                                <div id="CartCount" class="site-header__cart-count{% if cart.item_count == 0 %} hide{% endif %} critical-hidden" data-cart-count-bubble>
+                                    <span data-cart-count>{{ cart.item_count }}</span>
+                                    <span class="icon__fallback-text medium-up--hide">{{ 'layout.cart.items_count' | t: count: cart.item_count }}</span>
+                                </div>
+                            </a>
+                        {%- elsif section.settings.header-style == 'style-2' -%}
+                            <a href="{{ routes.cart_url }}" class="site-header__icon site-header__account icon-login">
+                                {% include 'icon-cart' %}
+                                <span class="fallback-text">{{ 'layout.cart.title' | t }} <span data-cart-count>({{ cart.item_count }})</span></span>
+                            </a>
+                        {%- endif -%}
 
-                        <a href="{{ routes.cart_url }}" class="site-header__icon site-header__cart">
-                            {% include 'icon-cart' %}
-                            <span class="icon__fallback-text">{{ 'layout.cart.title' | t }}</span>
-                            <div id="CartCount" class="site-header__cart-count{% if cart.item_count == 0 %} hide{% endif %} critical-hidden" data-cart-count-bubble>
-                                <span data-cart-count>{{ cart.item_count }}</span>
-                                <span class="icon__fallback-text medium-up--hide">{{ 'layout.cart.items_count' | t: count: cart.item_count }}</span>
-                            </div>
-                        </a>
 
                         {%- unless section.settings.header-style != 'style-2' -%}
-                            <div id="openNav" class="site-header__icon site-header__account">
+                            <div id="openNav" class="site-header__icon site-header__account icon-login">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" clip-rule="evenodd" d="M2.90909 6.77465H21.0909C21.593 6.77465 22 6.37738 22 5.88732C22 5.39727 21.593 5 21.0909 5H2.90909C2.40701 5 2 5.39727 2 5.88732C2 6.37738 2.40701 6.77465 2.90909 6.77465Z" fill="#252A2F"/>
                                     <path fill-rule="evenodd" clip-rule="evenodd" d="M2.90909 19H21.0909C21.593 19 22 18.6027 22 18.1127C22 17.6226 21.593 17.2253 21.0909 17.2253H2.90909C2.40701 17.2253 2 17.6226 2 18.1127C2 18.6027 2.40701 19 2.90909 19Z" fill="#252A2F"/>
@@ -194,10 +203,6 @@
         color: {{ section.settings.color-announcement }};
     }
 
-    .grid__annoubar{
-        grid-template-columns: repeat({{ count_grid }}, 1fr);
-    }
-
     {%- if section.settings.header-style == 'style-1' -%}
         .header > a{
             position: absolute;
@@ -209,31 +214,22 @@
             top: 0;
             left: 0;
         }
-        .grid__annoubar{
-            display: grid;
-            grid-template-rows: auto;
-        }
-        @media only screen and (max-width: 600px) {
-            .grid__annoubar{
-                grid-template-columns: repeat(2, 1fr) !important;
-            }
-        }
     {%- elsif section.settings.header-style == 'style-2' -%}
         .header .sidenav{
             top: 0;
             right: 10px;
         }
-        .grid__annoubar{
-            display: grid;
-            grid-template-rows: auto;
-        }
-        @media only screen and (max-width: 600px) {
-            .grid__annoubar{
-                grid-template-columns: repeat(3, 1fr) !important;
-            }
-        }
     {%- endif -%}
-
+    .content-left h6{
+        background: linear-gradient(90deg, {{ section.settings.bg-color-announcement }}, {{ section.settings.color-announcement }}, {{ section.settings.bg-color-announcement }});
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-repeat: no-repeat;
+        background-size: 85%;
+        animation: shine 3s linear infinite;
+        position: relative;
+    }
 </style>
 
 {%- schema -%}
@@ -272,12 +268,29 @@
             "default" : "style-1"
         },
         {
+            "type": "header",
+            "content": {
+                "en": "Announcement"
+            },
+            "info": {
+                "en": "Settings Announcement"
+            }
+        },
+        {
             "type" : "checkbox",
             "id" : "show-announcement",
             "label" : {
                 "en": "Show announcement"  
             },
             "default": true
+        },
+        {
+            "type": "text",
+            "id": "text-announcement",
+            "label": {
+                "en": "Text Announcement"
+            },
+            "default" : "Free shipping on domestic order over $200"
         },
         {
             "type": "color",
@@ -294,6 +307,15 @@
                 "en": "Text Color Announcement"
             },
             "default" : "#FFFFFF"
+        },
+        {
+            "type": "header",
+            "content": {
+                "en": "Main Menu"
+            },
+            "info": {
+                "en": "Settings Menu"
+            }
         },
         {
             "type": "color",
@@ -317,7 +339,7 @@
                 "en" : "Custom logo width"
             },
             "min": 150,
-            "max": 350,
+            "max": 200,
             "step": 5,
             "unit": "px",
             "default": 150

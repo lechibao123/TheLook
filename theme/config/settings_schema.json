@@ -1567,6 +1567,16 @@
           "zh-CN": "https:\/\/vimeo.com\/shopify",
           "zh-TW": "https:\/\/vimeo.com\/shopify"
         }
+      },
+      {
+        "type" : "text",
+        "id": "social_google_link",
+        "label": {
+            "en": "Google"
+        },
+        "info": {
+            "en": "https://google.com/shopify"
+        }
       }
     ]
   },
