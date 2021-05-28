@@ -6,29 +6,72 @@
     justify-content: space-between;
 
     .collection-block-image{
-        padding-top: 55px;
         padding-right: 15px;
         width: 33%;
 
         .collection-block-image-1{
+            padding-top: 55px;
             width: 100%;
             overflow: hidden;
-
+            
             img{
+                max-height: 340px;
                 width: 100%;
                 backface-visibility: hidden;
                 transition: transform 0.5s ease-in-out;
             }
         }
-        &:hover{
+        .collection-block-image-1:hover{
             img{
                 transform: scale(1.05)
+            }
+        }
+
+        .collection-block-image-2{
+            width: 100%;
+            
+            
+            .block-2-image-1{
+                
+                width: 100%;
+                padding-left: 40px;
+                padding-bottom: 30px;
+                overflow: hidden;
+
+                img{
+                    max-height: 290px;
+                    width: 100%;
+                    backface-visibility: hidden;
+                    transition: transform 0.5s ease-in-out;
+                }
+                &:hover{
+                    img{
+                        transform: scale(1.05)
+                    }
+                }
+            }
+            .block-2-image-2{
+                max-height: 290px;
+                width: 100%;
+                padding-right: 40px;
+
+                img{
+                    max-height: 290px;
+                    width: 100%;
+                    backface-visibility: hidden;
+                    transition: transform 0.5s ease-in-out;
+                }
+                &:hover{
+                    img{
+                        transform: scale(1.05)
+                    }
+                }
             }
         }
     }
     .collection-main-content{
         width: 33%;
-        padding-top: 50px;
+        padding-top: 100px;
         padding-left: 15px;
         padding-right: 15px;
 
@@ -102,6 +145,8 @@
         width: 33%;
         padding-left: 15px;
         overflow: hidden;
+        max-height: 530px;
+        padding-top: 55px;
 
         img{
             width: 100%;
@@ -115,3 +160,15 @@
         }
     }
 }
+@include respond-to(768){
+    .collection-block-image{
+        display: none;
+    }
+    .collection-main-content{
+        width: 55%;
+    }
+    .collection-main-image{
+        width: 45%;
+    }
+}
+  

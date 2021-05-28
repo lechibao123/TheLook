@@ -25,7 +25,37 @@
             {%- elsif sizeBlock == 2 -%}
                 <div class="collection-block-image-2">
                     {%- for block in section.blocks -%}
-
+                        {%- if forloop.first == true -%}
+                            <div class="block-2-image-1">
+                                {%- if block.settings.block_image != blank -%}
+                                    {%- assign img_url = block.settings.block_image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                                    <img id="{{ block.settings.block_image.id }}"
+                                        class="lazyload"
+                                        data-src="{{ img_url }}"
+                                        data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                                        data-aspectratio="{{ block.settings.block_image.aspect_ratio }}"
+                                        data-sizes="auto"
+                                        alt="{{ block.settings.block_image.alt }}">
+                                {%- else -%}
+                                    {{ 'image' | placeholder_svg_tag }}                  
+                                {%- endif -%}
+                            </div>
+                        {%- else -%}
+                            <div class="block-2-image-2">
+                                {%- if block.settings.block_image != blank -%}
+                                    {%- assign img_url = block.settings.block_image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                                    <img id="{{ block.settings.block_image.id }}"
+                                        class="lazyload"
+                                        data-src="{{ img_url }}"
+                                        data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                                        data-aspectratio="{{ block.settings.block_image.aspect_ratio }}"
+                                        data-sizes="auto"
+                                        alt="{{ block.settings.block_image.alt }}">
+                                {%- else -%}
+                                    {{ 'image' | placeholder_svg_tag }}                  
+                                {%- endif -%}
+                            </div>
+                        {%- endif -%}
                     {%- endfor -%}
                 </div>
             {%- else -%}
@@ -50,20 +80,18 @@
             </div>
         </div>
         <div class="collection-main-image">
-            <div class="collection-image">
-                {%- if section.settings.image != blank -%}
-                    {%- assign img_url = section.settings.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
-                    <img id="{{ section.settings.image.id }}"
-                        class="lazyload"
-                        data-src="{{ img_url }}"
-                        data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
-                        data-aspectratio="{{ section.settings.image.aspect_ratio }}"
-                        data-sizes="auto"
-                        alt="{{ section.settings.image.alt }}">
-                {%- else -%}
-                    {{ 'image' | placeholder_svg_tag }}                  
-                {%- endif -%}
-            </div>
+            {%- if section.settings.image != blank -%}
+                {%- assign img_url = section.settings.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                <img id="{{ section.settings.image.id }}"
+                    class="lazyload"
+                    data-src="{{ img_url }}"
+                    data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                    data-aspectratio="{{ section.settings.image.aspect_ratio }}"
+                    data-sizes="auto"
+                    alt="{{ section.settings.image.alt }}">
+            {%- else -%}
+                {{ 'image' | placeholder_svg_tag }}                  
+            {%- endif -%}
         </div>
     </div>
 </div>
