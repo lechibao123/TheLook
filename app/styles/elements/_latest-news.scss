@@ -16,7 +16,9 @@
         }
     }
 
-    &__gallery-style-1{
+   
+
+    &__gallery{
         -ms-box-orient: horizontal;
         display: -webkit-box;
         display: -moz-box;
@@ -24,36 +26,22 @@
         display: -moz-flex;
         display: -webkit-flex;
         display: flex;
-        align-items: flex-start;    
-        justify-content: space-between;
-
-        .card div > a{
-            margin-bottom: 14px;
-        }
-
-        .article-meta{
-            margin-bottom: 2px;
-        }
-    }
-
-    &__gallery{
-
         margin: 0 -15px;
 
         .card{
             padding: 0 15px;
+            .main-card{
+                width: 100%;
+                height: 100%;
+            }
         }
 
-        .card div > a{
-            display: block;
+        .card .main-card > a{
+            display: flex;
         }
 
         .contents{
             > a{
-                font-weight: normal;
-                font-size: 18px;
-                line-height: 21px;
-                color: #14171A;
                 margin-bottom: 8px;
                 @include truncate(2);
                 @include breakpoint(mobileonly){
@@ -75,6 +63,110 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+        }
+    }
+
+    &__gallery-style-1{
+        align-items: flex-start;    
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        row-gap: 30px;
+
+        .main-card a{
+            position: relative;
+            overflow: hidden;
+        }
+        .card:hover .main-card a img{
+            -webkit-transform: scale(1.3);
+            transform: scale(1.3);
+            transition: .5s ease-in-out;
+        }
+
+        .card .main-card > a{
+            margin-bottom: 14px;
+        }
+
+        .article-meta{
+            font-size: 12px;
+            color: #494F56;
+            line-height: 24px;
+            letter-spacing: 0.1px;
+            margin-bottom: 2px;
+        }
+
+        .contents > a{
+            color: #0F1214;
+            @include font-size(14px, 16px);
+            line-height: 24px;
+            letter-spacing: 0.2px;
+        }
+
+        .read-more {
+            &:hover a{
+                font-weight: 700;
+                color: #252A2F;
+                text-decoration: underline;
+            }
+            a{
+                text-transform: capitalize;
+                font-weight: 400;
+                display: inline-block;
+                color: #494F56;
+                @include font-size(14px, 16px);
+                line-height: 26.46px;
+                letter-spacing: 0.1px;
+                margin: 0;
+            }
+        }
+    }
+
+    &__gallery-style-2{
+        text-align: center;
+
+        .card .main-card > a{
+            margin-bottom: 13px;
+        }
+
+        .article-meta{
+            @include font-size(12px, 14px);
+            color: #71767C;
+            line-height: 26.46px;
+            letter-spacing: 0.2px;
+            margin-bottom: 5px;
+        }
+
+        .contents > a{
+            color: #0F1214;
+            @include font-size(16px, 20px);
+            line-height: 30px;
+            letter-spacing: 0.2px;
+        }
+
+        .excerpts{
+            @include font-size(12px, 14px);
+            color: #494F56;
+            line-height: 26.46px;
+            letter-spacing: 0.1px;
+            margin-bottom: 10px;
+        }
+
+        .read-more {
+            display: inline-block;
+            a{
+                display: block;
+                @include font-size(12px, 14px);
+                color: #494F56;
+                line-height: 26.46px;
+                letter-spacing: 0.1px;
+                margin: 0;
+                padding: 9px 48px;
+                @include  respond-to(1024) {
+                    padding: 7px 28px;
+                }
+
+                border: 1px solid #494F56;
+                border-radius: 40px;
+            }
         }
     }
 }
