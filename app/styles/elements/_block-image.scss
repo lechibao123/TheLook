@@ -1,0 +1,117 @@
+.collection{
+    padding-top: 0;
+    padding-bottom: 0;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+
+    .collection-block-image{
+        padding-top: 55px;
+        padding-right: 15px;
+        width: 33%;
+
+        .collection-block-image-1{
+            width: 100%;
+            overflow: hidden;
+
+            img{
+                width: 100%;
+                backface-visibility: hidden;
+                transition: transform 0.5s ease-in-out;
+            }
+        }
+        &:hover{
+            img{
+                transform: scale(1.05)
+            }
+        }
+    }
+    .collection-main-content{
+        width: 33%;
+        padding-top: 50px;
+        padding-left: 15px;
+        padding-right: 15px;
+
+        .collection-content-title{
+            width: 100%;
+            padding-right: 25px;
+
+            p{
+                margin: 0;
+                padding-bottom: 20px;
+                font-family: Playfair Display;
+                font-style: normal;
+                font-weight: bold;
+                font-size: 25px;
+                line-height: 122%;
+                letter-spacing: 1px;
+                color: #0F1214;
+            }
+        }
+
+        .collection-content-text{
+            width: 100%;
+            padding-left: 25px;
+
+            p{
+                margin: 0;
+                padding-bottom: 20px;
+                font-family: Playfair Display;
+                font-style: italic;
+                font-weight: normal;
+                font-size: 15px;
+                line-height: 150%;
+                letter-spacing: 0.2px;
+                color: #494F56;
+            }
+        }
+
+        .collection-button{
+            margin-left: 25px;
+            width: 60%;
+            height: 40px;
+            background: #252A2F;
+            border-radius: 40px;
+            transition: all 0.16s ease-in;
+            
+            a{
+                height: 100%;
+                width: 100%;
+                font-family: Lato;
+                font-style: normal;
+                font-weight: normal;
+                font-size: 12px;
+                line-height: 189%;
+                display: flex;
+                align-items: center;
+                text-align: center;
+                letter-spacing: 0.1px;
+                color: #FFFFFF;
+                justify-content: center;
+            }
+            &:hover{
+                background: none;
+                box-shadow: 0 0 0 1px rgba(80, 80, 80, .5);
+                a{
+                    color: #464646;
+                }
+            }
+        }
+    }
+    .collection-main-image{
+        width: 33%;
+        padding-left: 15px;
+        overflow: hidden;
+
+        img{
+            width: 100%;
+            backface-visibility: hidden;
+            transition: transform 0.5s ease-in-out;
+        }
+        &:hover{
+            img{
+                transform: scale(1.05)
+            }
+        }
+    }
+}

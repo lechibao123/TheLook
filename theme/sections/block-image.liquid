@@ -1,0 +1,175 @@
+{%- liquid 
+  assign sizeBlock = section.blocks | size
+  assign firstBlock = section.blocks | first
+-%}
+<div class="container">
+    <div class="collection p-mx">
+        <div class="collection-block-image" id="image-{{ block.id }}">
+            {% if sizeBlock == 1 %}
+                <div class="collection-block-image-1">
+                    {%- for block in section.blocks -%}
+                        {%- if block.settings.block_image != blank -%}
+                            {%- assign img_url = block.settings.block_image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                            <img id="{{ block.settings.block_image.id }}"
+                                class="lazyload"
+                                data-src="{{ img_url }}"
+                                data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                                data-aspectratio="{{ block.settings.block_image.aspect_ratio }}"
+                                data-sizes="auto"
+                                alt="{{ block.settings.block_image.alt }}">
+                        {%- else -%}
+                            {{ 'image' | placeholder_svg_tag }}                  
+                        {%- endif -%}
+                    {%- endfor -%}
+                </div>
+            {%- elsif sizeBlock == 2 -%}
+                <div class="collection-block-image-2">
+                    {%- for block in section.blocks -%}
+
+                    {%- endfor -%}
+                </div>
+            {%- else -%}
+                <div class="collection-block-image-3">
+                    {%- for block in section.blocks -%}
+
+                    {%- endfor -%}
+                </div>
+            {% endif %}
+        </div>
+        <div class="collection-main-content">
+            <div class="collection-content-title">
+                <p>{{section.settings.title}}</p>
+            </div>
+            <div class="collection-content-text">
+                <p>{{section.settings.content}}</p>
+            </div>
+            <div class="collection-button">
+                <a href="{{section.settings.url_button}}">
+                    {{section.settings.text_button }}
+                </a>
+            </div>
+        </div>
+        <div class="collection-main-image">
+            <div class="collection-image">
+                {%- if section.settings.image != blank -%}
+                    {%- assign img_url = section.settings.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                    <img id="{{ section.settings.image.id }}"
+                        class="lazyload"
+                        data-src="{{ img_url }}"
+                        data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                        data-aspectratio="{{ section.settings.image.aspect_ratio }}"
+                        data-sizes="auto"
+                        alt="{{ section.settings.image.alt }}">
+                {%- else -%}
+                    {{ 'image' | placeholder_svg_tag }}                  
+                {%- endif -%}
+            </div>
+        </div>
+    </div>
+</div>
+
+{%- schema -%}
+{
+    "name" : "Block Image",
+    "class": "block-image",
+    "max_blocks": 3,
+    "settings" : [
+        {
+            "type": "select",
+            "id": "style",
+            "label": {
+                "en": "Style"
+            },
+            "options":[
+                {
+                    "value": "style1",
+                    "label":{
+                        "en": "Style 1"
+                    }
+                },
+                {
+                    "value": "style2",
+                    "label":{
+                        "en": "Style 2"
+                    }
+                }
+            ],
+            "default": "style1"
+        },
+        {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image",
+            "info": {
+              "en": "Please upload big image"
+            }
+        },
+        {   
+            "type": "richtext",
+            "id": "title",
+            "label": "Title"
+        },
+        {
+            "type": "richtext",
+            "id": "content",
+            "label": "Content"
+        },
+        {
+            "type": "header",
+            "content": {
+                "en": "Button"
+            },
+            "info": {
+                "en": "Settings Button"
+            }
+        },
+        {
+            "type": "text",
+            "id": "text_button",
+            "label": {
+                "en": "Text Button"
+            },
+            "default" : "Check the collection"
+        },
+        {
+            "type": "color",
+            "id": "color_button",
+            "label": {
+                "en": "Color Button"
+            },
+            "default" : "#0f1214"
+        },
+        {
+            "type" : "url",
+            "id" : "url_button",
+            "label" : {
+                "en": "URL Button"
+            }
+        }
+    ],
+    "blocks": [
+        {
+            "type": "image",
+            "name": "Image",
+            "settings" : [
+              {
+                "type": "image_picker",
+                "id": "block_image",
+                "label": {
+                "en": "Block Image"
+                },
+                "info": {
+                "en": "Please upload small image"
+                }
+              }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Block Collection",
+            "category": "Advanced layout"
+        }
+    ]
+}
+{%- endschema -%}
