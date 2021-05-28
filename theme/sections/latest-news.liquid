@@ -5,8 +5,23 @@
 {%- case section.settings.latest-news-style -%}
     {%- when 'style-1' -%}
         {%- assign latestNewStyle = 'latest-news__gallery-style-1' -%}
+        {%- assign limitBlogs = section.settings.blog_pagination_limit -%}
     {%- when 'style-2' -%}
         {%- assign latestNewStyle = 'latest-news__gallery-style-2' -%}
+        {%- assign limitBlogs = section.settings.blog_pagination_limit | minus: 1 -%}
+{%- endcase -%}
+
+{%- case limitBlogs -%}
+    {%- when 1 -%}
+        {%- assign widthCard = '100' -%}
+    {%- when 2 -%}
+        {%- assign widthCard = '50' -%}
+    {%- when 3 -%}
+        {%- assign widthCard = '33.33' -%}
+    {%- when 4 -%}
+        {%- assign widthCard = '25' -%}
+    {%- else -%}
+        {%- assign widthCard = '25' -%}
 {%- endcase -%}
 
 <div class="bg-latest-news">
@@ -20,10 +35,10 @@
             {%- endif -%}
             {%- if articles -%}
                 <div class="latest-news__gallery {{ latestNewStyle }}">
-                    {%- for article in articles limit: 3 -%}
+                    {%- for article in articles limit: limitBlogs -%}
                         {%- assign img_url = article.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
                         <div class="card">
-                            <div class="main-card-{{ article.id }}">
+                            <div class="main-card main-card-{{ article.id }}">
                                 <a href="{{ article.url }}">
                                     {%- if article.image != blank -%}
                                         <img id="{{ article.image.id }}"
@@ -55,18 +70,24 @@
                                         {{ article.title | escape }}
                                     </a>
                                 </div>
-                                <div class="excerpts">
-                                    {% if article.excerpt.size > 0 %}
-                                        {{ article.excerpt }}
-                                    {% else %}
-                                        {{ article.content }}
-                                    {% endif %}
-                                </div>
+
+                                {%- if section.settings.latest-news-style == 'style-2' -%}
+                                    <div class="excerpts">
+                                        {% if article.excerpt.size > 0 %}
+                                            {{ article.excerpt }}
+                                        {% else %}
+                                            {{ article.content }}
+                                        {% endif %}
+                                    </div>
+                                {%- endif -%}
+
                                 <div class="read-more">
-                                    <a href="{{ article.url }}" class="btn btn-style" aria-label="{{ 'blogs.article.read_more_title' | t: title: article.title }}">
+                                    <a href="{{ article.url }}" aria-label="{{ 'blogs.article.read_more_title' | t: title: article.title }}">
                                         {{ 'blogs.article.read_more' | t }}
                                     </a>
                                 </div>
+
+
                             </div>
                         </div>
                     {%- endfor -%}
@@ -88,6 +109,17 @@
     .latest-news__description p{
         color: {{ section.settings.description-color }};
     }
+    .latest-news__gallery-style-1 .card{
+        width: {{ widthCard }}%;
+    }
+    .latest-news__gallery-style-2 .card{
+        width: {{ widthCard }}%;
+    }
+    @media only screen and (max-width: 600px){
+        .latest-news__gallery-style-1 .card{
+            width: 100%;
+        }
+    }
     .bg-latest-news{
         background-color: {{ section.settings.bg-latest-news }};
     }
@@ -103,6 +135,18 @@
             "id": "blog",
             "type": "blog",
             "label": "Blog"
+        },
+        {
+            "type": "range",
+            "id": "blog_pagination_limit",
+            "label": "Number of articles per page",
+            "min": 1,
+            "max": 4,
+            "step": 1,
+            "info": {
+                "en": "Note: *when you choose style 2, up to 3 blogs visible."
+            },
+            "default": 3
         },
         {
             "type": "select",
