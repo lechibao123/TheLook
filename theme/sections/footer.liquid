@@ -1,1020 +1,501 @@
-{%- assign social_icons = false -%}
-{%- assign inline_list = false -%}
-{%- assign locale_selector = false -%}
-{%- assign country_selector = false -%}
-{%- assign show_payment_icons = false -%}
-{%- assign show_selectors = false -%}
-
-
-{%- assign show_country_selector = section.settings.show_currency_selector  -%}
-{%- if show_country_selector and localization.available_countries.size > 1 -%}
-  {%- assign country_selector = true -%}
-{%- endif -%}
-
-{%- if section.settings.show_locale_selector and localization.available_languages.size > 1 -%}
-  {%- assign locale_selector = true -%}
-{%- endif -%}
-
-{%- if section.settings.show_payment_icons -%}
-  {%- unless shop.enabled_payment_types == empty -%}
-    {%- assign show_payment_icons = true -%}
-  {%- endunless -%}
-{%- endif -%}
-
-{%- if country_selector or locale_selector -%}
-  {%- assign show_selectors = true -%}
-{%- endif -%}
-
-{%- if
-  settings.social_twitter_link != blank
-  or settings.social_facebook_link != blank
-  or settings.social_pinterest_link != blank
-  or settings.social_instagram_link != blank
-  or settings.social_tumblr_link != blank
-  or settings.social_snapchat_link != blank
-  or settings.social_youtube_link != blank
-  or settings.social_vimeo_link != blank
-  or request.page_type == 'article'
-  or request.page_type == 'blog'
+{%- liquid 
+    assign sizeBlocks = section.blocks | size
+    assign firstBlock = section.blocks | first
 -%}
-  {%- assign social_icons = true -%}
-{%- endif -%}
 
-{%- assign payment_width_class = "one-half" -%}
-{%- if show_selectors -%}
-  {%- unless social_icons -%}
-    {%- assign payment_width_class = "" -%}
-  {%- endunless -%}
-{%- endif -%}
-
-{%- assign copyright_show_class = "medium-up--hide" -%}
-{%- if social_icons -%}
-  {%- unless show_selectors -%}
-    {%- assign copyright_show_class = "" -%}
-  {%- endunless -%}
-{%- endif -%}
-
-{%- case section.blocks.size -%}
-  {%- when 1 -%}
-    {%- assign footer_item = 'site-footer__item--full-width' -%}
-    {%- assign inline_list = true -%}
-  {%- when 2 -%}
-    {%- assign footer_item = 'site-footer__item--one-half' -%}
-    {%- assign inline_list = true -%}
-  {%- when 3 -%}
-    {%- assign footer_item = 'site-footer__item--one-third' -%}
-    {%- for block in section.blocks -%}
-      {%- if block.type == 'newsletter' -%}
-        {%- assign footer_item = 'site-footer__item--one-quarter' -%}
-        {%- break -%}
-      {%- endif -%}
-    {%- endfor -%}
-  {%- when 4 -%}
-    {%- assign footer_item = 'site-footer__item--one-quarter' -%}
-  {%- when 5 -%}
-    {%- assign footer_item = 'site-footer__item--one-fifth' -%}
+{%- case section.settings.footer-style -%}
+    {%- when 'style-1' -%}
+        {%- assign footerStyle = 'footer-style-1' -%}
+    {%- when 'style-2' -%}
+        {%- assign footerStyle = 'footer-style-2' -%}
 {%- endcase -%}
 
-{% comment %} Create an appropriate hover color based on text color and brightness {% endcomment %}
-{%- assign footer_text_color = section.settings.color_footer_text -%}
-{%- assign footer_text_color_brightness = section.settings.color_footer_text | color_brightness -%}
-{%- if footer_text_color_brightness <= 26 -%}
-  {%- assign footer_text_color_hover = footer_text_color | color_lighten: 25 -%}
-{%- elsif footer_text_color_brightness <= 65 -%}
-  {%- assign footer_text_color_hover = footer_text_color | color_lighten: 15 -%}
-{%- else -%}
-  {%- assign footer_text_color_hover = footer_text_color | color_darken: 10 -%}
+{%- case section.settings.align-icons -%}
+    {%- when 'left' -%}
+        {%- assign alignIcons = 'flex-start' -%}
+    {%- when 'center' -%}
+        {%- assign alignIcons = 'center' -%}
+    {%- else -%}
+        {%- assign alignIcons = 'flex-end' -%}
+{%- endcase -%}
+
+<div class="bg-footer">
+    <div class="container">
+        <div class="footer p-mx">
+            <div class="{{ footerStyle }}">
+                <div>
+                    <div class="footer__logo">
+                        {% if section.settings.logo %}
+                            {%- assign img_url = section.settings.logo | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                            <a href="{{ routes.root_url }}" style="max-width: {{ section.settings.logo_max_width }}px">
+                                {% capture logo_alt %}{{ section.settings.logo.alt | default: shop.name }}{% endcapture %}
+                                <img class="lazyload js"
+                                    src="{{ section.settings.logo | img_url: '300x300' }}"
+                                    data-src="{{ img_url }}"
+                                    data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                                    data-aspectratio="{{ section.settings.logo.aspect_ratio }}"
+                                    data-sizes="auto"
+                                    alt="{{ logo_alt | escape }}">
+                                <noscript>
+                                    {% capture image_size %}{{ section.settings.logo_max_width | escape }}px{% endcapture %}
+                                    <img src="{{ section.settings.logo | img_url: image_size }}"
+                                            srcset="{{ section.settings.logo | img_url: image_size }} 1x, {{ section.settings.logo | img_url: image_size, scale: 2 }} 2x"
+                                            alt="{{ section.settings.logo.alt | default: shop.name }}"
+                                            style="max-width: {{ section.settings.logo_max_width }}px;">
+                                </noscript>
+                            </a>
+                        {% else %}
+                            <a class="site-header__logo-link" href="{{ routes.root_url }}">{{ shop.name }}</a>
+                        {% endif %}
+                    </div>
+                    {%- unless section.settings.footer-style != 'style-2' -%}
+                        <div class="footer__description">{{ section.settings.footer-text}}</div>
+                    {%- endunless -%}
+                    <div class="footer__social">
+                        <ul class="widget-social-icons">
+                            {%- if settings.social_facebook_link != blank -%}
+                                <li><a href="{{ settings.social_facebook_link }}" target="_blank" rel="noopener" title="Facebook">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M11.3337 5.91659H8.83366V4.24992C8.83366 4.0289 8.92146 3.81694 9.07774 3.66066C9.23402 3.50438 9.44598 3.41659 9.66699 3.41659H10.5003V1.33325H8.83366C8.17062 1.33325 7.53473 1.59664 7.06589 2.06549C6.59705 2.53433 6.33366 3.17021 6.33366 3.83325V5.91659H4.66699V7.99992H6.33366V14.6666H8.83366V7.99992H10.5003L11.3337 5.91659Z" fill="#252A2F"/>
+                                    </svg>
+                                </a></li>
+                            {%- endif -%}
+
+                            {%- if settings.social_twitter_link != blank -%}
+                                <li><a href="{{ settings.social_twitter_link }}" target="_blank" rel="noopener" title="Twitter">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M14.6663 3.92942C14.1648 4.1448 13.6343 4.28795 13.0913 4.35444C13.6636 4.02019 14.0914 3.4909 14.2938 2.86685C13.758 3.17974 13.1718 3.40008 12.5605 3.51834C12.1857 3.12431 11.6992 2.85037 11.1643 2.73211C10.6293 2.61386 10.0705 2.65675 9.56065 2.85521C9.05076 3.05368 8.61327 3.39855 8.30503 3.84501C7.99678 4.29148 7.83203 4.8189 7.83217 5.35876C7.83217 5.57209 7.85051 5.77722 7.89551 5.97251C6.80808 5.92001 5.74414 5.64212 4.77326 5.15701C3.80238 4.67189 2.94642 3.99048 2.26134 3.15731C1.91036 3.74961 1.80185 4.45136 1.95791 5.11966C2.11397 5.78797 2.52287 6.37258 3.10134 6.75446C2.66864 6.74303 2.24507 6.62934 1.86634 6.42297V6.45251C1.86707 7.074 2.08523 7.67626 2.48411 8.15792C2.88298 8.63959 3.43822 8.97123 4.05634 9.09704C3.8225 9.15772 3.5815 9.18752 3.33967 9.18566C3.166 9.1887 2.9925 9.17329 2.82217 9.13971C2.99879 9.67388 3.33925 10.141 3.79667 10.4768C4.25409 10.8126 4.80598 11.0004 5.37634 11.0146C4.40879 11.7597 3.21549 12.1638 1.98717 12.1625C1.76301 12.1625 1.54801 12.1526 1.33301 12.1256C2.58291 12.9186 4.0394 13.3381 5.52634 13.3334C10.5563 13.3334 13.3063 9.23078 13.3063 5.67466C13.3063 5.55568 13.3022 5.44081 13.2963 5.32676C13.8355 4.94685 14.2997 4.47332 14.6663 3.92942Z" fill="#252A2F"/>
+                                    </svg>
+                                </a></li>
+                            {%- endif -%}
+
+                            {%- if settings.social_google_link != blank -%}
+                                <li><a href="{{ settings.social_google_link }}" target="_blank" rel="noopener" title="Google">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M6.86694 1.33325H9.81056C9.83896 1.33325 9.86394 1.35338 9.87176 1.38286C9.87963 1.41236 9.8684 1.44404 9.84446 1.46038L9.0031 2.03185C8.99304 2.03882 8.9812 2.04241 8.96921 2.04241H7.9924L7.99252 2.04252C8.36237 2.37293 9.13162 3.06016 9.13162 4.39007C9.13162 5.71273 8.41305 6.32426 7.77913 6.86365L7.75833 6.88636C7.55898 7.10057 7.33311 7.34366 7.33311 7.71149C7.33311 8.08574 7.5588 8.28777 7.74016 8.45013L7.74039 8.45034L8.32742 8.94369C9.02325 9.57655 9.67886 10.1729 9.67847 11.3806C9.67847 13.0135 8.22708 14.6666 5.45325 14.6666C3.06766 14.6666 2 13.4176 2 12.1797C2 11.8686 2.08921 10.796 3.23734 10.0585C4.20913 9.41318 5.53939 9.31458 6.25457 9.26157L6.25532 9.26152L6.30513 9.25792L6.27711 9.21887L6.2771 9.21886C6.05415 8.91102 5.82355 8.5926 5.82355 8.07613C5.82355 7.81139 5.8892 7.64154 5.95868 7.46177L5.95905 7.46083L5.98304 7.39786C5.82035 7.4144 5.63604 7.43273 5.46955 7.43273C3.73807 7.43273 2.8037 6.02597 2.8037 4.7019C2.8037 3.8427 3.18726 2.97235 3.82998 2.37317C4.64723 1.64389 5.55524 1.33325 6.86694 1.33325ZM3.41401 11.815C3.41401 13.0847 4.55009 13.9379 6.24089 13.9379C7.69757 13.9379 8.60259 13.2184 8.60271 12.0597C8.60271 11.1501 8.03396 10.6725 6.85087 9.76305C6.72286 9.74551 6.64234 9.74551 6.48207 9.74551C6.47265 9.74551 5.52667 9.75886 4.79379 10.0253C3.8787 10.3835 3.41401 10.9859 3.41401 11.815ZM4.217 3.85167C4.217 4.93045 4.8059 6.94534 6.22499 6.94534C6.60838 6.94534 7.0473 6.75008 7.31714 6.45916C7.71843 6.02338 7.71843 5.39571 7.71843 5.18949C7.71843 3.88196 6.99799 1.9902 5.69503 1.9902C5.26954 1.9902 4.82798 2.21536 4.57007 2.56387C4.33247 2.88188 4.217 3.3029 4.217 3.85167ZM12.3852 7.56046H13.9363C13.9716 7.56046 14 7.59135 14 7.62959V8.35968C14 8.39774 13.9715 8.42842 13.9363 8.42842H12.3852V10.1092C12.3852 10.147 12.3566 10.1779 12.3214 10.1779H11.6541C11.6189 10.1779 11.5904 10.147 11.5904 10.1092V8.42862H10.0472C10.012 8.42862 9.98345 8.39794 9.98345 8.35988V7.62959C9.98345 7.59135 10.012 7.56046 10.0472 7.56046H11.5904V5.89087C11.5904 5.85281 11.6189 5.82213 11.6541 5.82213H12.3214C12.3566 5.82213 12.3852 5.85281 12.3852 5.89087V7.56046Z" fill="#252A2F"/>
+                                    </svg>
+                                </a></li>
+                            {%- endif -%}
+
+                            {%- if settings.social_instagram_link != blank -%}
+                                <li><a href="{{ settings.social_instagram_link }}" target="_blank" rel="noopener" title="Instagram">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <g clip-path="url(#clip0)">
+                                        <path d="M10.5002 1.33325H5.50016C4.39509 1.33325 3.33529 1.77224 2.55388 2.55364C1.77248 3.33504 1.3335 4.39485 1.3335 5.49992L1.3335 10.4999C1.3335 11.605 1.77248 12.6648 2.55388 13.4462C3.33529 14.2276 4.39509 14.6666 5.50016 14.6666H10.5002C11.6052 14.6666 12.665 14.2276 13.4464 13.4462C14.2278 12.6648 14.6668 11.605 14.6668 10.4999V5.49992C14.6668 4.39485 14.2278 3.33504 13.4464 2.55364C12.665 1.77224 11.6052 1.33325 10.5002 1.33325V1.33325ZM13.4168 10.4999C13.4168 12.1083 12.1085 13.4166 10.5002 13.4166H5.50016C3.89183 13.4166 2.5835 12.1083 2.5835 10.4999V5.49992C2.5835 3.89159 3.89183 2.58325 5.50016 2.58325H10.5002C12.1085 2.58325 13.4168 3.89159 13.4168 5.49992V10.4999Z" fill="#252A2F"/>
+                                        <path d="M8.00033 4.6665C7.11627 4.6665 6.26842 5.01769 5.6433 5.64281C5.01818 6.26794 4.66699 7.11578 4.66699 7.99984C4.66699 8.88389 5.01818 9.73174 5.6433 10.3569C6.26842 10.982 7.11627 11.3332 8.00033 11.3332C8.88438 11.3332 9.73223 10.982 10.3573 10.3569C10.9825 9.73174 11.3337 8.88389 11.3337 7.99984C11.3337 7.11578 10.9825 6.26794 10.3573 5.64281C9.73223 5.01769 8.88438 4.6665 8.00033 4.6665ZM8.00033 10.0832C7.44799 10.0825 6.91847 9.8628 6.52792 9.47225C6.13736 9.08169 5.91765 8.55217 5.91699 7.99984C5.91699 6.85067 6.85199 5.9165 8.00033 5.9165C9.14866 5.9165 10.0837 6.85067 10.0837 7.99984C10.0837 9.14817 9.14866 10.0832 8.00033 10.0832Z" fill="#252A2F"/>
+                                        <path d="M11.5833 4.86074C11.8286 4.86074 12.0275 4.66189 12.0275 4.41658C12.0275 4.17127 11.8286 3.97241 11.5833 3.97241C11.338 3.97241 11.1392 4.17127 11.1392 4.41658C11.1392 4.66189 11.338 4.86074 11.5833 4.86074Z" fill="#252A2F"/>
+                                        </g>
+                                        <defs>
+                                        <clipPath id="clip0">
+                                        <rect width="16" height="16" fill="white"/>
+                                        </clipPath>
+                                        </defs>
+                                    </svg>
+                                </a></li>
+                            {%- endif -%}
+                        </ul>
+                    </div>
+                </div>
+                {%- unless section.settings.footer-style != 'style-2' -%}
+                    <div><h1>Newsletter Signup</h1></div>
+                    {%- if linklists[firstBlock.settings.menu] != blank -%}
+                        <div class="card_footer-item card_item-{{ firstBlock.id }}">
+                            <div class="card_footer-body">
+                                <ul class="menu_list-wrapper">
+                                    {%- for link in linklists[firstBlock.settings.menu].links -%}
+                                        <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                                    {%- endfor -%}
+                                </ul>
+                            </div>
+                        </div>
+                        <style>
+                            .card_item-{{ firstBlock.id }}{
+                                text-transform: uppercase;
+                                text-align: {{ firstBlock.settings.text-align-item }};
+                            }
+                        </style>
+                    {%- endif -%}
+                {%- endunless -%}
+            </div>
+            {%- unless section.settings.footer-style != 'style-1' -%}
+                <div class="footer__content-wrapper content-wrapper-1">
+                    {%- for block in section.blocks -%}
+                        {%- assign _block = block.settings -%}
+                        {%- case block.type -%}
+                            {%- when 'footer-menu' -%}
+                                {%- if linklists[_block.menu] != blank -%}
+                                    <div class="card_footer-item card_item-{{ block.id }}">
+                                        <div class="card_footer-title">{{linklists[_block.menu].title}}</div>
+                                        <div class="card_footer-body">
+                                            <ul class="menu_list-wrapper">
+                                                {%- for link in linklists[_block.menu].links -%}
+                                                    <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                                                {%- endfor -%}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                {%- endif -%}
+                        {%- endcase -%}
+                        <style>
+                            .card_item-{{ block.id }}{
+                                text-align: {{ _block.text-align-item }};
+                            }
+                        </style>
+                    {%- endfor -%}
+                </div>
+            {%- endunless -%}
+        </div>
+    </div>
+</div>
+
+{%- if section.settings.show-license -%}
+    <div class="bg-license">
+        <div class="container">
+            <div class="license p-mx">{{ section.settings.text-license }}</div>
+        </div>
+    </div>
 {%- endif -%}
 
+
 <style>
-  .site-footer__hr {
-    border-bottom: 1px solid {{ section.settings.color_footer_bg | color_darken: 10 }};
-  }
-
-  .site-footer p,
-  .site-footer__linklist-item a,
-  .site-footer__rte a,
-  .site-footer h4,
-  .site-footer small,
-  .site-footer__copyright-content a,
-  .site-footer__newsletter-error,
-  .site-footer__social-icons .social-icons__link {
-    color: {{ section.settings.color_footer_text }};
-  }
-
-  .site-footer {
-    color: {{ section.settings.color_footer_text }};
-    background-color: {{ section.settings.color_footer_bg }};
-  }
-
-  .site-footer__rte a {
-    border-bottom: 1px solid {{ section.settings.color_footer_text }};
-  }
-
-  .site-footer__rte a:hover,
-  .site-footer__linklist-item a:hover,
-  .site-footer__copyright-content a:hover {
-    color: {{ footer_text_color_hover }};
-    border-bottom: 1px solid {{ footer_text_color_hover }};
-  }
-
-  .site-footer__social-icons .social-icons__link:hover {
-    color: {{ footer_text_color_hover }};
-  }
+    .bg-footer{
+        background-color: {{ section.settings.bg-footer }};
+    }
+    .footer .footer__logo{
+        text-align: {{ section.settings.align-logo }};
+    }
+    .footer .footer__description p{
+        color: {{ section.settings.footer-color }};
+        text-align: {{ section.settings.text-align }};
+    }
+    .widget-social-icons{
+        justify-content: {{ alignIcons }};
+    }
+    .bg-license{
+        background-color: {{ section.settings.bg-license }};
+    }    
+    .license{
+        color: {{ section.settings.text-color-license }};
+        font-size: {{ section.settings.font-size-license }}px;
+        text-align: {{ section.settings.text-align-license }};
+    }
 </style>
 
-
-{%- capture payment_icon_markup -%}
-  {%- if show_payment_icons -%}
-    <div class="grid__item site-footer__payment-icons">
-      <span class="visually-hidden">{{ 'general.payment.method' | t }}</span>
-      <ul class="payment-icons list--inline site-footer__icon-list">
-        {%- for type in shop.enabled_payment_types -%}
-          <li class="payment-icon">
-            {{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}
-          </li>
-        {%- endfor -%}
-      </ul>
-    </div>
-  {%- endif -%}
-{%- endcapture -%}
-
-<footer class="site-footer critical-hidden" role="contentinfo" data-section-id="{{ section.id }}" data-section-type="footer-section">
-  <div class="page-width">
-    <div class="site-footer__content">
-      {%- for block in section.blocks -%}
-
-        <div class="site-footer__item
-                    {% if section.blocks.size == 1 %} site-footer__item--center{% endif %}
-                    {{ footer_item }}
-                    {% if block.type == 'newsletter' and section.blocks.size == 3 %}site-footer-newsletter__one-half{% endif %}"
-             {{ block.shopify_attributes }}>
-          <div class="site-footer__item-inner site-footer__item-inner--{{ block.type }}">
-
-            {%- if block.settings.title -%}
-              <p class="h4">{{ block.settings.title | escape }}</p>
-            {%- endif -%}
-
-            {%- case block.type -%}
-              {%- when 'newsletter' -%}
-                <div class="site-footer__newsletter
-                          {% if section.blocks.size == 1 %} site-footer__single-block--centered{% endif %}">
-                  {%- assign formId = 'ContactFooter' -%}
-                  {% form 'customer', id: formId, novalidate: 'novalidate' %}
-                    {%- if form.posted_successfully? -%}
-                      <p class="form-message form-message--success" tabindex="-1" data-form-status>
-                        {{ 'general.newsletter_form.confirmation' | t }}
-                      </p>
-                    {%- endif -%}
-                    <input type="hidden" name="contact[tags]" value="newsletter">
-                    <div class="input-group {% if form.errors %} input-group--error{% endif %}">
-                      <input type="email"
-                        name="contact[email]"
-                        id="{{ formId }}-email"
-                        class="input-group__field newsletter__input{% if form.errors %} input--error{% endif %}"
-                        value="{{ form.email }}"
-                        placeholder="{{ 'general.newsletter_form.email_placeholder' | t }}"
-                        aria-label="{{ 'general.newsletter_form.email_placeholder' | t }}"
-                        aria-required="true"
-                        required
-                        autocorrect="off"
-                        autocapitalize="off"
-                        {% if form.errors %}
-                          aria-invalid="true"
-                          aria-describedby="{{ formId }}-email-error"
-                          data-form-status
-                        {% endif %}>
-                      <span class="input-group__btn">
-                        <button type="submit" class="btn newsletter__submit" name="commit" >
-                          <span class="newsletter__submit-text--large">{{ 'general.newsletter_form.submit' | t }}</span>
-                        </button>
-                      </span>
-                    </div>
-                    {% if form.errors contains 'email' %}
-                      <span id="{{ formId }}-email-error" class="input-error-message">
-                        <span class="visually-hidden">{{ 'general.accessibility.error' | t }} </span>
-                        {% include 'icon-error' %}
-                        <span class="site-footer__newsletter-error">{{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}.</span>
-                      </span>
-                    {% endif %}
-                  {% endform %}
-                </div>
-
-              {%- when 'text' -%}
-                {%- if block.settings.text != blank -%}
-                  <div class="site-footer__rte
-                              {% if section.blocks.size == 1 %} site-footer__single-block--centered{% endif %}">
-                      {{ block.settings.text }}
-                  </div>
-                {%- endif -%}
-
-              {%- when 'link_list' -%}
-                {%- assign footer_linklist = block.settings.menu -%}
-                  <ul class="site-footer__linklist
-                            {% if inline_list %}list--inline{% endif %}">
-                    {%- for link in linklists[footer_linklist].links -%}
-                      <li class="site-footer__linklist-item">
-                        <a href="{{ link.url }}"
-                          {% if link.current %} aria-current="page"{% endif %}
-                        >
-                          {{ link.title | escape }}
-                        </a>
-                      </li>
-                    {%- endfor -%}
-                  </ul>
-
-            {%- endcase -%}
-
-          </div>
-        </div>
-      {%- endfor -%}
-    </div>
-  </div>
-
-  <hr class="site-footer__hr">
-
-  {%- assign socials = "Facebook Twitter Pinterest Instagram Tumblr Snapchat YouTube Vimeo" | split: ' ' -%}
-
-  <div class="page-width">
-    <div class="grid grid--no-gutters small--text-center grid--footer-float-right">
-      {%- if show_selectors -%}
-        <div class="grid__item one-half small--one-whole">
-          {%- form 'localization', class: 'selectors-form', data-disclosure-form: '' -%}
-            {%- if locale_selector -%}
-              <div class="selectors-form__item">
-                <h2 class="visually-hidden" id="lang-heading">
-                  {{ 'general.language.dropdown_label' | t }}
-                </h2>
-
-                <div class="disclosure" data-disclosure-locale>
-                  <button type="button" class="disclosure__toggle" aria-expanded="false" aria-controls="lang-list" aria-describedby="lang-heading" data-disclosure-toggle>
-                    {{ localization.language.endonym_name }}
-                  </button>
-                  <ul id="lang-list" class="disclosure-list" data-disclosure-list>
-                    {% for language in localization.available_languages %}
-                      <li class="disclosure-list__item {% if language.iso_code == localization.language.iso_code %}disclosure-list__item--current{% endif %}">
-                        <a class="disclosure-list__option" href="#" lang="{{ language.iso_code }}" {% if language.iso_code == localization.language.iso_code %}aria-current="true"{% endif %} data-value="{{ language.iso_code }}" data-disclosure-option>
-                          {{ language.endonym_name }}
-                        </a>
-                      </li>
-                    {%- endfor -%}
-                  </ul>
-                  <input type="hidden" name="locale_code" id="LocaleSelector" value="{{ form.current_locale.iso_code }}" data-disclosure-input/>
-                </div>
-              </div>
-            {%- endif -%}
-
-            {%- if country_selector -%}
-              <div class="selectors-form__item">
-                <h2 class="visually-hidden" id="country-heading">
-                  {{ 'general.country.dropdown_label' | t }}
-                </h2>
-                {%- assign current_currency_symbol = localization.country.currency.symbol -%}
-                {%- assign current_currency_iso_code = localization.country.currency.iso_code -%}
-                <div class="disclosure" data-disclosure-country>
-                  <button type="button" class="disclosure__toggle" aria-expanded="false" aria-controls="country-list" aria-describedby="country-heading" data-disclosure-toggle>
-                    {%- if current_currency_symbol -%}
-                      {{ localization.country.name }} ({{ current_currency_iso_code }} {{ current_currency_symbol }})
-                    {%- else -%}
-                      {{ localization.country.name }} ({{ current_currency_iso_code }})
-                    {%- endif -%}
-                  </button>
-                  <ul id="country-list" class="disclosure-list" data-disclosure-list>
-                    {% for country in form.available_countries %}
-                      {%- assign currency_symbol = country.currency.symbol -%}
-                      {%- assign currency_iso_code = country.currency.iso_code -%}
-                      <li class="disclosure-list__item {% if country.iso_code == localization.country.iso_code %}disclosure-list__item--current{% endif %}">
-                        <a class="disclosure-list__option" href="#" {% if country.iso_code == localization.country.iso_code %}aria-current="true"{% endif %} data-value="{{ country.iso_code }}" data-disclosure-option>
-                          {%- if currency_symbol -%}
-                            {{ country.name }} ({{ currency_iso_code }} {{ currency_symbol }})
-                          {%- else -%}
-                            {{ country.name }} ({{ currency_iso_code }})
-                          {%- endif -%}
-                        </a>
-                      </li>
-                    {%- endfor -%}
-                  </ul>
-                  <input type="hidden" name="country_code" id="CountrySelector" value="{{ localization.country.iso_code }}" data-disclosure-input/>
-                </div>
-              </div>
-            {%- endif -%}
-          {%- endform -%}
-        </div>
-      {%- else -%}
-        <div class="grid__item small--hide {{ payment_width_class }} {% if show_payment_icons %}site-footer-item-center-vertically{% endif %}">{{ payment_icon_markup }}</div>
-      {%- endif -%}
-
-      <div class="grid__item {% if show_selectors or show_payment_icons %}one-half{% endif %} small--one-whole site-footer-item-tall">
-        {%- if social_icons -%}
-          <ul class="list--inline site-footer__social-icons social-icons site-footer__icon-list">
-            {%- for social in socials -%}
-              {%- assign social_link = social | prepend: 'social_' | append: '_link' | downcase -%}
-              {%- assign icon_link = social | prepend: 'icon-' | downcase -%}
-              {%- if settings[social_link] != blank -%}
-                <li class="social-icons__item">
-                  <a class="social-icons__link" href="{{ settings[social_link] | escape }}" aria-describedby="a11y-external-message">
-                    {%- include icon_link -%}
-                    <span class="icon__fallback-text">{{ social }}</span>
-                  </a>
-                </li>
-              {%- endif -%}
-            {%- endfor -%}
-
-            {%- if request.page_type == 'blog' or request.page_type == 'article' -%}
-              <li>
-                <a class="social-icons__link" href="{{ shop.url }}{{ blog.url }}.atom">
-                  {% include 'icon-rss' %}
-                  <span class="icon__fallback-text">RSS</span>
-                </a>
-              </li>
-            {%- endif -%}
-          </ul>
-        {%- else -%}
-          <div class="small--hide site-footer-item-align-right {% if show_selectors or show_payment_icons %}site-footer-item-center-vertically{% endif %}">
-            <small class="site-footer__copyright-content">&copy; {{ 'now' | date: "%Y" }}, {{ shop.name | link_to: routes.root_url }}</small>
-            <small class="site-footer__copyright-content site-footer__copyright-content-powered-by">{{ powered_by_link }}</small>
-          </div>
-        {%- endif -%}
-      </div>
-
-      {%- if show_selectors -%}
-        <div class="grid__item small--hide {{ payment_width_class }}">{{ payment_icon_markup }}</div>
-      {%- endif -%}
-
-      <div class="grid__item medium-up--hide {{ payment_width_class }} small--one-whole">{{ payment_icon_markup }}</div>
-
-      {%- if social_icons and show_selectors -%}
-        <div class="grid__item small--hide site-footer-item-align-right {% if show_payment_icons %}one-half{% endif %}">
-          <small class="site-footer__copyright-content">&copy; {{ 'now' | date: "%Y" }}, {{ shop.name | link_to: routes.root_url }}</small>
-          <small class="site-footer__copyright-content site-footer__copyright-content--powered-by">{{ powered_by_link }}</small>
-        </div>
-      {%- endif -%}
-
-      <div class="grid__item small--one-whole {{ copyright_show_class }} site-footer-item-align-right">
-        <small class="site-footer__copyright-content">&copy; {{ 'now' | date: "%Y" }}, {{ shop.name | link_to: routes.root_url }}</small>
-        <small class="site-footer__copyright-content site-footer__copyright-content--powered-by">{{ powered_by_link }}</small>
-      </div>
-    </div>
-  </div>
-</footer>
-
-
-
-{% schema %}
+{%- schema -%}
 {
-  "name": {
-    "cs": "Zápatí",
-    "da": "Sidefod",
-    "de": "Fußzeile",
-    "en": "Footer",
-    "es": "Pie de página",
-    "fi": "Alatunniste",
-    "fr": "Pied de page",
-    "it": "Footer",
-    "ja": "フッター",
-    "ko": "바닥글",
-    "nb": "Footer",
-    "nl": "Voettekst",
-    "pl": "Stopka",
-    "pt-BR": "Rodapé",
-    "pt-PT": "Rodapé",
-    "sv": "Sidfot",
-    "th": "ส่วนท้าย",
-    "tr": "Altbilgi",
-    "vi": "Chân trang",
-    "zh-CN": "页脚",
-    "zh-TW": "頁尾"
-  },
-  "max_blocks": 4,
-  "settings": [
-    {
-      "type": "header",
-      "content": {
-        "cs": "Platební metody",
-        "da": "Betalingsmetoder",
-        "de": "Zahlungsmethoden",
-        "en": "Payment methods",
-        "es": "Métodos de pago",
-        "fi": "Maksutavat",
-        "fr": "Moyens de paiement",
-        "it": "Metodi di pagamento",
-        "ja": "決済方法",
-        "ko": "결제 방법",
-        "nb": "Betalingsmetoder",
-        "nl": "Betaalmethoden",
-        "pl": "Metody płatności",
-        "pt-BR": "Formas de pagamento",
-        "pt-PT": "Métodos de Pagamento",
-        "sv": "Betalningsmetoder",
-        "th": "วิธีการชำระเงิน",
-        "tr": "Ödeme yöntemleri",
-        "vi": "Phương thức thanh toán",
-        "zh-CN": "支付方式",
-        "zh-TW": "付款方式"
-      }
+    "name" : {
+        "en": "Footer"
     },
-    {
-      "type": "checkbox",
-      "id": "show_payment_icons",
-      "label": {
-        "cs": "Zobrazit ikony plateb",
-        "da": "Vis betalingsikoner",
-        "de": "Zahlungs-Buttons anzeigen",
-        "en": "Show payment icons",
-        "es": "Mostrar iconos de pago",
-        "fi": "Näytä maksukuvakkeet",
-        "fr": "Afficher les icônes de paiement",
-        "it": "Mostra le icone di pagamento",
-        "ja": "支払いアイコンを表示する",
-        "ko": "결제 아이콘 표시",
-        "nb": "Vis betalingsikoner",
-        "nl": "Betalingspictogrammen weergeven",
-        "pl": "Pokaż ikony płatności",
-        "pt-BR": "Exibir ícones de pagamento",
-        "pt-PT": "Mostrar ícones de pagamento",
-        "sv": "Visa betalningsikoner",
-        "th": "แสดงไอคอนการชำระเงิน",
-        "tr": "Ödeme simgelerini göster",
-        "vi": "Hiển thị biểu tượng thanh toán",
-        "zh-CN": "显示付款图标",
-        "zh-TW": "顯示付款圖示"
-      },
-      "default": false
-    },
-    {
-      "type": "header",
-      "content": {
-        "cs": "Barva",
-        "da": "Farve",
-        "de": "Farbe",
-        "en": "Color",
-        "es": "Color",
-        "fi": "Väri",
-        "fr": "Couleur",
-        "it": "Colore",
-        "ja": "色",
-        "ko": "색상",
-        "nb": "Farge",
-        "nl": "Kleur",
-        "pl": "Kolor",
-        "pt-BR": "Cor",
-        "pt-PT": "Cor",
-        "sv": "Färg",
-        "th": "สี",
-        "tr": "Renk",
-        "vi": "Màu",
-        "zh-CN": "颜色",
-        "zh-TW": "顏色"
-      }
-    },
-    {
-      "type": "color",
-      "id": "color_footer_bg",
-      "label": {
-        "cs": "Pozadí",
-        "da": "Baggrund",
-        "de": "Hintergrund",
-        "en": "Background",
-        "es": "Fondo",
-        "fi": "Tausta",
-        "fr": "Couleur de fond",
-        "it": "Sfondo",
-        "ja": "背景",
-        "ko": "배경",
-        "nb": "Bakgrunn",
-        "nl": "Achtergrond",
-        "pl": "Tło",
-        "pt-BR": "Plano de fundo",
-        "pt-PT": "Fundo",
-        "sv": "Bakgrund",
-        "th": "พื้นหลัง",
-        "tr": "Arka plan",
-        "vi": "Nền",
-        "zh-CN": "背景",
-        "zh-TW": "背景"
-      },
-      "default": "#f6f6f6"
-    },
-    {
-      "type": "color",
-      "id": "color_footer_text",
-      "label": {
-        "cs": "Text",
-        "da": "Tekst",
-        "de": "Text",
-        "en": "Text",
-        "es": "Texto",
-        "fi": "Teksti",
-        "fr": "Texte",
-        "it": "Testo",
-        "ja": "テキスト",
-        "ko": "텍스트",
-        "nb": "Tekst",
-        "nl": "Tekst",
-        "pl": "Tekst",
-        "pt-BR": "Texto",
-        "pt-PT": "Texto",
-        "sv": "Text",
-        "th": "ข้อความ",
-        "tr": "Metin",
-        "vi": "Văn bản",
-        "zh-CN": "文本",
-        "zh-TW": "文字"
-      },
-      "default": "#333232"
-    },
-    {
-      "type": "header",
-      "content": {
-        "cs": "Selektor jazyka",
-        "da": "Sprogvælger",
-        "de": "Sprachauswahl",
-        "en": "Language Selector",
-        "es": "Selector de idioma",
-        "fi": "Kielenvalitsin",
-        "fr": "Sélecteur de langue",
-        "it": "Selettore lingua",
-        "ja": "言語セレクター",
-        "ko": "언어 선택기",
-        "nb": "Språkvelger",
-        "nl": "Taalkiezer",
-        "pl": "Selektor języka",
-        "pt-BR": "Seletor de idiomas",
-        "pt-PT": "Seletor de Idioma",
-        "sv": "Språkväljare",
-        "th": "ตัวเลือกภาษา",
-        "tr": "Dil Seçici",
-        "vi": "Hộp chọn ngôn ngữ",
-        "zh-CN": "语言选择器",
-        "zh-TW": "語言選擇器"
-      },
-      "info": {
-        "cs": "Pokud chcete přidat jazyk, přejděte na [jazykové nastavení.](/admin/settings/languages)",
-        "da": "Du kan tilføje et sprog ved at gå til dine [sprogindstillinger.](/admin/settings/languages)",
-        "de": "Gehe zu deinen [Spracheinstellungen](/admin/settings/languages), um eine Sprache hinzuzufügen.",
-        "en": "To add a language, go to your [language settings.](/admin/settings/languages)",
-        "es": "Para agregar un idioma, ve a tu[configuración de idioma](/admin/settings/languages)",
-        "fi": "Lisää kieli siirtymällä [kieliasetuksiin.](/admin/settings/languages)",
-        "fr": "Pour ajouter une langue, allez dans vos [paramètres de langue.](/admin/settings/languages).",
-        "it": "Per aggiungere una lingua, vai su [impostazioni della lingua.](/admin/settings/languages)",
-        "ja": "言語を追加するには、[言語設定](/admin/settings/languages) に移動します。",
-        "ko": "언어를 추가하려면 [언어 설정.](/admin/settings/languages)(으)로 이동하십시오.",
-        "nb": "For å legge til et språk, går du til dine [språkinnstillinger.](/admin/settings/languages)",
-        "nl": "Ga naar je [taalinstellingen.](/admin/settings/languages) om een taal toe te voegen.",
-        "pl": "Aby dodać język, przejdź do swoich [ustawień języka.](/admin/settings/languages)",
-        "pt-BR": "Para adicionar um idioma, acesse suas [configurações de idioma. ](/admin/settings/languages)",
-        "pt-PT": "Para adicionar um idioma, aceda a [definições de idioma.](/admin/settings/languages)",
-        "sv": "För att lägga till ett språk, gå till dina [språkinställningar.](/admin/settings/languages)",
-        "th": "หากต้องการเพิ่มภาษา ให้ไปที่ [การตั้งค่าภาษา ](/admin/settings/languages) ของคุณ",
-        "tr": "Dil eklemek için [dil ayarları](/admin/settings/languages) bölümünüze gidin.",
-        "vi": "Để thêm ngôn ngữ, mở [cài đặt ngôn ngữ.](/admin/settings/languages)",
-        "zh-CN": "若要添加语言，请转到您的 [语言设置。](/admin/settings/languages)",
-        "zh-TW": "若要新增語言，請前往 [語言設定。](/admin/settings/languages)"
-      }
-    },
-    {
-      "type": "checkbox",
-      "id": "show_locale_selector",
-      "label": {
-        "cs": "Zobrazit selektor jazyka",
-        "da": "Vis sprogvælger",
-        "de": "Sprachauswahl anzeigen",
-        "en": "Show language selector",
-        "es": "Mostrar el selector de idioma",
-        "fi": "Näytä kielenvalitsin",
-        "fr": "Afficher le sélecteur de langue",
-        "it": "Mostra selettore lingua",
-        "ja": "言語セレクターを表示する",
-        "ko": "언어 선택기 표시",
-        "nb": "Vis språkvelger",
-        "nl": "Taalkiezer weergeven",
-        "pl": "Pokaż selektor języka",
-        "pt-BR": "Exibir seletor de idioma",
-        "pt-PT": "Mostrar seletor de idioma",
-        "sv": "Visa språkväljare",
-        "th": "แสดงตัวเลือกภาษา",
-        "tr": "Dil seçiciyi göster",
-        "vi": "Hiển thị hộp chọn ngôn ngữ",
-        "zh-CN": "显示语言选择器",
-        "zh-TW": "顯示語言選擇器"
-      },
-      "default": true
-    },
-    {
-      "type": "header",
-      "content": {
-        "cs": "Selektor země/oblasti",
-        "da": "Land/område-vælger",
-        "de": "Auswahl für Land/Region",
-        "en": "Country/region Selector",
-        "es": "Selector de país/región",
-        "fi": "Maa-/aluevalitsin",
-        "fr": "Sélecteur de pays/région",
-        "it": "Selettore paese/regione",
-        "ja": "国/地域セレクター",
-        "ko": "국가/지역 선택기",
-        "nb": "Land-/regionvelger",
-        "nl": "Kiezer voor land/regio",
-        "pl": "Selektor kraju/regionu",
-        "pt-BR": "Seletor de país/região",
-        "pt-PT": "Seletor de país/região",
-        "sv": "Land/region-väljare",
-        "th": "ตัวเลือกประเทศ/ภูมิภาค",
-        "tr": "Ülke/Bölge Seçici",
-        "vi": "Hộp chọn quốc gia/vùng",
-        "zh-CN": "国家/地区选择器",
-        "zh-TW": "國家/地區選擇器"
-      },
-      "info": {
-        "cs": "Pokud chcete přidat zemi nebo oblast, přejděte na [nastavení plateb.](/admin/settings/payments)",
-        "da": "For at tilføje et land/område skal du gå til dine [betalingsindstillinger.](/admin/settings/payments)",
-        "de": "Gehe zu deinen [Zahlungseinstellungen](/admin/settings/payments), um ein Land/eine Region hinzuzufügen.",
-        "en": "To add a country/region, go to your [payment settings.](/admin/settings/payments)",
-        "es": "Para agregar una país/región, ve a tu [configuración de pago.](/admin/settings/payments)",
-        "fi": "Lisää maa/alue siirtymällä omiin [maksuasetuksiisi.](/admin/settings/payments)",
-        "fr": "Pour ajouter un pays/une région, allez dans vos [paramètres de paiement.](/admin/settings/payments)",
-        "it": "Per aggiungere un paese/regione, vai a [impostazioni pagamento.](/admin/settings/payments)",
-        "ja": "国/地域を追加するには、[決済設定](/admin/settings/payments) に移動します。",
-        "ko": "국가/지역을 추가하려면 [결제 설정](/admin/settings/payments)(으)로 이동하십시오.",
-        "nb": "For å legge til et land/region må du gå til [betalingsinnstillingene.](/admin/settings/payments)",
-        "nl": "Ga naar je [betaalinstellingen.](/admin/settings/payments) om een land/regio toe te voegen.",
-        "pl": "Aby dodać kraj/region, przejdź do swoich [ustawień płatności.](/admin/settings/payments)",
-        "pt-BR": "Para adicionar um país/região, acesse as [configurações de pagamento.](/admin/settings/payments)",
-        "pt-PT": "Para adicionar um país/região, aceda às [definições de pagamento.](/admin/settings/payments)",
-        "sv": "För att lägga till land/region går du till dina [betalningsinställningar.](/admin/settings/payments)",
-        "th": "หากต้องการเพิ่มประเทศ/ภูมิภาค ให้ไปที่ [การตั้งค่าการชำระเงิน](/admin/settings/payments)",
-        "tr": "Ülke/bölge eklemek için [ödeme ayarlarınıza](/admin/settings/payments) gidin.",
-        "vi": "Để thêm quốc gia/vùng, vào [cài đặt thanh toán.](/admin/settings/payments)",
-        "zh-CN": "若要添加国家/地区，请转到 [支付设置。](/admin/settings/payments)",
-        "zh-TW": "若要新增國家/地區，請前往 [付款設定。](/admin/settings/payments)"
-      }
-    },
-    {
-      "type": "checkbox",
-      "id": "show_currency_selector",
-      "label": {
-        "cs": "Zobrazit selektor země/oblasti",
-        "da": "Vis land/område-vælger",
-        "de": "Auswahl für Land/Region anzeigen",
-        "en": "Show country/region selector",
-        "es": "Mostrar selector de país/región",
-        "fi": "Näytä maa-/aluevalitsin",
-        "fr": "Afficher le sélecteur de pays/région",
-        "it": "Mostra selettore paese/regione",
-        "ja": "国/地域セレクターを表示する",
-        "ko": "국가/지역 선택기 표시",
-        "nb": "Vis land-/regionvelger",
-        "nl": "Kiezer voor land/regio weergeven",
-        "pl": "Pokaż selektor kraju/regionu",
-        "pt-BR": "Exibir seletor de país/região",
-        "pt-PT": "Mostrar seletor de país/região",
-        "sv": "Visa land/region-väljare",
-        "th": "แสดงตัวเลือกประเทศ/ภูมิภาค",
-        "tr": "Ülke/bölge seçiciyi göster",
-        "vi": "Hiển thị hộp chọn quốc gia/vùng",
-        "zh-CN": "显示国家/地区选择器",
-        "zh-TW": "顯示國家/地區選擇器"
-      },
-      "default": true
-    }
-  ],
-  "blocks": [
-    {
-      "type": "link_list",
-      "name": {
-        "cs": "Nabídka",
-        "da": "Menu",
-        "de": "Menü",
-        "en": "Menu",
-        "es": "Menú",
-        "fi": "Valikko",
-        "fr": "Menu",
-        "it": "Menu",
-        "ja": "メニュー",
-        "ko": "메뉴",
-        "nb": "Meny",
-        "nl": "Menu",
-        "pl": "Menu",
-        "pt-BR": "Menu",
-        "pt-PT": "Menu",
-        "sv": "Meny",
-        "th": "เมนู",
-        "tr": "Menü",
-        "vi": "Menu",
-        "zh-CN": "菜单",
-        "zh-TW": "選單"
-      },
-      "settings": [
+    "max_blocks": 3,
+    "settings" : [
         {
-          "type": "text",
-          "id": "title",
-          "label": {
-            "cs": "Nadpis",
-            "da": "Overskrift",
-            "de": "Überschrift",
-            "en": "Heading",
-            "es": "Título",
-            "fi": "Otsake",
-            "fr": "Titre",
-            "it": "Heading",
-            "ja": "見出し",
-            "ko": "제목",
-            "nb": "Overskrift",
-            "nl": "Kop",
-            "pl": "Nagłówek",
-            "pt-BR": "Título",
-            "pt-PT": "Título",
-            "sv": "Rubrik",
-            "th": "ส่วนหัว",
-            "tr": "Başlık",
-            "vi": "Tiêu đề",
-            "zh-CN": "标题",
-            "zh-TW": "標題"
-          },
-          "default": {
-            "cs": "Rychlé odkazy",
-            "da": "Genvejslinks",
-            "de": "Quick-Links",
-            "en": "Quick links",
-            "es": "Enlaces rápidos",
-            "fi": "Pikalinkit",
-            "fr": "Liens rapides",
-            "it": "Link rapidi",
-            "ja": "クイックリンク",
-            "ko": "빠른 링크",
-            "nb": "Hurtigkoblinger",
-            "nl": "Snelle links",
-            "pl": "Szybkie linki",
-            "pt-BR": "Links rápidos",
-            "pt-PT": "Ligações rápidas",
-            "sv": "Snabblänkar",
-            "th": "ลิงก์ด่วน",
-            "tr": "Hızlı bağlantılar",
-            "vi": "Liên kết nhanh",
-            "zh-CN": "快速链接",
-            "zh-TW": "快速連結"
-          }
+            "type": "select",
+            "id": "footer-style",
+            "label" : {
+                "en" : "Footer Style"
+            },
+            "options": [
+                {
+                    "value": "style-1",
+                    "label": {
+                        "en": "Style 1"
+                    }
+                },
+                {
+                    "value": "style-2",
+                    "label": {
+                        "en": "Style 2"
+                    }
+                }
+            ],
+            "default" : "style-1",
+            "info": {
+                "en": "When you select footer style 2 then *CONTENT* is visible only in the first element."
+            }
         },
         {
-          "type": "link_list",
-          "id": "menu",
-          "label": {
-            "cs": "Nabídka",
-            "da": "Menu",
-            "de": "Menü",
-            "en": "Menu",
-            "es": "Menú",
-            "fi": "Valikko",
-            "fr": "Menu",
-            "it": "Menu",
-            "ja": "メニュー",
-            "ko": "메뉴",
-            "nb": "Meny",
-            "nl": "Menu",
-            "pl": "Menu",
-            "pt-BR": "Menu",
-            "pt-PT": "Menu",
-            "sv": "Meny",
-            "th": "เมนู",
-            "tr": "Menü",
-            "vi": "Menu",
-            "zh-CN": "菜单",
-            "zh-TW": "選單"
-          },
-          "default": "footer"
-        }
-      ]
-    },
-    {
-      "type": "text",
-      "name": {
-        "cs": "Text",
-        "da": "Tekst",
-        "de": "Text",
-        "en": "Text",
-        "es": "Texto",
-        "fi": "Teksti",
-        "fr": "Texte",
-        "it": "Testo",
-        "ja": "テキスト",
-        "ko": "텍스트",
-        "nb": "Tekst",
-        "nl": "Tekst",
-        "pl": "Tekst",
-        "pt-BR": "Texto",
-        "pt-PT": "Texto",
-        "sv": "Text",
-        "th": "ข้อความ",
-        "tr": "Metin",
-        "vi": "Văn bản",
-        "zh-CN": "文本",
-        "zh-TW": "文字"
-      },
-      "settings": [
-        {
-          "type": "text",
-          "id": "title",
-          "label": {
-            "cs": "Nadpis",
-            "da": "Overskrift",
-            "de": "Überschrift",
-            "en": "Heading",
-            "es": "Título",
-            "fi": "Otsake",
-            "fr": "Titre",
-            "it": "Heading",
-            "ja": "見出し",
-            "ko": "제목",
-            "nb": "Overskrift",
-            "nl": "Kop",
-            "pl": "Nagłówek",
-            "pt-BR": "Título",
-            "pt-PT": "Título",
-            "sv": "Rubrik",
-            "th": "ส่วนหัว",
-            "tr": "Başlık",
-            "vi": "Tiêu đề",
-            "zh-CN": "标题",
-            "zh-TW": "標題"
-          },
-          "default": {
-            "cs": "Informujte o svém obchodu",
-            "da": "Fortæl om din virksomhed",
-            "de": "Rede über dein Unternehmen",
-            "en": "Talk about your business",
-            "es": "Habla sobre tu negocio",
-            "fi": "Kerro yrityksestäsi",
-            "fr": "Parlez de votre entreprise",
-            "it": "Parla della tua attività commerciale",
-            "ja": "あなたのビジネスについて語る",
-            "ko": "비즈니스에 대한 이야기하기",
-            "nb": "Snakk om bedriften din",
-            "nl": "Vertel over je bedrijf",
-            "pl": "Opowiedz o swojej firmie",
-            "pt-BR": "Fale sobre o seu negócio",
-            "pt-PT": "Fale sobre o seu negócio",
-            "sv": "Prata om ditt företag",
-            "th": "พูดถึงธุรกิจของคุณ",
-            "tr": "İşletmenizden bahsedin",
-            "vi": "Chia sẻ về doanh nghiệp của bạn",
-            "zh-CN": "介绍您的业务",
-            "zh-TW": "描述您的商家"
-          }
+            "type" : "checkbox",
+            "id" : "show-newsletter-signup",
+            "label" : {
+                "en": "Show Newsletter Signup"  
+            },
+            "default": false,
+            "info": {
+                "en": "Note: *It only shows up when you choose footer style 2."
+            }
         },
         {
-          "type": "richtext",
-          "id": "text",
-          "label": {
-            "cs": "Text",
-            "da": "Tekst",
-            "de": "Text",
-            "en": "Text",
-            "es": "Texto",
-            "fi": "Teksti",
-            "fr": "Texte",
-            "it": "Testo",
-            "ja": "テキスト",
-            "ko": "텍스트",
-            "nb": "Tekst",
-            "nl": "Tekst",
-            "pl": "Tekst",
-            "pt-BR": "Texto",
-            "pt-PT": "Texto",
-            "sv": "Text",
-            "th": "ข้อความ",
-            "tr": "Metin",
-            "vi": "Văn bản",
-            "zh-CN": "文本",
-            "zh-TW": "文字"
-          },
-          "default": {
-            "cs": "<p>Popište zákazníkům podrobně svůj obchod, propagační akce nebo značky nabízeného zboží.</p>",
-            "da": "<p>Del butiksoplysninger, reklamer eller brandindhold med dine kunder.</p>",
-            "de": "<p>Teile deine Shop-Details, Werbeaktionen oder Markeninhalte mit deinen Kunden.</p>",
-            "en": "<p>Share store details, promotions, or brand content with your customers.</p>",
-            "es": "<p>Comparte detalles de la tienda, promociones o contenido de la marca con tus clientes.</p>",
-            "fi": "<p>Jaa myymälän tiedot, tarjoukset tai brändin sisältö asiakkaittesi kanssa.</p>",
-            "fr": "<p>Partagez les détails de la boutique, les promotions ou le contenu de la marque avec vos clients.</p>",
-            "it": "<p>Condividi dettagli del negozio, promozioni o contenuti del brand con i clienti.</p>",
-            "ja": "<p>ストア詳細、プロモーション、ブランドのコンテンツをお客様と共有する。</p>",
-            "ko": "<p>스토어 세부 정보, 프로모션 또는 브랜드 콘텐츠를 고객과 공유하십시오.</p>",
-            "nb": "<p>Del butikkdetaljer, kampanjer eller merkevareinnhold med kundene dine.</p>",
-            "nl": "<p>Deel winkeldetails, promoties of merkcontent met je klanten.</p>",
-            "pl": "<p>Poinformuj swoich klientów o sklepie, promocjach lub zawartości marki.</p>",
-            "pt-BR": "<p>Compartilhe informações da loja, promoções ou conteúdo da marca com seus clientes.</p>",
-            "pt-PT": "<p>Partilhe detalhes da loja, promoções ou conteúdo de marca com os seus clientes.</p>",
-            "sv": "<p>Dela butikens detaljer, kampanjer eller varumärkesinnehåll med dina kunder.</p>",
-            "th": "<p>แชร์รายละเอียดร้านค้า โปรโมชัน หรือเนื้อหาแบรนด์กับลูกค้าของคุณ</p>",
-            "tr": "<p>Mağaza ayrıntılarını, promosyonları, marka içeriğini müşterilerinizle paylaşın.</p>",
-            "vi": "<p>Chia sẻ thông tin cửa hàng, khuyến mãi hoặc nội dung thương hiệu với khách hàng.</p>",
-            "zh-CN": "<p>与您的客户共享商店详细信息、促销信息或品牌内容。</p>",
-            "zh-TW": "<p>與顧客分享商店的詳細資訊、宣傳活動或品牌內容。</p>"
-          }
-        }
-      ]
-    },
-    {
-      "type": "newsletter",
-      "limit": 1,
-      "name": {
-        "cs": "Přihlášení k odběru novinek",
-        "da": "Tilmelding til nyhedsbrev",
-        "de": "Newsletter-Anmeldung",
-        "en": "Newsletter signup",
-        "es": "Suscripción al boletín",
-        "fi": "Uutiskirjeen tilaus",
-        "fr": "Inscription",
-        "it": "Iscriviti alla Newsletter",
-        "ja": "ニュースレターの登録",
-        "ko": "뉴스레터 신청",
-        "nb": "Registrering for nyhetsbrev",
-        "nl": "Nieuwsbriefaanmelding",
-        "pl": "Rejestracja do newslettera",
-        "pt-BR": "Assinatura da newsletter",
-        "pt-PT": "Registo na newsletter",
-        "sv": "Nyhetsbrevsregistrering",
-        "th": "การสมัครรับจดหมายข่าว",
-        "tr": "Bülten aboneliği",
-        "vi": "Đăng ký nhận bản tin",
-        "zh-CN": "新闻通讯注册",
-        "zh-TW": "訂閱電子報"
-      },
-      "settings": [
+            "type": "header",
+            "content": {
+                "en": "Main Header"
+            }
+        },
         {
-          "type": "text",
-          "id": "title",
-          "label": {
-            "cs": "Nadpis",
-            "da": "Overskrift",
-            "de": "Überschrift",
-            "en": "Heading",
-            "es": "Título",
-            "fi": "Otsake",
-            "fr": "Titre",
-            "it": "Heading",
-            "ja": "見出し",
-            "ko": "제목",
-            "nb": "Overskrift",
-            "nl": "Kop",
-            "pl": "Nagłówek",
-            "pt-BR": "Título",
-            "pt-PT": "Título",
-            "sv": "Rubrik",
-            "th": "ส่วนหัว",
-            "tr": "Başlık",
-            "vi": "Tiêu đề",
-            "zh-CN": "标题",
-            "zh-TW": "標題"
-          },
-          "info": {
-            "cs": "Odběratelé budou přidáni do vašeho [seznamu zákazníků, kteří přijímají marketing.](/admin/customers?query=&accepts_marketing=1)",
-            "da": "Abonnenter bliver føjet til [kundelisten](/admin/customers?query=&accepts_marketing=1) for \"accepterer markedsføring\".",
-            "de": "Abonnenten werden zu deiner Liste „akzeptiert Marketingmaterial“ hinzugefügt [Kundenliste.](/admin/customers?query=&accepts_marketing=1)",
-            "en": "Subscribers will be added to your “accepts marketing” [customer list.](/admin/customers?query=&accepts_marketing=1)",
-            "es": "Se añadirá los suscriptores a tu [lista de clientes.](/admin/customers?query=&accepts_marketing=1) \"acepta marketing\".",
-            "fi": "Tilaajat lisätään \"hyväksyy markkinointi\" [-asiakasluetteloosi. ](/admin/customers?query=&accepts_marketing=1)",
-            "fr": "Les abonnés seront ajoutés à votre [liste de clients](/admin/customers?query=&accepts_marketing=1) « Accepte le marketing ».",
-            "it": "Gli iscritti verranno aggiunti al tuo [elenco clienti.](/admin/customers?query=&accepts_marketing=1) «accetta marketing»",
-            "ja": "購読者は「マーケティングを受け入れる」[顧客リスト](/admin/customers?query=&accepts_marketing=1) に追加されます。",
-            "ko": "가입자가 \"마케팅 수락\" [고객 목록.](/admin/customers?query=&accepts_marketing=1)에 추가됩니다.",
-            "nb": "Abonnenter vil bli lagt til i «aksepterer markedsføring» [kundeliste.](/admin/customers?query=&accepts_marketing=1)",
-            "nl": "Abonnees worden toegevoegd aan je \"accepteert marketing\" [klantenlijst.](/admin/customers?query=&accepts_marketing=1)",
-            "pl": "Subskrybenci zostaną dodani do Twojej [listy klientów \"akceptujących marketing\".](/admin/customers?query=&accepts_marketing=1)",
-            "pt-BR": "Os assinantes serão adicionados à “aceita marketing” [lista de clientes. ](/admin/customers?query=&accepts_marketing=1)",
-            "pt-PT": "Os subscritores serão adicionados à sua lista de \"aceitam marketing\" [lista de clientes.](/admin/customers?query=&accepts_marketing=1)",
-            "sv": "Prenumeranter läggs till i din \"accepterar marknadsföring\" [kundlista. ](/admin/customers?query=&accepts_marketing=1)",
-            "th": "ระบบจะเพิ่มผู้สมัครใช้งานไปยังส่วน “ยอมรับการตลาด” ของคุณ [รายชื่อลูกค้า](/admin/customers?query=&accepts_marketing=1)",
-            "tr": "Aboneler \"pazarlama kabul ediyor\" [müşteri listenize](/admin/customers?query=&accepts_marketing=1) eklenir.",
-            "vi": "Người đăng ký sẽ được thêm vào [danh sách khách hàng](/admin/customers?query=&accepts_marketing=1) \"chấp nhận tiếp thị\".",
-            "zh-CN": "订阅者将被添加到您的“接受营销”[客户列表](/admin/customers?query=&accepts_marketing=1)中。",
-            "zh-TW": "系統會將訂閱者新增至您的「接受行銷」[客戶清單。](/admin/customers?query=&accepts_marketing=1)"
-          },
-          "default": {
-            "cs": "Novinky",
-            "da": "Nyhedsbrev",
-            "de": "Newsletter",
-            "en": "Newsletter",
-            "es": "Boletín",
-            "fi": "Uutiskirje",
-            "fr": "Newsletter",
-            "it": "Newsletter",
-            "ja": "ニュースレター",
-            "ko": "뉴스레터",
-            "nb": "Nyhetsbrev",
-            "nl": "Nieuwsbrief",
-            "pl": "Newsletter",
-            "pt-BR": "Newsletter",
-            "pt-PT": "Newsletter",
-            "sv": "Nyhetsbrev",
-            "th": "จดหมายข่าว",
-            "tr": "Bülten",
-            "vi": "Bản tin",
-            "zh-CN": "新闻通讯",
-            "zh-TW": "電子報"
-          }
+            "type": "color",
+            "id": "bg-footer",
+            "label": {
+                "en": "Background Color"
+            },
+            "default" : "#0F1214"
+        },
+        {
+            "type": "image_picker",
+            "id": "logo",
+            "label": {
+                "en": "Logo"
+            }
+        },
+        {
+            "type" : "range",
+            "id": "logo_max_width",
+            "label": {
+                "en" : "Custom logo width"
+            },
+            "min": 200,
+            "max": 300,
+            "step": 5,
+            "unit": "px",
+            "default": 200
+        },
+        {
+            "type": "select",
+            "id": "align-logo",
+            "label" : {
+                "en" : "Align Logo"
+            },
+            "options": [
+                {
+                    "value": "left",
+                    "label": {
+                        "en": "Left"
+                    }
+                },
+                {
+                    "value": "center",
+                    "label": {
+                        "en": "Center"
+                    }
+                },
+                {
+                    "value": "right",
+                    "label": {
+                        "en": "Right"
+                    }
+                }
+            ],
+            "default" : "center"
+        },
+        {
+            "type": "header",
+            "content": {
+                "en": "Footer Text"
+            }
+        },
+        {
+            "type": "richtext",
+            "id": "footer-text",
+            "label": {
+                "en": "Description"
+            },
+            "default" : "<p>Please enter here</p>",
+            "info": {
+                "en": "Note: *It only shows up when you choose footer style 2."
+            }
+        },
+        {
+            "type": "color",
+            "id": "footer-color",
+            "label": {
+                "en": "Color Description"
+            },
+            "default" : "#F4F4F5"
+        },
+        {
+            "type": "select",
+            "id": "text-align",
+            "label" : {
+                "en" : "Text Align"
+            },
+            "options": [
+                {
+                    "value": "left",
+                    "label": {
+                        "en": "Left"
+                    }
+                },
+                {
+                    "value": "center",
+                    "label": {
+                        "en": "Center"
+                    }
+                },
+                {
+                    "value": "right",
+                    "label": {
+                        "en": "Right"
+                    }
+                }
+            ],
+            "default" : "center"
+        },
+        {
+            "type": "header",
+            "content": {
+                "en": "Widget Social Icons"
+            }
+        },
+        {
+            "type": "select",
+            "id": "align-icons",
+            "label" : {
+                "en" : "Align Icons"
+            },
+            "options": [
+                {
+                    "value": "left",
+                    "label": {
+                        "en": "Left"
+                    }
+                },
+                {
+                    "value": "center",
+                    "label": {
+                        "en": "Center"
+                    }
+                },
+                {
+                    "value": "right",
+                    "label": {
+                        "en": "Right"
+                    }
+                }
+            ],
+            "default" : "center"
+        },
+        {
+            "type": "header",
+            "content": {
+                "en": "License"
+            }
+        },
+        {
+            "type" : "checkbox",
+            "id" : "show-license",
+            "label" : {
+                "en": "Show License"  
+            },
+            "default": true
+        },
+        {
+            "type": "color",
+            "id": "bg-license",
+            "label": {
+                "en": "Background License"
+            },
+            "default" : "#252A2F"
+        },
+        {
+            "type": "text",
+            "id": "text-license",
+            "label": {
+                "en": "Text License"
+            },
+            "default" : "© All rights Reserved"
+        },
+        {
+            "type": "color",
+            "id": "text-color-license",
+            "label": {
+                "en": "Text Color License"
+            },
+            "default" : "#FFFFFF"
+        },
+        {
+            "type" : "range",
+            "id": "font-size-license",
+            "label": {
+                "en" : "Font Size License"
+            },
+            "step": 1,
+            "min" : 12,
+            "max" : 20,
+            "unit" : "px",
+            "default" : 12
+        },
+        {
+            "type": "select",
+            "id": "text-align-license",
+            "label" : {
+                "en" : "Text Align License"
+            },
+            "options": [
+                {
+                    "value": "left",
+                    "label": {
+                        "en": "Left"
+                    }
+                },
+                {
+                    "value": "center",
+                    "label": {
+                        "en": "Center"
+                    }
+                },
+                {
+                    "value": "right",
+                    "label": {
+                        "en": "Right"
+                    }
+                }
+            ],
+            "default" : "center"
         }
-      ]
-    }
-  ]
+    ],
+    "blocks": [
+        {
+            "type": "footer-menu",
+            "limit": 4,
+            "name": {
+                "en": "Footer Menu"
+            },
+            "settings" : [
+                {
+                    "type": "link_list",
+                    "id": "menu",
+                    "label": {
+                        "en": "List Menu"
+                    }
+                },
+                {
+                    "type": "select",
+                    "id": "text-align-item",
+                    "label" : {
+                        "en" : "Text Align"
+                    },
+                    "options": [
+                        {
+                            "value": "left",
+                            "label": {
+                                "en": "Left"
+                            }
+                        },
+                        {
+                            "value": "center",
+                            "label": {
+                                "en": "Center"
+                            }
+                        },
+                        {
+                            "value": "right",
+                            "label": {
+                                "en": "Right"
+                            }
+                        }
+                    ],
+                    "default" : "center"
+                }
+            ]
+        }
+    ]
 }
-{% endschema %}
+{%- endschema -%}

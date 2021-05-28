@@ -250,6 +250,11 @@ img{
     z-index: 10;
 }
 
+.vertical-rl {
+  writing-mode: vertical-rl;
+  display: inline-block;
+}
+
 @keyframes fade-in {
     0% {opacity: 0;}
     100% {opacity: 1;}
@@ -259,5 +264,14 @@ img{
     #MainContent{
         padding-top: 0;
     }
+}
 
+
+@keyframes shine {
+    0% {
+        background-position-x: -500%;
+    }
+    100% {
+        background-position-x: 500%;
+    }
 }
