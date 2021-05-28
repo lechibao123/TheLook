@@ -95,8 +95,27 @@
     .footer-style-2{
         margin-top: 18px;
         display: grid;
-        grid-template-columns: minmax(auto, 50%) minmax(auto, 30%) minmax(auto, 20%);
-        
+        grid-template-columns: minmax(auto,72.5%) minmax(auto,23.5%) minmax(auto,10%);
+        row-gap: 30px;
+        column-gap: 80px;
+        @include respond-to(1440){
+            grid-template-columns: minmax(auto,60%) minmax(auto,25%) minmax(auto,15%);
+            column-gap: 50px;
+        }
+        @include respond-to(600){
+            grid-template-columns: 1fr;
+        }
+
+        .content-style-2{
+            padding-right: 100px;
+            @include respond-to(1440){
+                padding-right: 0;
+            }
+        }
+
+        .footer__social{
+            margin-bottom: 10px;
+        }
     }
 }
 
@@ -154,6 +173,62 @@
             fill: #d6249f;
         }
     }
+}
+
+.site-footer__newsletter{
+
+    h2{
+        text-transform: uppercase;
+        font-weight: 700;
+        @include font-size(14px, 16px);
+        line-height: 24px;
+        letter-spacing: 0.2px;
+    }
+    p{
+        color: #F4F4F5;
+        @include font-size(12px, 14px);
+        line-height: 26.46px;
+        letter-spacing: 0.1px;
+    }
+}
+
+#ContactFooter{
+    position: relative;
+
+    #ContactFooter-email{
+        margin: 0;
+    }
+    button{
+        display: inline-block;
+        background: inherit;
+        border: none;
+        outline: none;
+        box-shadow: none;
+        position: absolute;
+        padding: 0;
+        transform: translate(-50%, -50%);
+        top: 50%;
+        right: 0;
+    }
+}
+
+.newsletter__input{
+    padding: 0;
+    margin: 0;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    background-color: inherit;
+    border-bottom: 1px solid #373A3C;
+}
+
+.newsletter__input::placeholder,
+.newsletter__input::-webkit-input-placeholder{
+    color: #FFFFFF;
+    opacity: .5;
+    @include font-size(12px, 14px);
+    line-height: 26.46px;
+    letter-spacing: 0.1px;
 }
 
 .license{

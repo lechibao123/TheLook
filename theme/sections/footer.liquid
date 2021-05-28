@@ -23,7 +23,7 @@
     <div class="container">
         <div class="footer p-mx">
             <div class="{{ footerStyle }}">
-                <div>
+                <div class="content-style-2">
                     <div class="footer__logo">
                         {% if section.settings.logo %}
                             {%- assign img_url = section.settings.logo | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
@@ -97,7 +97,61 @@
                     </div>
                 </div>
                 {%- unless section.settings.footer-style != 'style-2' -%}
-                    <div><h1>Newsletter Signup</h1></div>
+                    {%- if section.settings.show-newsletter-signup -%}
+                        <div class="site-footer__newsletter {% if section.blocks.size == 1 %} site-footer__single-block--centered{% endif %}">
+                            {%- if section.settings.titel-newsletter != blank -%}
+                                <h2>{{ section.settings.titel-newsletter | escape }}</h2>
+                            {%- endif -%}
+                            {%- if section.settings.description-newsletter != blank -%}
+                                <p>{{ section.settings.description-newsletter }}</p>
+                            {%- endif -%}
+                            {%- assign formId = 'ContactFooter' -%}
+                            {% form 'customer', id: formId, novalidate: 'novalidate' %}
+                                {%- if form.posted_successfully? -%}
+                                    <p class="form-message form-message--success" tabindex="-1" data-form-status>
+                                        {{ 'general.newsletter_form.confirmation' | t }}
+                                    </p>
+                                {%- endif -%}
+                                <input type="hidden" name="contact[tags]" value="newsletter">
+                                <div class="input-group {% if form.errors %} input-group--error{% endif %}">
+                                    <input type="email"
+                                        name="contact[email]"
+                                        id="{{ formId }}-email"
+                                        class="input-group__field newsletter__input{% if form.errors %} input--error{% endif %}"
+                                        value="{{ form.email }}"
+                                        placeholder="{{ 'general.newsletter_form.email_placeholder' | t }}"
+                                        aria-label="{{ 'general.newsletter_form.email_placeholder' | t }}"
+                                        aria-required="true"
+                                        required
+                                        autocorrect="off"
+                                        autocapitalize="off"
+                                        {% if form.errors %}
+                                        aria-invalid="true"
+                                        aria-describedby="{{ formId }}-email-error"
+                                        data-form-status
+                                        {% endif %}>
+                                    <button type="submit" name="commit" >
+                                        <span>
+                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <g opacity="0.5">
+                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M4.99107 1.48037C4.75887 1.27912 4.39703 1.28506 4.17261 1.49381C3.94819 1.70256 3.9418 2.03913 4.15817 2.25512L10.4442 8.10224L4.15817 13.7447C3.9418 13.9607 3.94819 14.2973 4.17261 14.506C4.39703 14.7148 4.75887 14.7207 4.99107 14.5195L12 8.10224L4.99107 1.48037Z" fill="white"/>
+                                                </g>
+                                            </svg>
+                                        </span>
+                                    </button>
+                                </div>
+                                {% if form.errors contains 'email' %}
+                                    <span id="{{ formId }}-email-error" class="input-error-message">
+                                        <span class="visually-hidden">{{ 'general.accessibility.error' | t }} </span>
+                                        {% include 'icon-error' %}
+                                        <span class="site-footer__newsletter-error">{{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}.</span>
+                                    </span>
+                                {% endif %}
+                            {% endform %}
+                        </div>
+                    
+                    {%- endif -%}
+
                     {%- if linklists[firstBlock.settings.menu] != blank -%}
                         <div class="card_footer-item card_item-{{ firstBlock.id }}">
                             <div class="card_footer-body">
@@ -168,6 +222,9 @@
         color: {{ section.settings.footer-color }};
         text-align: {{ section.settings.text-align }};
     }
+    .site-footer__newsletter {
+        text-align: {{ section.settings.align-newsletter }};
+    }
     .widget-social-icons{
         justify-content: {{ alignIcons }};
     }
@@ -178,6 +235,9 @@
         color: {{ section.settings.text-color-license }};
         font-size: {{ section.settings.font-size-license }}px;
         text-align: {{ section.settings.text-align-license }};
+    }
+    #ContactFooter .newsletter__input{
+        color: {{ section.settings.footer-color }};
     }
 </style>
 
@@ -219,10 +279,54 @@
             "label" : {
                 "en": "Show Newsletter Signup"  
             },
-            "default": false,
+            "default": true,
             "info": {
                 "en": "Note: *It only shows up when you choose footer style 2."
             }
+        },
+        {
+            "type": "text",
+            "id": "titel-newsletter",
+            "label": {
+                "en": "Title Newsletter Signup"
+            },
+            "default" : "NEWSLETTER SIGN UP"
+        },
+        {
+            "type": "richtext",
+            "id": "description-newsletter",
+            "label": {
+                "en": "Description Newsletter Signup"
+            },
+            "default" : "Sign up for our Newsletter to get more events, promotions & news from us!"
+        },
+        {
+            "type": "select",
+            "id": "align-newsletter",
+            "label" : {
+                "en" : "Align Aewsletter Signup"
+            },
+            "options": [
+                {
+                    "value": "left",
+                    "label": {
+                        "en": "Left"
+                    }
+                },
+                {
+                    "value": "center",
+                    "label": {
+                        "en": "Center"
+                    }
+                },
+                {
+                    "value": "right",
+                    "label": {
+                        "en": "Right"
+                    }
+                }
+            ],
+            "default" : "left"
         },
         {
             "type": "header",
