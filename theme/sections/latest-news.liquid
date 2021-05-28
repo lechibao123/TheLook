@@ -1,0 +1,226 @@
+{%- liquid 
+    assign articles = blogs[section.settings.blog].articles
+-%}
+
+{%- case section.settings.latest-news-style -%}
+    {%- when 'style-1' -%}
+        {%- assign latestNewStyle = 'latest-news__gallery-style-1' -%}
+    {%- when 'style-2' -%}
+        {%- assign latestNewStyle = 'latest-news__gallery-style-2' -%}
+{%- endcase -%}
+
+<div class="bg-latest-news">
+    <div class="container">
+        <div class="latest-news p-mx p-my">
+            {%- if section.settings.title -%}
+                <h2 class="latest-news__title">{{ section.settings.title | escape }}</h2>
+            {%- endif -%}
+            {%- if section.settings.description -%}
+                <div class="latest-news__description">{{ section.settings.description }}</div>
+            {%- endif -%}
+            {%- if articles -%}
+                <div class="latest-news__gallery {{ latestNewStyle }}">
+                    {%- for article in articles limit: 3 -%}
+                        {%- assign img_url = article.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                        <div class="card">
+                            <div class="main-card-{{ article.id }}">
+                                <a href="{{ article.url }}">
+                                    {%- if article.image != blank -%}
+                                        <img id="{{ article.image.id }}"
+                                            class="lazyload"
+                                            src="{{ article.image | img_url: 'master' }}"
+                                            data-src="{{ img_url }}"
+                                            data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                                            data-aspectratio="{{ article.image.aspect_ratio }}"
+                                            data-sizes="auto"
+                                            alt="article.image.alt">
+                                    {%- else -%}
+                                        {% capture current %}{% cycle 1, 2, 3 %}{% endcapture %}
+                                        {{ 'collection-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+                                    {%- endif -%}
+                                </a>
+
+                                {%- if section.settings.show-author -%}
+                                    <div class="article-meta">
+                                        <span>{{ 'blogs.article.by_author' | t: author: article.author }}</span>
+                                        {%- if section.settings.latest-news-style == 'style-1' -%}
+                                            <span>- </span>
+                                        {%- endif -%}
+                                        <span>{{ article.published_at | date: format: 'abbreviated_date' }}</span>
+                                    </div>
+                                {%- endif -%}
+
+                                <div class="contents">
+                                    <a href="{{ article.url }}">
+                                        {{ article.title | escape }}
+                                    </a>
+                                </div>
+                                <div class="excerpts">
+                                    {% if article.excerpt.size > 0 %}
+                                        {{ article.excerpt }}
+                                    {% else %}
+                                        {{ article.content }}
+                                    {% endif %}
+                                </div>
+                                <div class="read-more">
+                                    <a href="{{ article.url }}" class="btn btn-style" aria-label="{{ 'blogs.article.read_more_title' | t: title: article.title }}">
+                                        {{ 'blogs.article.read_more' | t }}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {%- endfor -%}
+                </div>
+            {%- endif -%}
+        </div>
+    </div>
+</div>
+
+<style>
+    .latest-news .latest-news__title,
+    .latest-news .latest-news__description{
+        text-align: {{ section.settings.text-align }};
+    }
+    .latest-news__title{
+        color: {{ section.settings.title-color }};
+        font-size: {{ section.settings.title-font-size }}px;
+    }
+    .latest-news__description p{
+        color: {{ section.settings.description-color }};
+    }
+    .bg-latest-news{
+        background-color: {{ section.settings.bg-latest-news }};
+    }
+</style>
+
+{%- schema -%}
+{
+    "name" : {
+        "en": "Latest news"
+    },
+    "settings" : [
+        {
+            "id": "blog",
+            "type": "blog",
+            "label": "Blog"
+        },
+        {
+            "type": "select",
+            "id": "latest-news-style",
+            "label" : {
+                "en" : "Latest news Style"
+            },
+            "options": [
+                {
+                    "value": "style-1",
+                    "label": {
+                        "en": "Style 1"
+                    }
+                },
+                {
+                    "value": "style-2",
+                    "label": {
+                        "en": "Style 2"
+                    }
+                }
+            ],
+            "default" : "style-1"
+        },
+        {
+            "type" : "checkbox",
+            "id" : "show-author",
+            "label" : {
+                "en": "Show Author"  
+            },
+            "default": true
+        },
+        {
+            "type": "color",
+            "id": "bg-latest-news",
+            "label": {
+                "en": "Background"
+            },
+            "default" : "#FFFFFF"
+        },
+        {
+            "type": "select",
+            "id": "text-align",
+            "label" : {
+                "en" : "Text Align"
+            },
+            "options": [
+                {
+                    "value": "left",
+                    "label": {
+                        "en": "Left"
+                    }
+                },
+                    {
+                    "value": "center",
+                    "label": {
+                        "en": "Center"
+                    }
+                },
+                    {
+                    "value": "right",
+                    "label": {
+                        "en": "Right"
+                    }
+                }
+            ],
+            "default" : "center"
+        },
+        {
+            "type": "text",
+            "id": "title",
+            "label": {
+                "en": "Title"
+            },
+            "default" : "Latest news"
+        },
+        {
+            "type" : "range",
+            "id": "title-font-size",
+            "label": {
+                "en" : "Title Font Size" 
+            },
+            "step": 1,
+            "min" : 20,
+            "max" : 40,
+            "unit" : "px",
+            "default" : 30
+        },
+        {
+            "type": "color",
+            "id": "title-color",
+            "label": {
+                "en": "Title Color"
+            },
+            "default" : "#0F1214"
+        },
+        {
+            "type": "richtext",
+            "id": "description",
+            "label": {
+                "en": "Description"
+            },
+            "default" : "<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat</p>"
+        },
+        {
+            "type": "color",
+            "id": "description-color",
+            "label": {
+                "en": "Description Color"
+            },
+            "default" : "#494F56"
+        }
+    ],
+    "blocks": [],
+    "presets": [
+        {
+            "name": "Latest news",
+            "category": "Blog"
+        }
+    ]
+}
+{%- endschema -%}
