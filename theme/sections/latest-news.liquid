@@ -8,7 +8,7 @@
         {%- assign limitBlogs = section.settings.blog_pagination_limit -%}
     {%- when 'style-2' -%}
         {%- assign latestNewStyle = 'latest-news__gallery-style-2' -%}
-        {%- assign limitBlogs = section.settings.blog_pagination_limit | minus: 1 -%}
+        {%- assign limitBlogs = section.settings.blog_pagination_limit | limit: 3 -%}
 {%- endcase -%}
 
 {%- case limitBlogs -%}
@@ -98,6 +98,9 @@
 </div>
 
 <style>
+    .latest-news__gallery{
+        align-items: {{ section.settings.align-items }};
+    }
     .latest-news .latest-news__title,
     .latest-news .latest-news__description{
         text-align: {{ section.settings.text-align }};
@@ -144,7 +147,7 @@
             "max": 4,
             "step": 1,
             "info": {
-                "en": "Note: *when you choose style 2, up to 3 blogs visible."
+                "en": "Note: *When you choose style 2, up to 3 blogs visible."
             },
             "default": 3
         },
@@ -169,6 +172,34 @@
                 }
             ],
             "default" : "style-1"
+        },
+        {
+            "type": "select",
+            "id": "align-items",
+            "label" : {
+                "en" : "Align item articles"
+            },
+            "options": [
+                {
+                    "value": "flex-start",
+                    "label": {
+                        "en": "flex-start"
+                    }
+                },
+                {
+                    "value": "center",
+                    "label": {
+                        "en": "center"
+                    }
+                },
+                {
+                    "value": "flex-end",
+                    "label": {
+                        "en": "flex-end"
+                    }
+                }
+            ],
+            "default" : "flex-start"
         },
         {
             "type" : "checkbox",
