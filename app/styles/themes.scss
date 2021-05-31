@@ -2,14 +2,14 @@
     #Sass Variables
 ==============================================================================*/
 :root {
-    --max-width: 1920px;
-    --large-max-width: 960px;
-    --medium-max-width: 720px;
-    --small-max-width: 540px;
+  --max-width: 1920px;
+  --large-max-width: 960px;
+  --medium-max-width: 720px;
+  --small-max-width: 540px;
 
-    --large-padding: 255px;
-    --medium-padding: 100px;
-    --small-padding: 30px;
+  --large-padding: 255px;
+  --medium-padding: 100px;
+  --small-padding: 30px;
 }
 
 // @import "elements/_01_variables.scss";
@@ -21,7 +21,7 @@
 ==============================================================================*/
 @import "elements/_mixin.scss";
 
-//Element  
+//Element
 /* ============== Element ============== */
 @import "elements/reset.scss";
 @import "elements/header.scss";
