@@ -16,8 +16,6 @@
         }
     }
 
-   
-
     &__gallery{
         -ms-box-orient: horizontal;
         display: -webkit-box;
@@ -72,6 +70,7 @@
         flex-wrap: wrap;
         row-gap: 30px;
 
+
         .main-card a{
             position: relative;
             overflow: hidden;
@@ -122,6 +121,7 @@
 
     &__gallery-style-2{
         text-align: center;
+        flex-wrap: wrap;
 
         .card .main-card > a{
             margin-bottom: 13px;

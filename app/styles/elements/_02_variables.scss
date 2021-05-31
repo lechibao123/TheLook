@@ -231,8 +231,17 @@ img{
 
 
 .p-my{
-    padding-top: 80px;
-    padding-bottom: 100px;
+    padding-top: 0;
+    padding-bottom: 150px;
+    @include respond-to(1280) {
+        padding-bottom: 100px;
+    }
+    @include respond-to(768) {
+        padding-bottom: 75px;
+    }
+    @include respond-to(600) {
+        padding-bottom: 50px;
+    }
 }
 
 .overlay{
@@ -251,8 +260,8 @@ img{
 }
 
 .vertical-rl {
-  writing-mode: vertical-rl;
-  display: inline-block;
+    writing-mode: vertical-rl;
+    display: inline-block;
 }
 
 @keyframes fade-in {
