@@ -1,6 +1,4 @@
 .collection {
-  padding-top: 0;
-  padding-bottom: 0;
   display: flex;
   width: 100%;
   justify-content: space-between;
@@ -288,6 +286,29 @@
       img {
         transform: scale(1.05);
       }
+    }
+  }
+  @include respond-to(768) {
+    .collection-block-image-3-block {
+      display: none;
+    }
+    .collection-main-content-3-block {
+      width: 70%;
+      padding-top: 0;
+      padding-left: 0;
+      .collection-content-title-3-block {
+        padding-right: 0;
+      }
+      .collection-content-text-3-block {
+        padding-left: 0;
+      }
+      .collection-button-3-block {
+        padding-left: 0;
+      }
+    }
+    .collection-main-image-3-block {
+      width: 30%;
+      padding-top: 0;
     }
   }
 }
