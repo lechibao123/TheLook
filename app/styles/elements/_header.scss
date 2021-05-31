@@ -275,6 +275,20 @@
     a:last-child{
         margin-right: 0;
     }
+
+    .content-right{
+        -ms-box-orient: horizontal;
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -moz-flex;
+        display: -webkit-flex;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        row-gap: 8px;
+        column-gap: 7px;
+    }
 }
 
 .fallback-text{
