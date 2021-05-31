@@ -177,6 +177,9 @@
     .collection-main-image {
       width: 30%;
       padding-top: 0;
+      img {
+        height: 100%;
+      }
     }
   }
 
@@ -296,6 +299,10 @@
       width: 70%;
       padding-top: 0;
       padding-left: 0;
+      padding-right: 10px;
+      .collection-main-content-position {
+        position: unset;
+      }
       .collection-content-title-3-block {
         padding-right: 0;
       }
@@ -309,6 +316,9 @@
     .collection-main-image-3-block {
       width: 30%;
       padding-top: 0;
+      img {
+        height: 100%;
+      }
     }
   }
 }
