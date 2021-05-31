@@ -4,7 +4,7 @@
 -%}
 <div class="container">
     {% if sizeBlock == 1 %}
-        <div class="collection p-mx">
+        <div class="collection p-mx p-my">
             <div class="collection-block-image" id="image-{{ block.id }}">
                 <div class="collection-block-image-1">
                     {%- for block in section.blocks -%}
@@ -52,7 +52,7 @@
             </div>
         </div>
     {%- elsif sizeBlock == 2 -%}
-        <div class="collection p-mx">
+        <div class="collection p-mx p-my">
             <div class="collection-block-image" id="image-{{ block.id }}">
                 <div class="collection-block-image-2">
                     {%- for block in section.blocks -%}
@@ -119,10 +119,40 @@
             </div>
         </div>
     {%- else -%}
-        <div class="collection p-mx">
+        <div class="collection p-mx p-my">
             <div class="collection-block-image-3-block" id="image-{{ block.id }}">
                 {%- for block in section.blocks -%}
-                
+                    {%- if forloop.last == true -%}
+                        <div class="collection-block-image-3-large">
+                            {%- if block.settings.block_image != blank -%}
+                                {%- assign img_url = block.settings.block_image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                                <img id="{{ block.settings.block_image.id }}"
+                                    class="lazyload"
+                                    data-src="{{ img_url }}"
+                                    data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                                    data-aspectratio="{{ block.settings.block_image.aspect_ratio }}"
+                                    data-sizes="auto"
+                                    alt="{{ block.settings.block_image.alt }}">
+                            {%- else -%}
+                                {{ 'image' | placeholder_svg_tag }}                  
+                            {%- endif -%}
+                        </div>
+                    {%- else -%}
+                        <div class="collection-block-image-3-small">
+                            {%- if block.settings.block_image != blank -%}
+                                {%- assign img_url = block.settings.block_image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                                <img id="{{ block.settings.block_image.id }}"
+                                    class="lazyload"
+                                    data-src="{{ img_url }}"
+                                    data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                                    data-aspectratio="{{ block.settings.block_image.aspect_ratio }}"
+                                    data-sizes="auto"
+                                    alt="{{ block.settings.block_image.alt }}">
+                            {%- else -%}
+                                {{ 'image' | placeholder_svg_tag }}                  
+                            {%- endif -%}
+                        </div>
+                    {%- endif -%}
                 {%- endfor -%}
             </div>
             <div class="collection-main-content-3-block">

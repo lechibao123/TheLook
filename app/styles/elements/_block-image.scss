@@ -184,6 +184,25 @@
 
   .collection-block-image-3-block {
     width: 50%;
+    display: flex;
+    flex-wrap: wrap;
+
+    .collection-block-image-3-small {
+      width: 50%;
+      padding-bottom: 10px;
+      padding-left: 10px;
+      padding-right: 10px;
+      img {
+        width: 100%;
+      }
+    }
+
+    .collection-block-image-3-large {
+      width: 100%;
+      img {
+        width: 100%;
+      }
+    }
   }
   .collection-main-content-3-block {
     width: 25%;
@@ -214,6 +233,17 @@
     }
     .collection-content-text-3-block {
       p {
+        word-wrap: break-word;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        position: relative;
+        width: 100%;
+        word-break: break-word;
+        display: -webkit-box;
+        -webkit-line-clamp: 10;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
         font-family: Lato;
         font-style: normal;
         font-weight: normal;
