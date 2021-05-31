@@ -97,55 +97,58 @@
     </div>
 </div>
 
-<div class="bg-save-up">
-    <div class="container">
-        <div class="save-up p-mx p-my">
-            {%- for block in section.blocks -%}
-                {%- assign _block = block.settings -%}
-                {%- case block.type -%}
-                    {%- when 'save-up' -%}
-                        <div class="save-up__item save-up__item-{{ block.id }}">
-                            {%- if  _block.title != blank -%}
-                                <div class="save-up__item-title">{{ _block.title }}</div>
-                            {%- endif -%}
-                            <div class="save-up__item-content">
-                                <div class="save-up__item-image">
-                                    {%- if _block.image != blank -%}
-                                        {%- assign img_url = _block.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
-                                        <img id="{{ _block.image.id }}"
-                                            class="lazyload"
-                                            data-src="{{ img_url }}"
-                                            data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
-                                            data-aspectratio="{{ _block.image.aspect_ratio }}"
-                                            data-sizes="auto"
-                                            alt="{{ _block.image.alt }}">
-                                    {%- else -%}
-                                        {{ 'image' | placeholder_svg_tag }}                  
+{%- if section.blocks != blank -%}
+    <div class="bg-save-up">
+        <div class="container">
+            <div class="save-up p-mx p-my">
+                {%- for block in section.blocks -%}
+                    {%- assign _block = block.settings -%}
+                    {%- case block.type -%}
+                        {%- when 'save-up' -%}
+                            <div class="save-up__item save-up__item-{{ block.id }}">
+                                {%- if  _block.title != blank -%}
+                                    <div class="save-up__item-title">{{ _block.title }}</div>
+                                {%- endif -%}
+                                <div class="save-up__item-content">
+                                    <div class="save-up__item-image">
+                                        {%- if _block.image != blank -%}
+                                            {%- assign img_url = _block.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                                            <img id="{{ _block.image.id }}"
+                                                class="lazyload"
+                                                data-src="{{ img_url }}"
+                                                data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                                                data-aspectratio="{{ _block.image.aspect_ratio }}"
+                                                data-sizes="auto"
+                                                alt="{{ _block.image.alt }}">
+                                        {%- else -%}
+                                            {{ 'image' | placeholder_svg_tag }}                  
+                                        {%- endif -%}
+                                    </div>
+
+                                    {%- if _block.text-vertical != blank -%}
+                                        <div class="save-up__item-text-vertical vertical-rl">{{ _block.text-vertical }}</div>
                                     {%- endif -%}
                                 </div>
 
-                                {%- if _block.text-vertical != blank -%}
-                                    <div class="save-up__item-text-vertical vertical-rl">{{ _block.text-vertical }}</div>
-                                {%- endif -%}
-                            </div>
-
-                            {%- style -%}
-                                @media only screen and (min-width: 768px) {
-                                    .save-up__item-{{ block.id }}{
-                                        margin-top: {{ _block.margin-top }}px;
+                                {%- style -%}
+                                    @media only screen and (min-width: 768px) {
+                                        .save-up__item-{{ block.id }}{
+                                            margin-top: {{ _block.margin-top }}px;
+                                        }
                                     }
-                                }
-                                .save-up__item-{{ block.id }} .save-up__item-image{
-                                    width: 100%;
-                                    max-width: {{ _block.width-image }}px;
-                                }
-                            {%- endstyle -%}
-                        </div>
-                {%- endcase -%}
-            {%- endfor -%}
+                                    .save-up__item-{{ block.id }} .save-up__item-image{
+                                        width: 100%;
+                                        max-width: {{ _block.width-image }}px;
+                                    }
+                                {%- endstyle -%}
+                            </div>
+                    {%- endcase -%}
+                {%- endfor -%}
+            </div>
         </div>
     </div>
-</div>
+{%- endif -%}
+
 
 <style>
     .latest-news__gallery{
